@@ -1,8 +1,8 @@
 :root {
-  --bg: #0d0d0c;
-  --fg: #ece6da;
-  --muted: #8f877a;
-  --gold: #c2a46b;
+  --bg: #141824;
+  --fg: #ffffff;
+  --muted: #8a90a3;
+  --blue: #5285f7;
 }
 
 * {
@@ -17,7 +17,7 @@ body {
 }
 
 body {
-  background: radial-gradient(ellipse at center, #1a1916 0%, var(--bg) 70%);
+  background: radial-gradient(ellipse at center, #1c2233 0%, var(--bg) 70%);
   color: var(--fg);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,73 +33,47 @@ body {
   text-align: center;
 }
 
-.mark {
-  position: relative;
-  width: 64px;
-  height: 64px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  margin-bottom: 2.5rem;
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+  background: rgba(20, 24, 36, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.hand {
-  position: absolute;
-  left: 50%;
-  bottom: 50%;
-  width: 1px;
-  background: var(--gold);
-  transform-origin: bottom center;
+.header-logo {
+  display: block;
+  line-height: 0;
 }
 
-.hour {
-  height: 16px;
-  transform: translateX(-50%) rotate(300deg);
+.header-logo img {
+  height: 22px;
+  width: auto;
 }
 
-.minute {
-  height: 24px;
-  animation: sweep 60s linear infinite;
+.hero-logo {
+  line-height: 0;
 }
 
-@keyframes sweep {
-  from {
-    transform: translateX(-50%) rotate(0deg);
-  }
-  to {
-    transform: translateX(-50%) rotate(360deg);
-  }
-}
-
-.brand {
-  font-family: var(--font-serif), Georgia, serif;
-  font-weight: 300;
-  font-size: clamp(3.5rem, 14vw, 7.5rem);
-  letter-spacing: 0.35em;
-  margin-right: -0.35em;
-  line-height: 1;
-}
-
-.tagline {
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.6em;
-  margin-right: -0.6em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.rule {
-  width: 48px;
-  height: 1px;
-  background: var(--gold);
-  margin: 2.5rem 0;
+.hero-logo img {
+  width: min(560px, 80vw);
+  height: auto;
 }
 
 .soon {
-  font-family: var(--font-serif), Georgia, serif;
-  font-style: italic;
-  font-size: 1.25rem;
-  color: var(--fg);
+  margin-top: 3rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  margin-right: -0.4em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .footer {
@@ -108,11 +82,4 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   color: var(--muted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .minute {
-    animation: none;
-    transform: translateX(-50%) rotate(60deg);
-  }
 }
