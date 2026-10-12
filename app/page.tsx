@@ -3,7 +3,12 @@ export default function Home() {
     <>
       <header className="header">
         <a href="/" className="header-logo" aria-label="MATIN home">
-          <img src="/matin-wordmark.svg" alt="MATIN" width={1971} height={347} />
+          <img
+            src="/matin-logo.svg"
+            alt="MATIN Rugged Smartwatches"
+            width={1971}
+            height={587}
+          />
         </a>
       </header>
       <main className="page">
