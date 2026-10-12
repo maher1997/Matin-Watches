@@ -1,11 +1,12 @@
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <img src="/matin-logo.svg" alt="MATIN Rugged Smartwatches" width={1971} height={587} />
+          <Logo />
           <p>Smartwatches built for hard places.</p>
         </div>
         <div className="footer-col">

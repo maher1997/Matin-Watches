@@ -13,7 +13,7 @@
   --teal: #5fd6d0;
   --purple: #3a3358;
   --radius: 16px;
-  --header-h: 64px;
+  --header-h: 76px;
   --max: 1240px;
 }
 
@@ -181,10 +181,15 @@ h3 {
   top: 0;
   z-index: 50;
   height: var(--header-h);
-  background: rgba(18, 19, 27, 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* Same look as the logo artwork: navy, cloudy texture, dot grid. */
+  background-color: #141824;
+  background-image:
+    radial-gradient(circle, rgba(150, 160, 210, 0.4) 1px, transparent 1.5px),
+    url("/bg-texture.svg");
+  background-size: 18px 18px, 1200px 800px;
+  background-position: 9px 9px, 0 0;
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.6);
 }
 
 .header-inner {
@@ -202,9 +207,42 @@ h3 {
   line-height: 0;
 }
 
-.header-logo img {
-  height: 40px;
-  width: auto;
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  width: 196px;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+}
+
+.logo-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-brand), var(--font-sans), sans-serif;
+  font-weight: 600;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.logo-tag i {
+  flex: 1;
+  height: 2px;
+  min-width: 10px;
+  background: linear-gradient(90deg, rgba(82, 133, 247, 0.5), var(--blue));
+}
+
+.logo-tag i:last-child {
+  background: linear-gradient(90deg, var(--blue), rgba(82, 133, 247, 0.5));
 }
 
 .nav {
@@ -945,9 +983,8 @@ h3 {
   gap: 2rem;
 }
 
-.footer-brand img {
-  height: 44px;
-  width: auto;
+.footer-brand .logo {
+  width: 200px;
 }
 
 .footer-brand p,
@@ -1034,14 +1071,19 @@ h3 {
 
 @media (max-width: 860px) {
   :root {
-    --header-h: 56px;
+    --header-h: 66px;
   }
   .header-inner {
     gap: 0.5rem;
     justify-content: space-between;
   }
-  .header-logo img {
-    height: 34px;
+  .header-logo .logo {
+    width: 168px;
+    gap: 6px;
+  }
+  .header-logo .logo-tag {
+    font-size: 7.5px;
+    gap: 6px;
   }
   .menu-btn {
     display: inline-flex;
@@ -1055,7 +1097,7 @@ h3 {
     flex-direction: column;
     gap: 0;
     padding: 0.5rem 1rem 1rem;
-    background: rgba(18, 19, 27, 0.97);
+    background: #141824;
     border-bottom: 1px solid var(--border);
   }
   .nav.open {
