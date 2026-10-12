@@ -17,7 +17,13 @@ body {
 }
 
 body {
-  background: radial-gradient(ellipse at center, #1c2233 0%, var(--bg) 70%);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle, rgba(150, 160, 210, 0.4) 1px, transparent 1.5px),
+    url("/bg-texture.svg");
+  background-size: 18px 18px, 1200px 800px;
+  background-position: 9px 9px, 0 0;
+  background-attachment: fixed;
   color: var(--fg);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,9 +49,7 @@ body {
   align-items: center;
   height: 112px;
   padding: 0 clamp(1rem, 4vw, 2.5rem);
-  background: rgba(20, 24, 36, 0.85);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
 }
 
 .header-logo {
