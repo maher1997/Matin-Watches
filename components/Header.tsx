@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "./Cart";
+import Logo from "./Logo";
 
 const links = [
   { href: "/shop", label: "Shop all" },
@@ -31,7 +32,7 @@ export default function Header() {
             </svg>
           </button>
           <Link href="/" className="header-logo" aria-label="MATIN home" onClick={() => setOpen(false)}>
-            <img src="/matin-logo.svg" alt="MATIN Rugged Smartwatches" width={1971} height={587} />
+            <Logo />
           </Link>
           <nav className={`nav ${open ? "open" : ""}`}>
             {links.map((l) => (
