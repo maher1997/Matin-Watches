@@ -9,8 +9,13 @@ type Sort = "featured" | "low" | "high";
 
 export default function ShopGrid() {
   const params = useSearchParams();
+  return <ShopGridView active={(params.get("c") as Category | null) ?? null} />;
+}
+
+// The grid itself. The shop page also renders it with no filter as the
+// first paint, so the page is full height right away and does not jump.
+export function ShopGridView({ active }: { active: Category | null }) {
   const router = useRouter();
-  const active = (params.get("c") as Category | null) ?? null;
   const [sort, setSort] = useState<Sort>("featured");
 
   const list = useMemo(() => {
