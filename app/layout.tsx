@@ -77,7 +77,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} ${brand.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable} ${brand.variable}`}>
       <body>
         <JsonLd data={orgData} />
         <CartProvider>
