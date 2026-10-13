@@ -1346,3 +1346,239 @@ h3 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ---------- Motion (Apple-style) ---------- */
+
+/* Scroll reveal: hidden only for people who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+  /* Hero watch floats gently (transform only, so it never delays paint) */
+  .hero-media .product-photo {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* "Take a closer look" pinned scroll story */
+.story {
+  --p: 0;
+  position: relative;
+  height: 340vh;
+  margin-top: 4rem;
+}
+
+.story-stage {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100svh - var(--header-h));
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 520px) 1fr;
+  grid-template-rows: auto 1fr;
+  align-items: center;
+  gap: 0 2rem;
+  overflow: hidden;
+}
+
+.story-title {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  padding-top: 1.5rem;
+  opacity: calc(1 - var(--p) * 0.6);
+}
+
+.story-watch {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  transform: scale(calc(0.72 + var(--p) * 0.38)) rotate(calc(-10deg + var(--p) * 10deg));
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+  will-change: transform;
+}
+
+.story-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(82, 133, 247, calc(0.15 + var(--p) * 0.35)), transparent);
+}
+
+.story-callouts {
+  grid-row: 2;
+  list-style: none;
+  display: grid;
+  gap: 2.2rem;
+}
+
+.story-left {
+  grid-column: 1;
+  text-align: right;
+}
+
+.story-right {
+  grid-column: 3;
+}
+
+.callout {
+  --o: clamp(0, (var(--p) - var(--start)) * 10, 1);
+  opacity: var(--o);
+  transform: translateY(calc((1 - var(--o)) * 24px));
+}
+
+.callout strong {
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, #fff, #a9c2ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.callout span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Big counting numbers */
+.big-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  text-align: center;
+}
+
+.big-stat strong {
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 30%, #5285f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.big-stat > span {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Feature chapters */
+.chapter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.chapter h2 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  margin: 0.4rem 0 1rem;
+}
+
+.chapter-flip .chapter-text {
+  order: 2;
+}
+
+.chapter-media img {
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  box-shadow: 0 40px 80px -40px rgba(82, 133, 247, 0.45);
+}
+
+@media (max-width: 860px) {
+  .story {
+    height: 300vh;
+  }
+  .story-stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    gap: 1.5rem;
+  }
+  .story-title {
+    padding-top: 0;
+  }
+  .story-watch {
+    grid-column: 1;
+    width: min(88vw, 400px);
+    justify-self: center;
+    transform: scale(calc(0.82 + var(--p) * 0.22)) rotate(calc(-8deg + var(--p) * 8deg));
+  }
+  /* On phones the notes appear one at a time under the watch */
+  .story-callouts {
+    grid-column: 1;
+    grid-row: 3;
+    display: block;
+    position: relative;
+    height: 5.5rem;
+    text-align: center;
+  }
+  .story-left {
+    text-align: center;
+  }
+  .callout {
+    --o: min(clamp(0, (var(--p) - var(--start)) * 12, 1), clamp(0, (var(--end) - var(--p)) * 12, 1));
+    position: absolute;
+    inset: 0 0 auto;
+  }
+  .big-stats {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 2rem;
+  }
+  .chapter {
+    grid-template-columns: 1fr;
+  }
+  .chapter-flip .chapter-text {
+    order: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story {
+    height: auto;
+  }
+  .story-stage {
+    position: static;
+    height: auto;
+  }
+  .callout {
+    --o: 1;
+    position: static;
+  }
+  .story-callouts {
+    height: auto;
+  }
+}

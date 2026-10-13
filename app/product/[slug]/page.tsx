@@ -8,6 +8,9 @@ import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
 import JsonLd from "@/components/JsonLd";
+import ScrollStory from "@/components/ScrollStory";
+import CountUp from "@/components/CountUp";
+import Reveal from "@/components/Reveal";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -166,6 +169,42 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </div>
 
+      <ScrollStory product={product} />
+
+      {product.bigStats && (
+        <section className="section big-stats" aria-label={`${product.name} in numbers`}>
+          {product.bigStats.map((b, i) => (
+            <Reveal key={b.label} className="big-stat" delay={i * 90}>
+              <strong>
+                <CountUp to={b.value} suffix={b.suffix} />
+              </strong>
+              <span>{b.label}</span>
+            </Reveal>
+          ))}
+        </section>
+      )}
+
+      {product.chapters?.map((c, i) => (
+        <section key={c.title} className={`section chapter ${i % 2 ? "chapter-flip" : ""}`}>
+          <Reveal className="chapter-text">
+            <p className="eyebrow">{c.eyebrow}</p>
+            <h2>{c.title}</h2>
+            <p className="lead">{c.text}</p>
+          </Reveal>
+          {c.image && (
+            <Reveal className="chapter-media" delay={120}>
+              <Image
+                src={c.image}
+                alt={c.imageAlt ?? c.title}
+                width={product.posters?.find((p) => p.src === c.image)?.width ?? 1200}
+                height={product.posters?.find((p) => p.src === c.image)?.height ?? 1500}
+                sizes="(max-width: 860px) 100vw, 50vw"
+              />
+            </Reveal>
+          )}
+        </section>
+      ))}
+
       <section className="section">
         <h2 className="spec-title">{product.name} specifications</h2>
         {specGroups.length > 1 || specGroups[0]?.[0] ? (
@@ -215,24 +254,6 @@ export default async function ProductPage({ params }: Props) {
               <li key={s}>{s}</li>
             ))}
           </ul>
-        </section>
-      )}
-
-      {product.posters && (
-        <section className="section">
-          <h2 className="spec-title">Built for the field</h2>
-          <div className="posters">
-            {product.posters.map((p) => (
-              <Image
-                key={p.src}
-                src={p.src}
-                alt={p.alt}
-                width={p.width}
-                height={p.height}
-                sizes="(max-width: 860px) 100vw, 50vw"
-              />
-            ))}
-          </div>
         </section>
       )}
 

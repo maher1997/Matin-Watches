@@ -28,6 +28,12 @@ export type Product = {
   features?: string[];
   // Optional list of sports shown on the product page.
   sports?: string[];
+  // "Take a closer look" scroll story: short notes that appear around the watch.
+  callouts?: { title: string; text: string }[];
+  // Big counting numbers band (e.g. 170 + "+" / "Sport modes").
+  bigStats?: { value: number; suffix?: string; label: string }[];
+  // Apple-style feature chapters: short headline, one paragraph, optional picture.
+  chapters?: { eyebrow: string; title: string; text: string; image?: string; imageAlt?: string }[];
   // Marketing pictures shown lower on the product page.
   posters?: { src: string; alt: string; width: number; height: number }[];
   // Questions and answers shown on the page and given to Google.
@@ -106,6 +112,38 @@ export const products: Product[] = [
       "Calendar",
       "Calculator",
       "World time",
+    ],
+    callouts: [
+      { title: "Built-in GPS", text: "Tracks your route, distance and pace." },
+      { title: '1.95" AMOLED', text: "Big, bright and sharp, even outdoors." },
+      { title: "1000mAh battery", text: "Up to 30 days on one charge." },
+      { title: "Zinc alloy case", text: "Armoured frame that takes the knocks." },
+      { title: "Heart rate", text: "Keeps an eye on your effort all day." },
+      { title: "3ATM", text: "Rain, sweat and splashes are fine." },
+    ],
+    bigStats: [
+      { value: 170, suffix: "+", label: "Sport modes" },
+      { value: 30, label: "Days of battery" },
+      { value: 1000, label: "mAh battery" },
+      { value: 3, suffix: "ATM", label: "Water resistance" },
+    ],
+    chapters: [
+      {
+        eyebrow: "GPS",
+        title: "Find your way. Anywhere.",
+        text: "Built-in GPS maps your route, distance and time on every run, ride and hike. Head out further and always know how far you have come.",
+        image: "/products/matin-trekon-gps-rugged-smartwatch-outdoors.webp",
+        imageAlt:
+          "MATIN Trekon rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
+      },
+      {
+        eyebrow: "170+ sport modes",
+        title: "Every sport. Covered.",
+        text: "Running, cycling, hiking, climbing, tennis, basketball, yoga and more than 160 others. Pick your sport and the Trekon tracks heart rate, calories and time.",
+        image: "/products/matin-trekon-170-sport-modes.webp",
+        imageAlt:
+          "MATIN Trekon GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
+      },
     ],
     sports: ["Running", "Cycling", "Hiking", "Climbing", "Tennis", "Basketball", "Yoga", "And 160+ more"],
     posters: [

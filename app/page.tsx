@@ -3,6 +3,7 @@ import Link from "next/link";
 import { categories, products } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import ProductImage from "@/components/ProductImage";
+import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: { absolute: "MATIN | Rugged GPS Smartwatches Built for Hard Places" },
@@ -58,13 +59,13 @@ export default function Home() {
 
       <section className="features">
         {features.map((f, i) => (
-          <div key={f.title} className="feature">
+          <Reveal key={f.title} className="feature" delay={i * 90}>
             <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
               {icons[i]}
             </svg>
             <h3>{f.title}</h3>
             <p>{f.text}</p>
-          </div>
+          </Reveal>
         ))}
       </section>
 
@@ -109,7 +110,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="banner">
+      <Reveal as="section" className="banner">
         <div>
           <p className="eyebrow">Tested beyond the standard</p>
           <h2>Dropped. Frozen. Submerged. Still running.</h2>
@@ -122,7 +123,7 @@ export default function Home() {
             <li key={t}>{t}</li>
           ))}
         </ul>
-      </section>
+      </Reveal>
 
       <section className="section trust">
         {[
