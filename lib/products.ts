@@ -47,21 +47,20 @@ export const categories: { id: Category; name: string; blurb: string }[] = [
 
 export const products: Product[] = [
   {
-    slug: "matin-sentinel",
-    // PLACEHOLDER name and price: change them here when they are decided.
-    name: "MATIN Sentinel",
+    slug: "matin-trekon",
+    name: "MATIN Trekon",
     tagline: "Rugged GPS smartwatch with 170+ sport modes",
-    price: 89,
+    price: 120,
     category: "tactical",
     badge: "New",
-    images: ["/products/matin-sentinel-rugged-smartwatch.webp"],
+    images: ["/products/matin-trekon-rugged-smartwatch.webp"],
     imageAlts: [
-      'MATIN Sentinel rugged GPS smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
+      'MATIN Trekon rugged GPS smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
     ],
-    shareImage: "/products/matin-sentinel-share.jpg",
+    shareImage: "/products/matin-trekon-share.jpg",
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Sentinel is a rugged GPS smartwatch built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
+      'The MATIN Trekon is a rugged GPS smartwatch built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
     highlights: [
       { value: "GPS", label: "Route tracking" },
       { value: "170+", label: "Sport modes" },
@@ -89,7 +88,7 @@ export const products: Product[] = [
       { group: "Smart features", label: "Notifications", value: "Calls, messages and app alerts" },
       { group: "Smart features", label: "Tools", value: "Alarm, calendar, calculator, world time" },
       { group: "Smart features", label: "Camera", value: "None" },
-      { group: "In the box", label: "Includes", value: "MATIN Sentinel watch, magnetic charging cable" },
+      { group: "In the box", label: "Includes", value: "MATIN Trekon watch, magnetic charging cable" },
     ],
     features: [
       "Built-in GPS",
@@ -111,21 +110,21 @@ export const products: Product[] = [
     sports: ["Running", "Cycling", "Hiking", "Climbing", "Tennis", "Basketball", "Yoga", "And 160+ more"],
     posters: [
       {
-        src: "/products/matin-sentinel-gps-rugged-smartwatch-outdoors.webp",
-        alt: "MATIN Sentinel rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
+        src: "/products/matin-trekon-gps-rugged-smartwatch-outdoors.webp",
+        alt: "MATIN Trekon rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
         width: 1121,
         height: 1403,
       },
       {
-        src: "/products/matin-sentinel-170-sport-modes.webp",
-        alt: "MATIN Sentinel GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
+        src: "/products/matin-trekon-170-sport-modes.webp",
+        alt: "MATIN Trekon GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
         width: 1200,
         height: 1693,
       },
     ],
     faq: [
       {
-        q: "Does the MATIN Sentinel have GPS?",
+        q: "Does the MATIN Trekon have GPS?",
         a: "Yes. It has built-in GPS that tracks your route, distance and time for runs, rides and hikes.",
       },
       {
@@ -138,10 +137,10 @@ export const products: Product[] = [
       },
       {
         q: "Does it work with iPhone and Android?",
-        a: "Yes. The MATIN Sentinel pairs with both iPhone and Android phones through its companion app for notifications, settings and watch faces.",
+        a: "Yes. The MATIN Trekon pairs with both iPhone and Android phones through its companion app for notifications, settings and watch faces.",
       },
       {
-        q: "Is the MATIN Sentinel waterproof?",
+        q: "Is the MATIN Trekon waterproof?",
         a: "It is rated 3ATM, so rain, sweat and splashes are fine. It is not made for swimming or diving.",
       },
       {
@@ -153,9 +152,9 @@ export const products: Product[] = [
         a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
       },
     ],
-    seoTitle: "MATIN Sentinel Rugged GPS Smartwatch | 170+ Sport Modes",
+    seoTitle: "MATIN Trekon Rugged GPS Smartwatch | 170+ Sport Modes",
     seoDescription:
-      'MATIN Sentinel rugged GPS smartwatch for men: built-in GPS, 170+ sport modes, 1.95" AMOLED screen, 1000mAh battery up to 30 days, zinc alloy case, 3ATM. Free shipping.',
+      'MATIN Trekon rugged GPS smartwatch for men: built-in GPS, 170+ sport modes, 1.95" AMOLED screen, 1000mAh battery up to 30 days, zinc alloy case, 3ATM. Free shipping.',
     art: { case: "#2a2e38", strap: "#16181e", accent: "#e0b45a" },
   },
   {
