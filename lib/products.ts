@@ -61,7 +61,7 @@ export const products: Product[] = [
     shareImage: "/products/matin-sentinel-share.jpg",
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Sentinel is a rugged GPS smartwatch built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
+      'The MATIN Sentinel is a rugged GPS smartwatch built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
     highlights: [
       { value: "GPS", label: "Route tracking" },
       { value: "170+", label: "Sport modes" },
@@ -78,6 +78,7 @@ export const products: Product[] = [
       { group: "GPS & sports", label: "GPS", value: "Built-in GPS route tracking" },
       { group: "GPS & sports", label: "Sport modes", value: "170+ (running, cycling, hiking, climbing and more)" },
       { group: "GPS & sports", label: "Outdoor tools", value: "Altitude meter, compass" },
+      { group: "Health", label: "Heart rate", value: "Heart rate monitoring" },
       { group: "Health", label: "Tracking", value: "Steps, distance, calories, sleep" },
       { group: "Health", label: "Reminders", value: "Sedentary reminder" },
       { group: "Build", label: "Case", value: "Zinc alloy middle frame" },
@@ -95,6 +96,7 @@ export const products: Product[] = [
       "170+ sport modes",
       "Altitude meter",
       "Compass",
+      "Heart rate monitor",
       "Step and distance tracker",
       "Calorie tracker",
       "Sleep tracker",
