@@ -1192,3 +1192,19 @@ h3 {
 .feature-list {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
+
+/* Real product photos: soft studio light behind, shadow and a faint blue rim */
+.photo-glow {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side at 46% 44%, rgba(82, 133, 247, 0.5), rgba(82, 133, 247, 0.16) 55%, transparent),
+    radial-gradient(closest-side at 64% 72%, rgba(95, 214, 208, 0.22), transparent 75%);
+  pointer-events: none;
+}
+
+.product-photo {
+  filter: drop-shadow(0 0 1.5px rgba(160, 190, 255, 0.55)) drop-shadow(0 0 22px rgba(82, 133, 247, 0.3))
+    drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
+}

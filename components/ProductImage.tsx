@@ -9,17 +9,22 @@ export default function ProductImage({ product, index = 0, priority, sizes, alt 
   const src = product.images[index];
   if (src) {
     return (
-      <Image
-        src={src}
-        alt={alt ?? product.imageAlts?.[index] ?? `${product.name} rugged smartwatch`}
-        fill
-        priority={priority}
-        fetchPriority={priority ? "high" : undefined}
-        // Above-the-fold photos use slightly lighter files so the page paints sooner.
-        quality={priority ? 60 : 75}
-        sizes={sizes ?? "(max-width: 768px) 100vw, 33vw"}
-        style={{ objectFit: "contain" }}
-      />
+      <>
+        {/* Soft blue/teal light behind the watch so it glows on the dark page. */}
+        <span className="photo-glow" aria-hidden="true" />
+        <Image
+          className="product-photo"
+          src={src}
+          alt={alt ?? product.imageAlts?.[index] ?? `${product.name} rugged smartwatch`}
+          fill
+          priority={priority}
+          fetchPriority={priority ? "high" : undefined}
+          // Above-the-fold photos use slightly lighter files so the page paints sooner.
+          quality={priority ? 60 : 75}
+          sizes={sizes ?? "(max-width: 768px) 100vw, 33vw"}
+          style={{ objectFit: "contain" }}
+        />
+      </>
     );
   }
   return <WatchArt {...product.art} />;
