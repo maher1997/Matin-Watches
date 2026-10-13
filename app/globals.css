@@ -1208,3 +1208,141 @@ h3 {
   filter: drop-shadow(0 0 1.5px rgba(160, 190, 255, 0.55)) drop-shadow(0 0 22px rgba(82, 133, 247, 0.3))
     drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
 }
+
+/* Product key numbers under the price */
+.pdp-stats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  margin: -0.25rem 0 1.5rem;
+}
+
+.pdp-stats li {
+  padding: 0.8rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.pdp-stats strong {
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.pdp-stats span {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Grouped specification cards */
+.spec-groups {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.spec-group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-mid);
+  padding: 1.25rem 1.4rem 0.5rem;
+}
+
+.spec-group h3 {
+  font-size: 1.05rem;
+  color: var(--teal);
+  margin-bottom: 0.5rem;
+}
+
+.spec-group dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+.spec-group dt {
+  color: var(--muted);
+}
+
+.spec-group dd {
+  text-align: right;
+}
+
+/* Sports list */
+.sport-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.sport-list li {
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 0.9rem;
+}
+
+.sport-list li:last-child {
+  color: var(--teal);
+}
+
+/* Marketing posters */
+.posters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.posters img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* FAQ */
+.faq {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.faq details {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 0 1.2rem;
+}
+
+.faq summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  font-weight: 500;
+}
+
+.faq details p {
+  color: #c9cbdb;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 860px) {
+  .spec-groups,
+  .posters {
+    grid-template-columns: 1fr;
+  }
+  .pdp-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

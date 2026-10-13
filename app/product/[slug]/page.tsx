@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { categories, formatPrice, getProduct, products } from "@/lib/products";
+import { categories, formatPrice, getProduct, products, type Product } from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
@@ -42,6 +43,14 @@ export default async function ProductPage({ params }: Props) {
   const thumbs = product.images.length ? (product.images.length > 1 ? product.images.length : 0) : 3;
   const category = categories.find((c) => c.id === product.category);
   const url = absoluteUrl(`/product/${product.slug}`);
+  // Specs grouped by their `group` (in first-seen order); ungrouped ones share "".
+  const specGroups: [string, Product["specs"]][] = [];
+  for (const spec of product.specs) {
+    const group = spec.group ?? "";
+    const found = specGroups.find(([g]) => g === group);
+    if (found) found[1].push(spec);
+    else specGroups.push([group, [spec]]);
+  }
 
   // Product data for Google Shopping and rich results (price, stock, photo).
   const productData = {
@@ -54,7 +63,7 @@ export default async function ProductPage({ params }: Props) {
         description: product.description,
         sku: product.slug,
         url,
-        image: product.images.map((src) => absoluteUrl(src)),
+        image: [...product.images, ...(product.posters ?? []).map((p) => p.src)].map((src) => absoluteUrl(src)),
         brand: { "@type": "Brand", name: site.name },
         category: "Smartwatches",
         color: product.colors.map((c) => c.name).join(", "),
@@ -82,6 +91,18 @@ export default async function ProductPage({ params }: Props) {
           },
         },
       },
+      ...(product.faq
+        ? [
+            {
+              "@type": "FAQPage",
+              mainEntity: product.faq.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            },
+          ]
+        : []),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -125,6 +146,16 @@ export default async function ProductPage({ params }: Props) {
             {formatPrice(product.price)}
             {product.compareAt && <s>{formatPrice(product.compareAt)}</s>}
           </p>
+          {product.highlights && (
+            <ul className="pdp-stats">
+              {product.highlights.map((h) => (
+                <li key={h.label}>
+                  <strong>{h.value}</strong>
+                  <span>{h.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
           <p className="pdp-desc">{product.description}</p>
           <AddToCart product={product} />
           <ul className="perks">
@@ -137,14 +168,32 @@ export default async function ProductPage({ params }: Props) {
 
       <section className="section">
         <h2 className="spec-title">{product.name} specifications</h2>
-        <dl className="specs">
-          {product.specs.map((s) => (
-            <div key={s.label}>
-              <dt>{s.label}</dt>
-              <dd>{s.value}</dd>
-            </div>
-          ))}
-        </dl>
+        {specGroups.length > 1 || specGroups[0]?.[0] ? (
+          <div className="spec-groups">
+            {specGroups.map(([group, rows]) => (
+              <div key={group} className="spec-group">
+                <h3>{group}</h3>
+                <dl>
+                  {rows.map((s) => (
+                    <div key={s.label}>
+                      <dt>{s.label}</dt>
+                      <dd>{s.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <dl className="specs">
+            {product.specs.map((s) => (
+              <div key={s.label}>
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </section>
 
       {product.features && (
@@ -155,6 +204,49 @@ export default async function ProductPage({ params }: Props) {
               <li key={f}>{f}</li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {product.sports && (
+        <section className="section">
+          <h2 className="spec-title">170+ sport modes</h2>
+          <ul className="sport-list">
+            {product.sports.map((s) => (
+              <li key={s}>{s}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {product.posters && (
+        <section className="section">
+          <h2 className="spec-title">Built for the field</h2>
+          <div className="posters">
+            {product.posters.map((p) => (
+              <Image
+                key={p.src}
+                src={p.src}
+                alt={p.alt}
+                width={p.width}
+                height={p.height}
+                sizes="(max-width: 860px) 100vw, 50vw"
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {product.faq && (
+        <section className="section">
+          <h2 className="spec-title">Questions</h2>
+          <div className="faq">
+            {product.faq.map((f) => (
+              <details key={f.q}>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
         </section>
       )}
 

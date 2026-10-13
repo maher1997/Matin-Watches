@@ -20,9 +20,18 @@ export type Product = {
   shareImage?: string;
   colors: { name: string; hex: string }[];
   description: string;
-  specs: { label: string; value: string }[];
+  // `group` sorts the spec table into sections (Display, Battery...).
+  specs: { label: string; value: string; group?: string }[];
+  // Big numbers shown under the price (e.g. "170+" / "Sport modes").
+  highlights?: { value: string; label: string }[];
   // Optional "What it does" list on the product page.
   features?: string[];
+  // Optional list of sports shown on the product page.
+  sports?: string[];
+  // Marketing pictures shown lower on the product page.
+  posters?: { src: string; alt: string; width: number; height: number }[];
+  // Questions and answers shown on the page and given to Google.
+  faq?: { q: string; a: string }[];
   // Optional search-result title and description (Google shows these).
   seoTitle?: string;
   seoDescription?: string;
@@ -41,32 +50,52 @@ export const products: Product[] = [
     slug: "matin-sentinel",
     // PLACEHOLDER name and price: change them here when they are decided.
     name: "MATIN Sentinel",
-    tagline: 'Rugged smartwatch with a 1.95" AMOLED screen',
+    tagline: "Rugged GPS smartwatch with 170+ sport modes",
     price: 89,
     category: "tactical",
     badge: "New",
     images: ["/products/matin-sentinel-rugged-smartwatch.webp"],
     imageAlts: [
-      'MATIN Sentinel rugged smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
+      'MATIN Sentinel rugged GPS smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
     ],
     shareImage: "/products/matin-sentinel-share.jpg",
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'A tough, square smartwatch made for work, training and the outdoors. The armoured zinc alloy case protects a big, bright 1.95" AMOLED touchscreen, and one charge lasts 11 to 30 days. Track steps, calories, sleep and altitude, check the compass, and get call and message alerts from your phone, all on a watch that is rated 3ATM against rain, sweat and splashes.',
+      'The MATIN Sentinel is a rugged GPS smartwatch built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes.',
+    highlights: [
+      { value: "GPS", label: "Route tracking" },
+      { value: "170+", label: "Sport modes" },
+      { value: "30d", label: "Battery life" },
+      { value: '1.95"', label: "AMOLED screen" },
+    ],
     specs: [
-      { label: "Display", value: '1.95" AMOLED touchscreen' },
-      { label: "Battery", value: "11 to 30 days" },
-      { label: "Water", value: "3ATM water resistant" },
-      { label: "Case", value: "Zinc alloy, rectangular" },
-      { label: "Strap", value: "Silicone" },
-      { label: "Charging", value: "Magnetic charger" },
-      { label: "Phone app", value: "App control for Android phones" },
-      { label: "Camera", value: "None" },
+      { group: "Display", label: "Screen", value: '1.95" AMOLED touchscreen' },
+      { group: "Display", label: "Shape", value: "Rectangular" },
+      { group: "Display", label: "Watch faces", value: "Multiple faces, changeable in the app" },
+      { group: "Battery", label: "Capacity", value: "1000mAh" },
+      { group: "Battery", label: "Battery life", value: "11 to 30 days, depending on use" },
+      { group: "Battery", label: "Charging", value: "Magnetic charger" },
+      { group: "GPS & sports", label: "GPS", value: "Built-in GPS route tracking" },
+      { group: "GPS & sports", label: "Sport modes", value: "170+ (running, cycling, hiking, climbing and more)" },
+      { group: "GPS & sports", label: "Outdoor tools", value: "Altitude meter, compass" },
+      { group: "Health", label: "Tracking", value: "Steps, distance, calories, sleep" },
+      { group: "Health", label: "Reminders", value: "Sedentary reminder" },
+      { group: "Build", label: "Case", value: "Zinc alloy middle frame" },
+      { group: "Build", label: "Strap", value: "Silicone sport strap" },
+      { group: "Build", label: "Water resistance", value: "3ATM (rain, sweat and splashes)" },
+      { group: "Build", label: "Buttons", value: "SEL, BACK, SPORT and GPS keys" },
+      { group: "Smart features", label: "Phone app", value: "App control (Android)" },
+      { group: "Smart features", label: "Notifications", value: "Calls, messages and app alerts" },
+      { group: "Smart features", label: "Tools", value: "Alarm, calendar, calculator, world time" },
+      { group: "Smart features", label: "Camera", value: "None" },
+      { group: "In the box", label: "Includes", value: "MATIN Sentinel watch, magnetic charging cable" },
     ],
     features: [
+      "Built-in GPS",
+      "170+ sport modes",
       "Altitude meter",
       "Compass",
-      "Fitness and step tracker",
+      "Step and distance tracker",
       "Calorie tracker",
       "Sleep tracker",
       "Call reminders",
@@ -77,9 +106,50 @@ export const products: Product[] = [
       "Calculator",
       "World time",
     ],
-    seoTitle: 'MATIN Sentinel Rugged Smartwatch | 1.95" AMOLED, 30-Day Battery',
+    sports: ["Running", "Cycling", "Hiking", "Climbing", "Tennis", "Basketball", "Yoga", "And 160+ more"],
+    posters: [
+      {
+        src: "/products/matin-sentinel-gps-rugged-smartwatch-outdoors.webp",
+        alt: "MATIN Sentinel rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
+        width: 1121,
+        height: 1403,
+      },
+      {
+        src: "/products/matin-sentinel-170-sport-modes.webp",
+        alt: "MATIN Sentinel GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
+        width: 1200,
+        height: 1693,
+      },
+    ],
+    faq: [
+      {
+        q: "Does the MATIN Sentinel have GPS?",
+        a: "Yes. It has built-in GPS that tracks your route, distance and time for runs, rides and hikes.",
+      },
+      {
+        q: "How long does the battery last?",
+        a: "The 1000mAh battery lasts 11 to 30 days on one charge, depending on how much you use GPS and notifications. It charges with a magnetic cable.",
+      },
+      {
+        q: "How many sport modes does it have?",
+        a: "More than 170, including running, cycling, hiking, climbing, tennis, basketball and yoga.",
+      },
+      {
+        q: "Is the MATIN Sentinel waterproof?",
+        a: "It is rated 3ATM, so rain, sweat and splashes are fine. It is not made for swimming or diving.",
+      },
+      {
+        q: "What is the screen like?",
+        a: 'A big 1.95 inch AMOLED touchscreen with bright, sharp colours that stays readable outdoors.',
+      },
+      {
+        q: "Does shipping cost anything?",
+        a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
+      },
+    ],
+    seoTitle: "MATIN Sentinel Rugged GPS Smartwatch | 170+ Sport Modes",
     seoDescription:
-      'MATIN Sentinel rugged smartwatch for men: 1.95" AMOLED touchscreen, zinc alloy case, up to 30 days battery, 3ATM water resistance, compass, altitude and fitness tracking.',
+      'MATIN Sentinel rugged GPS smartwatch for men: built-in GPS, 170+ sport modes, 1.95" AMOLED screen, 1000mAh battery up to 30 days, zinc alloy case, 3ATM. Free shipping.',
     art: { case: "#2a2e38", strap: "#16181e", accent: "#e0b45a" },
   },
   {
