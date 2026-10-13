@@ -14,9 +14,18 @@ export type Product = {
   category: Category;
   badge?: string;
   images: string[];
+  // Text read by Google and screen readers for each photo (same order as images).
+  imageAlts?: string[];
+  // 1200x630 picture shown when the page link is shared (WhatsApp, Facebook, X).
+  shareImage?: string;
   colors: { name: string; hex: string }[];
   description: string;
   specs: { label: string; value: string }[];
+  // Optional "What it does" list on the product page.
+  features?: string[];
+  // Optional search-result title and description (Google shows these).
+  seoTitle?: string;
+  seoDescription?: string;
   // Placeholder drawing colors, used only while `images` is empty.
   art: { case: string; strap: string; accent: string };
 };
@@ -28,6 +37,51 @@ export const categories: { id: Category; name: string; blurb: string }[] = [
 ];
 
 export const products: Product[] = [
+  {
+    slug: "matin-sentinel",
+    // PLACEHOLDER name and price: change them here when they are decided.
+    name: "MATIN Sentinel",
+    tagline: 'Rugged smartwatch with a 1.95" AMOLED screen',
+    price: 89,
+    category: "tactical",
+    badge: "New",
+    images: ["/products/matin-sentinel-rugged-smartwatch.webp"],
+    imageAlts: [
+      'MATIN Sentinel rugged smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
+    ],
+    shareImage: "/products/matin-sentinel-share.jpg",
+    colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
+    description:
+      'A tough, square smartwatch made for work, training and the outdoors. The armoured zinc alloy case protects a big, bright 1.95" AMOLED touchscreen, and one charge lasts 11 to 30 days. Track steps, calories, sleep and altitude, check the compass, and get call and message alerts from your phone, all on a watch that is rated 3ATM against rain, sweat and splashes.',
+    specs: [
+      { label: "Display", value: '1.95" AMOLED touchscreen' },
+      { label: "Battery", value: "11 to 30 days" },
+      { label: "Water", value: "3ATM water resistant" },
+      { label: "Case", value: "Zinc alloy, rectangular" },
+      { label: "Strap", value: "Silicone" },
+      { label: "Charging", value: "Magnetic charger" },
+      { label: "Phone app", value: "App control for Android phones" },
+      { label: "Camera", value: "None" },
+    ],
+    features: [
+      "Altitude meter",
+      "Compass",
+      "Fitness and step tracker",
+      "Calorie tracker",
+      "Sleep tracker",
+      "Call reminders",
+      "Message and app notifications",
+      "Sedentary reminder",
+      "Alarm clock",
+      "Calendar",
+      "Calculator",
+      "World time",
+    ],
+    seoTitle: 'MATIN Sentinel Rugged Smartwatch | 1.95" AMOLED, 30-Day Battery',
+    seoDescription:
+      'MATIN Sentinel rugged smartwatch for men: 1.95" AMOLED touchscreen, zinc alloy case, up to 30 days battery, 3ATM water resistance, compass, altitude and fitness tracking.',
+    art: { case: "#2a2e38", strap: "#16181e", accent: "#e0b45a" },
+  },
   {
     slug: "matin-titan-x",
     name: "MATIN Titan X",

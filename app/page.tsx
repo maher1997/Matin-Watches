@@ -1,13 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { categories, products } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import ProductImage from "@/components/ProductImage";
 
+export const metadata: Metadata = {
+  title: { absolute: "MATIN | Rugged Smartwatches Built for Hard Places" },
+  alternates: { canonical: "/" },
+};
+
 const features = [
-  { title: "MIL-STD-810H", text: "Tested against drops, heat, cold, dust and shock." },
-  { title: "100m water", text: "Swim, dive and work in the rain without worry." },
+  { title: "Tough metal case", text: "An armoured zinc alloy case built to take knocks." },
+  { title: "3ATM water rated", text: "Rain, sweat and splashes are no problem." },
   { title: "30 day battery", text: "Weeks in the field on a single charge." },
-  { title: "Sapphire glass", text: "A screen that shrugs off scratches." },
+  { title: "Bright AMOLED", text: "A big 1.95 inch screen you can read in the sun." },
 ];
 
 const icons = [
@@ -30,21 +36,21 @@ export default function Home() {
             Built for <span className="accent">hard</span> places.
           </h1>
           <p className="lead">
-            Military-grade smartwatches with titanium cases, sapphire glass and weeks of battery. Made to
-            survive whatever you put them through.
+            Rugged smartwatches with tough metal cases, big AMOLED screens and weeks of battery. Made to
+            keep up with whatever you put them through.
           </p>
           <div className="hero-cta">
             <Link href="/shop" className="btn btn-primary">Shop watches</Link>
             <Link href={`/product/${hero.slug}`} className="btn btn-ghost">Explore {hero.name.replace("MATIN ", "")}</Link>
           </div>
           <ul className="hero-stats">
-            <li><strong>810H</strong><span>Military tested</span></li>
-            <li><strong>100m</strong><span>Water rated</span></li>
+            <li><strong>1.95&quot;</strong><span>AMOLED screen</span></li>
+            <li><strong>3ATM</strong><span>Water resistant</span></li>
             <li><strong>30d</strong><span>Battery</span></li>
           </ul>
         </div>
         <div className="hero-media">
-          <ProductImage product={hero} priority sizes="(max-width: 900px) 90vw, 45vw" />
+          <ProductImage product={hero} priority sizes="(max-width: 900px) 85vw, 45vw" />
         </div>
       </section>
 
@@ -124,7 +130,7 @@ export default function Home() {
           ["Secure checkout", "Card, Apple Pay, PayPal"],
         ].map(([t, s]) => (
           <div key={t}>
-            <h4>{t}</h4>
+            <h3>{t}</h3>
             <p>{s}</p>
           </div>
         ))}

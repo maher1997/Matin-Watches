@@ -454,7 +454,8 @@ h3 {
   text-transform: uppercase;
   padding: 0.3rem 0.6rem;
   border-radius: 8px;
-  background: rgba(82, 133, 247, 0.18);
+  /* Solid so the label stays readable on top of product photos. */
+  background: #1f2a52;
   color: #a9c2ff;
   border: 1px solid rgba(82, 133, 247, 0.35);
 }
@@ -605,7 +606,11 @@ h3 {
   padding-bottom: 1rem;
 }
 
-.trust h4 {
+.trust h3 {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: inherit;
   font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 0.2rem;
@@ -1181,4 +1186,9 @@ h3 {
     align-items: center;
     text-align: left;
   }
+}
+
+/* Product "What it does" list */
+.feature-list {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
