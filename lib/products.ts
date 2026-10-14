@@ -29,7 +29,9 @@ export type Product = {
   // Optional list of sports shown on the product page.
   sports?: string[];
   // "Take a closer look" scroll story: short notes that appear around the watch.
-  callouts?: { title: string; text: string }[];
+  // `at` is the spot on the main photo (0 to 1 across and down) the camera
+  // zooms to for this note; `zoom` is how close it gets.
+  callouts?: { title: string; text: string; at?: [number, number]; zoom?: number }[];
   // Big counting numbers band (e.g. 170 + "+" / "Sport modes").
   bigStats?: { value: number; suffix?: string; label: string }[];
   // Apple-style feature chapters: short headline, one paragraph, optional picture.
@@ -114,12 +116,12 @@ export const products: Product[] = [
       "World time",
     ],
     callouts: [
-      { title: "Built-in GPS", text: "Tracks your route, distance and pace." },
-      { title: '1.95" AMOLED', text: "Big, bright and sharp, even outdoors." },
-      { title: "1000mAh battery", text: "Up to 30 days on one charge." },
-      { title: "Zinc alloy case", text: "Armoured frame that takes the knocks." },
-      { title: "Heart rate", text: "Keeps an eye on your effort all day." },
-      { title: "3ATM", text: "Rain, sweat and splashes are fine." },
+      { title: '1.95" AMOLED', text: "A big, bright screen you can read in full sun.", at: [0.33, 0.45], zoom: 1.55 },
+      { title: "Built-in GPS", text: "Maps your route, distance and pace. No phone needed.", at: [0.22, 0.42], zoom: 2.1 },
+      { title: "1000mAh battery", text: "Up to 30 days on one charge.", at: [0.335, 0.33], zoom: 2.3 },
+      { title: "Heart rate", text: "Keeps an eye on your effort, day and night.", at: [0.43, 0.57], zoom: 2.3 },
+      { title: "Zinc alloy case", text: "An armoured frame with four solid keys that takes the knocks.", at: [0.56, 0.45], zoom: 2 },
+      { title: "3ATM", text: "Rain, sweat and splashes are no problem.", at: [0.66, 0.58], zoom: 1.45 },
     ],
     bigStats: [
       { value: 170, suffix: "+", label: "Sport modes" },
