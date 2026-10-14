@@ -29,6 +29,7 @@ html {
 
 body {
   min-height: 100vh;
+  overflow-x: clip;
   background-color: var(--bg-top);
   color: var(--fg);
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -1741,155 +1742,194 @@ button.thumb:focus-visible {
   }
 }
 
-/* "From every angle": pinned stage, the watch turns as you scroll */
-.turn {
-  --p: 0;
-  position: relative;
-  height: calc(var(--n) * 90vh + 30vh);
-  margin-top: 4rem;
+/* "From every angle": a row of big photo cards you swipe sideways */
+.angles {
+  margin-top: 5rem;
 }
 
-.turn-stage {
-  position: sticky;
-  top: var(--header-h);
-  height: calc(100svh - var(--header-h));
+.angles-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.angles-head h2 {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.angles-nav {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.angles-nav button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(169, 194, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(1rem, 4vw, 4rem);
+  place-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.angles-nav button:hover {
+  background: #2f62e0;
+  border-color: #2f62e0;
+}
+
+.angles-nav button:active {
+  transform: scale(0.94);
+}
+
+.angles-nav svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The row runs to the screen edge but its first card lines up with the page */
+.angles-track {
+  --edge: max(clamp(1rem, 4vw, 2rem), calc((100vw - var(--max)) / 2 + 2rem));
+  display: flex;
+  gap: 1.25rem;
+  margin: 0 calc(50% - 50vw);
+  padding: 0.5rem var(--edge) 1.5rem;
+  scroll-padding-inline: var(--edge);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.angles-track::-webkit-scrollbar {
+  display: none;
+}
+
+.angle-card {
+  flex: 0 0 min(82vw, 400px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px;
   overflow: hidden;
-}
-
-.turn-glow {
-  position: absolute;
-  left: 28%;
-  top: 50%;
-  width: min(80vh, 760px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(closest-side, rgba(82, 133, 247, 0.35), rgba(95, 214, 208, 0.08) 60%, transparent);
-  pointer-events: none;
-}
-
-/* Turntable ring under the watch; its light sweeps round as you scroll */
-.turn-ring {
-  position: absolute;
-  left: 28%;
-  top: 78%;
-  width: min(56vh, 520px);
-  aspect-ratio: 4 / 1;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid rgba(169, 194, 255, 0.22);
-  box-shadow: 0 0 40px 2px rgba(82, 133, 247, 0.35), inset 0 0 30px rgba(82, 133, 247, 0.25);
   background:
-    radial-gradient(circle at calc(10% + var(--p) * 80%) 100%, rgba(95, 214, 208, 0.5), transparent 25%),
-    radial-gradient(closest-side, rgba(82, 133, 247, 0.18), transparent);
-  pointer-events: none;
-}
-
-.turn-photos {
-  position: relative;
-  width: min(100%, 76vh, 680px);
-  aspect-ratio: 1;
-  justify-self: center;
-  perspective: 1400px;
-}
-
-.turn-photo {
-  position: absolute;
-  inset: 0;
-  will-change: transform, opacity;
-  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.6));
-}
-
-.turn-kicker {
-  font-size: 0.8rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 1.5rem;
-}
-
-.turn-texts {
-  display: grid;
-}
-
-.turn-text {
-  grid-area: 1 / 1;
+    radial-gradient(120% 70% at 50% 28%, rgba(82, 133, 247, 0.32), transparent 62%),
+    linear-gradient(180deg, #1a1d3a, #11122a);
+  border: 1px solid rgba(169, 194, 255, 0.14);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateX(60px);
+  transition:
+    opacity 0.7s ease calc(var(--i) * 90ms),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i) * 90ms),
+    border-color 0.3s ease;
 }
 
-.turn-text.on {
+.angles.in .angle-card {
   opacity: 1;
   transform: none;
 }
 
-.turn-text h2 {
-  font-size: clamp(2.4rem, 4.8vw, 4.2rem);
-  line-height: 1;
-  margin: 0.6rem 0 1rem;
-  background: linear-gradient(100deg, #fff 35%, #a9c2ff 75%, #5fd6d0);
+.angle-card.on,
+.angle-card:hover {
+  border-color: rgba(95, 214, 208, 0.45);
+}
+
+.angle-pic {
+  position: relative;
+  aspect-ratio: 1;
+  margin: 1.25rem 1.25rem 0;
+}
+
+.angle-pic img {
+  object-fit: contain;
+  filter: drop-shadow(0 28px 30px rgba(0, 0, 0, 0.55));
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.angle-card:hover .angle-pic img {
+  transform: scale(1.06) translateY(-6px);
+}
+
+.angle-text {
+  padding: 0.5rem 1.75rem 1.9rem;
+}
+
+.angle-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.5rem;
+}
+
+.angle-text h3 {
+  font-size: 1.7rem;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+  background: linear-gradient(100deg, #fff 45%, #a9c2ff 85%, #5fd6d0);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.turn-text > p:last-child {
-  max-width: 30rem;
-  font-size: 1.1rem;
-  line-height: 1.6;
+.angle-text p:last-child {
+  font-size: 1rem;
+  line-height: 1.55;
   color: #c9cfe6;
 }
 
-.turn-steps {
-  list-style: none;
+.angles-dots {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.2rem;
-  margin-top: 2.2rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(201, 207, 230, 0.72);
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.turn-steps li {
-  position: relative;
-  padding-top: 0.7rem;
-  transition: color 0.3s ease;
+.angles-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  transition: width 0.35s ease, background-color 0.35s ease;
 }
 
-.turn-steps li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 2px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.12);
-  transition: background-color 0.3s ease;
-}
-
-.turn-steps li.on {
-  color: #fff;
-}
-
-.turn-steps li.on::before {
+.angles-dots span.on {
+  width: 28px;
   background: linear-gradient(90deg, #5285f7, #5fd6d0);
 }
 
-.turn-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #5285f7, #5fd6d0) 0 0 / calc(var(--p) * 100%) 100% no-repeat;
+@media (max-width: 860px) {
+  .angles {
+    margin-top: 3.5rem;
+  }
+  .angles-nav {
+    display: none;
+  }
+  .angles-track {
+    gap: 0.9rem;
+  }
+  .angle-text h3 {
+    font-size: 1.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .angle-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Big counting numbers */
@@ -2096,88 +2136,10 @@ button.thumb:focus-visible {
 }
 
 @media (max-width: 860px) {
-  .turn-stage {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    align-content: center;
-    gap: 0.5rem;
-  }
-  .turn-glow,
-  .turn-ring {
-    left: 50%;
-  }
-  .turn-glow {
-    top: 32%;
-    width: 110vw;
-  }
-  .turn-ring {
-    top: 52%;
-    width: 78vw;
-  }
-  .turn-photos {
-    width: min(86vw, 44svh);
-  }
-  .turn-copy {
-    text-align: center;
-    padding: 0 0.25rem;
-  }
-  .turn-kicker {
-    display: none;
-  }
-  .turn-text h2 {
-    font-size: clamp(2rem, 9vw, 2.6rem);
-  }
-  .turn-text > p:last-child {
-    font-size: 1rem;
-    margin: 0 auto;
-  }
-  /* Phones: the step names become short bars */
-  .turn-steps {
-    justify-content: center;
-    flex-wrap: nowrap;
-    margin-top: 1.4rem;
-    gap: 0.5rem;
-    font-size: 0;
-  }
-  .turn-steps li {
-    width: 28px;
-    padding-top: 0;
-    height: 3px;
-  }
-  .turn-steps li::before {
-    height: 3px;
-  }
   .big-stats {
     grid-template-columns: repeat(2, 1fr);
     row-gap: 2rem;
   }
-}
-
-/* No motion: every view as a simple list of photo + text */
-.turn-static {
-  height: auto;
-}
-.turn-static .turn-stage {
-  position: static;
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-.turn-static .turn-glow,
-.turn-static .turn-ring,
-.turn-static .turn-bar,
-.turn-static .turn-steps,
-.turn-static .turn-photo:not(:first-child) {
-  display: none;
-}
-.turn-static .turn-texts {
-  gap: 2rem;
-  grid-auto-flow: row;
-}
-.turn-static .turn-text {
-  grid-area: auto;
-  opacity: 1;
-  transform: none;
 }
 
 .pdp-main .badge {

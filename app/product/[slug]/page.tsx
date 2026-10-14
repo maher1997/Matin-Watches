@@ -8,7 +8,7 @@ import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
 import JsonLd from "@/components/JsonLd";
-import ScrollStory from "@/components/ScrollStory";
+import AngleCards from "@/components/AngleCards";
 import CountUp from "@/components/CountUp";
 import Reveal from "@/components/Reveal";
 import Showcase from "@/components/Showcase";
@@ -167,7 +167,7 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </div>
 
-      <ScrollStory product={product} />
+      <AngleCards product={product} />
 
       {product.bigStats && (
         <section className="section big-stats" aria-label={`${product.name} in numbers`}>
