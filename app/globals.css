@@ -1358,6 +1358,30 @@ h3 {
   font-size: 1.02rem;
 }
 
+.faq summary * {
+  cursor: pointer;
+}
+
+.faq summary {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+}
+
+.faq summary:hover .faq-q {
+  color: #a9c2ff;
+}
+
+.faq summary:hover .faq-icon {
+  background: rgba(82, 133, 247, 0.35);
+}
+
+.faq summary:focus-visible {
+  outline: 2px solid #5285f7;
+  outline-offset: -2px;
+  border-radius: 16px;
+}
+
 .faq summary::-webkit-details-marker {
   display: none;
 }
@@ -1928,16 +1952,13 @@ h3 {
 }
 
 .showcase-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  align-items: stretch;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
 .showcase-card {
   display: flex;
-  flex: var(--ar, 1) 1 0;
   min-width: 0;
 }
 
@@ -1958,17 +1979,23 @@ h3 {
 }
 
 .showcase-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
 }
 
-.showcase-media img {
-  display: block;
-  width: 100%;
-  height: auto;
+.showcase-fill {
+  object-fit: cover;
+  filter: blur(24px) brightness(0.7);
+  transform: scale(1.15);
+}
+
+.showcase-img {
+  object-fit: contain;
   transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.showcase-sizer:hover .showcase-media img {
+.showcase-sizer:hover .showcase-img {
   transform: scale(1.04);
 }
 
@@ -2033,7 +2060,7 @@ h3 {
   }
   /* Phones: swipe between the two cards */
   .showcase-row {
-    max-width: none;
+    display: flex;
     margin: 0 calc(-1 * clamp(1rem, 4vw, 2rem));
     padding: 0 clamp(1rem, 4vw, 2rem) 0.5rem;
     overflow-x: auto;

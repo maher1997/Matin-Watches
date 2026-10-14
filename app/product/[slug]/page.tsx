@@ -209,16 +209,17 @@ export default async function ProductPage({ params }: Props) {
               const w = poster?.width ?? 1200;
               const h = poster?.height ?? 1500;
               return (
-                // Cards grow in proportion to their picture, so both pictures end up the same height.
-                <div key={c.title} className="showcase-card" style={{ "--ar": (w / h).toFixed(3) } as React.CSSProperties}>
+                <div key={c.title} className="showcase-card">
                   <Reveal className="showcase-sizer" delay={i * 140}>
                     {c.image && (
+                      // Same frame for both pictures; a blurred copy fills any thin edge.
                       <div className="showcase-media">
+                        <Image src={c.image} alt="" aria-hidden="true" fill className="showcase-fill" sizes="(max-width: 860px) 85vw, 600px" />
                         <Image
                           src={c.image}
                           alt={c.imageAlt ?? c.title}
-                          width={w}
-                          height={h}
+                          fill
+                          className="showcase-img"
                           sizes="(max-width: 860px) 85vw, 600px"
                         />
                       </div>
