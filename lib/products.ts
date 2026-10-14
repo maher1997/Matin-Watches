@@ -219,8 +219,8 @@ export const products: Product[] = [
         title: ["1000mAh", "large battery"],
         text: "Go further with long-lasting power for all your adventures.",
         points: [
-          { icon: "battery", title: "Up to 20 days", text: "Typical use" },
-          { icon: "bolt", title: "Up to 50 days", text: "Standby time" },
+          { icon: "battery", title: "20 days in use", text: "Up to 20 days with typical use" },
+          { icon: "bolt", title: "50 days standby", text: "Up to 50 days on standby" },
           { icon: "magnet", title: "Magnetic charging", text: "The charger snaps on in a second" },
         ],
       },
