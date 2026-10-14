@@ -1501,15 +1501,6 @@ button.thumb:focus-visible {
   transition: border-color 0.3s ease, box-shadow 0.3s ease, translate 0.3s ease;
 }
 
-.fgroups .fgroup.reveal {
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    translate 0.3s ease;
-}
-
 .fgroup:hover {
   translate: 0 -4px;
   border-color: rgba(82, 133, 247, 0.55);
@@ -1712,19 +1703,7 @@ button.thumb:focus-visible {
 
 /* ---------- Motion (Apple-style) ---------- */
 
-/* Scroll reveal: hidden only for people who allow motion */
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition:
-      opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .reveal.in {
-    opacity: 1;
-    transform: none;
-  }
   /* Hero watch floats gently (transform only, so it never delays paint) */
   .hero-media .product-photo {
     animation: float 6s ease-in-out infinite;
@@ -1895,36 +1874,15 @@ button.thumb:focus-visible {
   position: relative;
   grid-column: 2;
   grid-row: 1;
-  /* Whole picture, never cropped */
-  aspect-ratio: 1;
+  /* Whole picture, never cropped. A square made with padding rather than
+     aspect-ratio: iPhone Safari stretched the aspect-ratio box far too tall
+     inside the stacked slides, pushing the photo off screen. */
+  height: 0;
+  padding-bottom: calc(100% - 1.25rem);
   margin: 1.25rem 1.25rem 1.25rem 0;
   border-radius: 24px;
   overflow: hidden;
   transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-/* Entrance states: only once the script has armed the slider */
-.stories.armed .story-pic {
-  opacity: 0;
-  transform: translateX(28px) scale(0.98);
-}
-
-.stories.armed .story-pic img {
-  transform: scale(1.04);
-}
-
-.stories.armed .story h2 span {
-  opacity: 0;
-  transform: translateY(22px);
-}
-
-.stories.armed .story-lede {
-  opacity: 0;
-}
-
-.stories.armed .story-points li {
-  opacity: 0;
-  transform: translateX(-18px);
 }
 
 .story-pic img {
@@ -2092,17 +2050,13 @@ button.thumb:focus-visible {
   }
   /* Phones: the photo on top, the words underneath */
   .story {
-    aspect-ratio: auto;
     min-height: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    display: block;
   }
   .story-pic {
-    aspect-ratio: 1;
+    padding-bottom: calc(100% - 1.5rem);
     margin: 0.75rem 0.75rem 0;
     border-radius: 18px;
-    transform: translateY(24px);
   }
   .story-pic::after {
     background: none;

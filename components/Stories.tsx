@@ -45,16 +45,10 @@ export default function Stories({ product }: { product: Product }) {
   // Plain scroll check instead of IntersectionObserver: on iPhone Safari the
   // observer did not report this tall section, so the slides stayed hidden.
   // "On screen" means any part of it covers the middle half of the view.
-  // `armed` turns on the entrance animations, and only once the script runs
-  // with the slider still below the screen; until then everything is simply
-  // visible, so a slow or blocked script can never leave it blank.
   const [shown, setShown] = useState(false);
-  const [armed, setArmed] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!calm && el.getBoundingClientRect().top > window.innerHeight * 0.75) setArmed(true);
     let raf = 0;
     const check = () => {
       raf = 0;
@@ -91,7 +85,7 @@ export default function Stories({ product }: { product: Product }) {
   return (
     <section
       ref={ref}
-      className={`stories${armed ? " armed" : ""}${shown ? " in" : ""}${inView && !paused ? " playing" : ""}`}
+      className={`stories${shown ? " in" : ""}${inView && !paused ? " playing" : ""}`}
       aria-roledescription="carousel"
       aria-label={`${product.name} highlights`}
       onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}
