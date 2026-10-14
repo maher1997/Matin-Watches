@@ -42,12 +42,33 @@ export default function Stories({ product }: { product: Product }) {
   const [paused, setPaused] = useState(false);
   const touchX = useRef(0);
 
+  // Plain scroll check instead of IntersectionObserver: on iPhone Safari the
+  // observer did not report this tall section, so the slides stayed hidden.
+  // "On screen" means any part of it covers the middle half of the view.
+  const [shown, setShown] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.4 });
-    io.observe(el);
-    return () => io.disconnect();
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const h = window.innerHeight;
+      const on = r.top < h * 0.75 && r.bottom > h * 0.25;
+      setInView(on);
+      if (on) setShown(true);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    check();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    return () => {
+      removeEventListener("scroll", onScroll);
+      removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Keyed on `active`, so any jump restarts the 4 seconds.
@@ -64,7 +85,7 @@ export default function Stories({ product }: { product: Product }) {
   return (
     <section
       ref={ref}
-      className={`stories${inView ? " in" : ""}${paused ? " paused" : ""}`}
+      className={`stories${shown ? " in" : ""}${paused ? " paused" : ""}`}
       aria-roledescription="carousel"
       aria-label={`${product.name} highlights`}
       onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}

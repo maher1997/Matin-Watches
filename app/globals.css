@@ -29,7 +29,6 @@ html {
 
 body {
   min-height: 100vh;
-  overflow-x: clip;
   background-color: var(--bg-top);
   color: var(--fg);
   font-family: var(--font-sans), system-ui, sans-serif;
