@@ -1799,12 +1799,8 @@ button.thumb:focus-visible {
   transform: scaleX(0);
 }
 
-.stories.in .stories-progress {
+.stories.playing .stories-progress {
   animation: showcase-fill 4s linear forwards;
-}
-
-.stories.paused .stories-progress {
-  animation-play-state: paused;
 }
 
 .stories-stage {
@@ -1904,14 +1900,35 @@ button.thumb:focus-visible {
   margin: 1.25rem 1.25rem 1.25rem 0;
   border-radius: 24px;
   overflow: hidden;
+  transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Entrance states: only once the script has armed the slider */
+.stories.armed .story-pic {
   opacity: 0;
   transform: translateX(28px) scale(0.98);
-  transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.stories.armed .story-pic img {
+  transform: scale(1.04);
+}
+
+.stories.armed .story h2 span {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.stories.armed .story-lede {
+  opacity: 0;
+}
+
+.stories.armed .story-points li {
+  opacity: 0;
+  transform: translateX(-18px);
 }
 
 .story-pic img {
   object-fit: contain;
-  transform: scale(1.04);
   transition: transform 5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -1953,8 +1970,6 @@ button.thumb:focus-visible {
 }
 
 .story h2 span {
-  opacity: 0;
-  transform: translateY(22px);
   transition: opacity 0.8s ease 0.15s, transform 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s;
 }
 
@@ -1972,7 +1987,6 @@ button.thumb:focus-visible {
   font-size: 1.1rem;
   line-height: 1.5;
   color: #c9cfe6;
-  opacity: 0;
   transition: opacity 0.8s ease 0.2s;
 }
 
@@ -1993,8 +2007,6 @@ button.thumb:focus-visible {
   display: flex;
   align-items: center;
   gap: 1rem;
-  opacity: 0;
-  transform: translateX(-18px);
   transition: opacity 0.7s ease var(--d), transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d);
 }
 
