@@ -11,6 +11,7 @@ import JsonLd from "@/components/JsonLd";
 import ScrollStory from "@/components/ScrollStory";
 import CountUp from "@/components/CountUp";
 import Reveal from "@/components/Reveal";
+import Showcase from "@/components/Showcase";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -203,37 +204,7 @@ export default async function ProductPage({ params }: Props) {
             <p className="eyebrow">Made for the outdoors</p>
             <h2>Go further with {product.name}</h2>
           </Reveal>
-          <div className="showcase-row">
-            {product.chapters.map((c, i) => {
-              const poster = product.posters?.find((p) => p.src === c.image);
-              const w = poster?.width ?? 1200;
-              const h = poster?.height ?? 1500;
-              return (
-                <div key={c.title} className="showcase-card">
-                  <Reveal className="showcase-sizer" delay={i * 140}>
-                    {c.image && (
-                      // Same frame for both pictures; a blurred copy fills any thin edge.
-                      <div className="showcase-media">
-                        <Image src={c.image} alt="" aria-hidden="true" fill className="showcase-fill" sizes="(max-width: 860px) 85vw, 600px" />
-                        <Image
-                          src={c.image}
-                          alt={c.imageAlt ?? c.title}
-                          fill
-                          className="showcase-img"
-                          sizes="(max-width: 860px) 85vw, 600px"
-                        />
-                      </div>
-                    )}
-                    <div className="showcase-text">
-                      <p className="eyebrow">{c.eyebrow}</p>
-                      <h3>{c.title}</h3>
-                      <p>{c.text}</p>
-                    </div>
-                  </Reveal>
-                </div>
-              );
-            })}
-          </div>
+          <Showcase product={product} />
         </section>
       )}
 
