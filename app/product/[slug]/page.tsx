@@ -335,7 +335,7 @@ export default async function ProductPage({ params }: Props) {
       {product.faq && (
         <section className="section">
           <Reveal>
-            <h2 className="spec-title">Questions</h2>
+            <h2 className="spec-title">FAQ</h2>
           </Reveal>
           <div className="faq">
             {product.faq.map((f, i) => (
