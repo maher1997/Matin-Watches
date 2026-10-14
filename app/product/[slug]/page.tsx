@@ -12,6 +12,7 @@ import ScrollStory from "@/components/ScrollStory";
 import CountUp from "@/components/CountUp";
 import Reveal from "@/components/Reveal";
 import Showcase from "@/components/Showcase";
+import PdpGallery from "@/components/PdpGallery";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -55,9 +56,6 @@ export default async function ProductPage({ params }: Props) {
   const product = getProduct((await params).slug);
   if (!product) notFound();
   const related = products.filter((p) => p.slug !== product.slug).slice(0, 4);
-  // Real photos: one thumbnail per photo (none if there is only one).
-  // Placeholder drawing: three thumbnails so the layout looks complete.
-  const thumbs = product.images.length ? (product.images.length > 1 ? product.images.length : 0) : 3;
   const category = categories.find((c) => c.id === product.category);
   const url = absoluteUrl(`/product/${product.slug}`);
   // Specs grouped by their `group` (in first-seen order); ungrouped ones share "".
@@ -139,21 +137,7 @@ export default async function ProductPage({ params }: Props) {
       </nav>
 
       <div className="pdp">
-        <div className="pdp-gallery">
-          <div className="pdp-main">
-            {product.badge && <span className="badge">{product.badge}</span>}
-            <ProductImage product={product} priority sizes="(max-width: 900px) 100vw, 50vw" />
-          </div>
-          {thumbs > 0 && (
-            <div className="pdp-thumbs">
-              {Array.from({ length: thumbs }).map((_, i) => (
-                <div key={i} className={i === 0 ? "thumb active" : "thumb"}>
-                  <ProductImage product={product} index={i} sizes="120px" />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <PdpGallery product={product} />
 
         <div className="pdp-info">
           <p className="eyebrow">{category?.name ?? product.category} smartwatch</p>
