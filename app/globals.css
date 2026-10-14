@@ -1742,20 +1742,75 @@ button.thumb:focus-visible {
   }
 }
 
-/* Lifestyle panels: photo with the headline and icon points as real text */
+/* Lifestyle slider: photo with the headline and icon points as real text */
 .stories {
-  display: grid;
-  gap: clamp(1.25rem, 3vw, 2rem);
+  position: relative;
   margin-top: 5rem;
 }
 
-.story {
-  --accent-1: #4da3ff;
-  --accent-2: #1f6bff;
-  --ring: rgba(64, 140, 255, 0.85);
+.stories-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stories-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.stories-tabs button {
   position: relative;
-  min-height: 620px;
-  aspect-ratio: 16 / 10;
+  flex: none;
+  overflow: hidden;
+  padding: 0.7rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(169, 194, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #c9cfe6;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.stories-tabs button:hover {
+  color: #fff;
+  border-color: rgba(169, 194, 255, 0.45);
+}
+
+.stories-tabs button.on {
+  color: #fff;
+  background: #2f62e0;
+  border-color: #2f62e0;
+}
+
+/* Fills up over the 4 seconds before the next slide */
+.stories-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.stories.in .stories-progress {
+  animation: showcase-fill 4s linear forwards;
+}
+
+.stories.paused .stories-progress {
+  animation-play-state: paused;
+}
+
+.stories-stage {
+  position: relative;
+  display: grid;
   border-radius: 32px;
   overflow: hidden;
   isolation: isolate;
@@ -1764,43 +1819,125 @@ button.thumb:focus-visible {
   box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.8);
 }
 
+.story {
+  --accent-1: #4da3ff;
+  --accent-2: #1f6bff;
+  --ring: rgba(64, 140, 255, 0.85);
+  grid-area: 1 / 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  isolation: isolate;
+  background:
+    radial-gradient(70% 90% at 20% 50%, rgba(47, 98, 224, 0.16), transparent 70%),
+    #0a0d1c;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.9s;
+}
+
+.story.on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stories-arrow {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(6, 9, 22, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.stories-arrow.prev {
+  right: 3.75rem;
+}
+
+.stories-arrow.next {
+  right: 0;
+}
+
+.stories-arrow:hover {
+  background: #2f62e0;
+}
+
+.stories-arrow:active {
+  transform: scale(0.94);
+}
+
+.stories-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .story-gold {
+  background:
+    radial-gradient(70% 90% at 20% 50%, rgba(185, 141, 85, 0.14), transparent 70%),
+    #0a0d1c;
   --accent-1: #f1dfb6;
   --accent-2: #b98d55;
   --ring: rgba(225, 196, 140, 0.85);
 }
 
+/* Desktop: words on the left, the picture on the right */
 .story-pic {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  /* Whole picture, never cropped */
+  aspect-ratio: 1;
+  margin: 1.25rem 1.25rem 1.25rem 0;
+  border-radius: 24px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(28px) scale(0.98);
+  transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .story-pic img {
-  object-fit: cover;
-  object-position: 70% 45%;
-  transform: scale(1.08);
-  transition: transform 2.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  object-fit: contain;
+  transform: scale(1.04);
+  transition: transform 5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.story.in .story-pic img {
+.stories.in .story.on .story-pic {
+  opacity: 1;
   transform: none;
 }
 
-/* Darkens the left side so the words read clearly on any photo */
+.stories.in .story.on .story-pic img {
+  transform: none;
+}
+
+/* Soft inner edge so the picture sits in the card */
 .story-pic::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg, rgba(6, 9, 22, 0.95) 0%, rgba(6, 9, 22, 0.86) 34%, rgba(6, 9, 22, 0.55) 50%, rgba(6, 9, 22, 0.15) 62%, transparent 72%),
-    linear-gradient(0deg, rgba(6, 9, 22, 0.55), transparent 30%);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(169, 194, 255, 0.14);
 }
 
 .story-copy {
   position: relative;
-  height: 100%;
-  max-width: 46%;
+  grid-column: 1;
+  grid-row: 1;
   padding: clamp(2rem, 4.5vw, 4rem);
   display: flex;
   flex-direction: column;
@@ -1818,12 +1955,12 @@ button.thumb:focus-visible {
 
 .story h2 span {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateY(22px);
+  transition: opacity 0.8s ease 0.15s, transform 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s;
 }
 
 .story h2 .story-accent {
-  transition-delay: 0.1s;
+  transition-delay: 0.25s;
   background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
   -webkit-background-clip: text;
   background-clip: text;
@@ -1840,8 +1977,8 @@ button.thumb:focus-visible {
   transition: opacity 0.8s ease 0.2s;
 }
 
-.story.in h2 span,
-.story.in .story-lede {
+.stories.in .story.on h2 span,
+.stories.in .story.on .story-lede {
   opacity: 1;
   transform: none;
 }
@@ -1858,11 +1995,11 @@ button.thumb:focus-visible {
   align-items: center;
   gap: 1rem;
   opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 0.6s ease var(--d), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d);
+  transform: translateX(-18px);
+  transition: opacity 0.7s ease var(--d), transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d);
 }
 
-.story.in .story-points li {
+.stories.in .story.on .story-points li {
   opacity: 1;
   transform: none;
 }
@@ -1926,28 +2063,42 @@ button.thumb:focus-visible {
   .stories {
     margin-top: 3.5rem;
   }
+  .stories-tabs {
+    justify-content: flex-start;
+    margin-left: calc(-1 * clamp(1rem, 4vw, 2rem));
+    margin-right: calc(-1 * clamp(1rem, 4vw, 2rem));
+    padding: 0 clamp(1rem, 4vw, 2rem);
+  }
+  .stories-tabs button {
+    padding: 0.6rem 1.05rem;
+    font-size: 0.85rem;
+  }
+  .stories-stage {
+    border-radius: 24px;
+  }
+  .stories-arrow {
+    display: none;
+  }
   /* Phones: the photo on top, the words underneath */
   .story {
     aspect-ratio: auto;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    border-radius: 24px;
+    align-items: stretch;
   }
   .story-pic {
-    position: relative;
     aspect-ratio: 1;
-  }
-  .story-pic img {
-    object-position: 78% 50%;
+    margin: 0.75rem 0.75rem 0;
+    border-radius: 18px;
+    transform: translateY(24px);
   }
   .story-pic::after {
-    background: linear-gradient(0deg, #0a0d1c 0%, rgba(10, 13, 28, 0.4) 30%, transparent 55%);
+    background: none;
   }
   .story-copy {
-    max-width: none;
-    margin-top: -2rem;
-    padding: 0 1.4rem 1.8rem;
+    justify-content: flex-start;
+    padding: 1.4rem 1.4rem 1.8rem;
   }
   .story h2 {
     font-size: clamp(2.3rem, 11vw, 3rem);
@@ -1970,6 +2121,7 @@ button.thumb:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .story-pic,
   .story-pic img,
   .story h2 span,
   .story-lede,

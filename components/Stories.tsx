@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Product, StoryIcon } from "@/lib/products";
 
 const icons: Record<StoryIcon, string> = {
@@ -28,67 +28,123 @@ function Icon({ name }: { name: StoryIcon }) {
   );
 }
 
-// Big lifestyle panels. The photo has no words baked in; the headline and the
-// icon points are real text laid over it, and slide in when the panel shows.
+const AUTOPLAY_MS = 4000;
+
+// Lifestyle slider. The photos have no words baked in; the headline and the
+// icon points are real text laid over them. It moves to the next slide every
+// few seconds while on screen; the buttons and arrows jump straight to one.
 export default function Stories({ product }: { product: Product }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const stories = product.stories ?? [];
+  const n = stories.length;
+  const ref = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
+  const [inView, setInView] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const touchX = useRef(0);
 
   useEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target);
-          }
-        }),
-      { rootMargin: "0px 0px -15% 0px" },
-    );
-    root.querySelectorAll(".story").forEach((el) => io.observe(el));
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.4 });
+    io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  const stories = product.stories ?? [];
-  if (stories.length === 0) return null;
+  // Keyed on `active`, so any jump restarts the 4 seconds.
+  useEffect(() => {
+    if (!inView || paused || n < 2) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setTimeout(() => setActive((a) => (a + 1) % n), AUTOPLAY_MS);
+    return () => clearTimeout(id);
+  }, [active, inView, paused, n]);
+
+  if (n === 0) return null;
+  const go = (i: number) => setActive((i + n) % n);
 
   return (
-    <div ref={ref} className="stories">
-      {stories.map((s) => (
-        <section key={s.image} className={`story story-${s.accent ?? "blue"}`} aria-label={s.title.join(" ")}>
-          <div className="story-pic">
-            <Image src={s.image} alt={s.alt} fill quality={75} sizes="(max-width: 860px) 100vw, 1240px" />
-          </div>
-          <div className="story-copy">
-            <h2>
-              <span>{s.title[0]}</span>
-              <span className="story-accent">{s.title[1]}</span>
-            </h2>
-            <p className="story-lede">{s.text}</p>
-            <ul className="story-points">
-              {s.points.map((pt, i) => (
-                <li key={pt.title} style={{ "--d": `${200 + i * 110}ms` } as React.CSSProperties}>
-                  <span className="story-icon">
-                    <Icon name={pt.icon} />
-                  </span>
-                  <span>
-                    <strong>{pt.title}</strong>
-                    <span>{pt.text}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-            {s.tags && (
-              <ul className="story-tags">
-                {s.tags.map((t) => (
-                  <li key={t}>{t}</li>
+    <section
+      ref={ref}
+      className={`stories${inView ? " in" : ""}${paused ? " paused" : ""}`}
+      aria-roledescription="carousel"
+      aria-label={`${product.name} highlights`}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setPaused(false)}
+    >
+      <div className="stories-tabs" role="tablist" aria-label="Choose a highlight">
+        {stories.map((s, i) => (
+          <button
+            key={s.image}
+            type="button"
+            role="tab"
+            id={`story-tab-${i}`}
+            aria-selected={i === active}
+            aria-controls={`story-${i}`}
+            className={i === active ? "on" : undefined}
+            onClick={() => go(i)}
+          >
+            {s.tab}
+            {i === active && <span key={`${active}-${inView}`} className="stories-progress" aria-hidden="true" />}
+          </button>
+        ))}
+      </div>
+
+      <button type="button" className="stories-arrow prev" aria-label="Previous highlight" onClick={() => go(active - 1)}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+      </button>
+      <button type="button" className="stories-arrow next" aria-label="Next highlight" onClick={() => go(active + 1)}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+      </button>
+
+      <div
+        className="stories-stage"
+        onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+        onTouchEnd={(e) => {
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          if (Math.abs(dx) > 50) go(active + (dx < 0 ? 1 : -1));
+        }}
+      >
+        {stories.map((s, i) => (
+          <div
+            key={s.image}
+            id={`story-${i}`}
+            role="tabpanel"
+            aria-labelledby={`story-tab-${i}`}
+            aria-hidden={i === active ? undefined : true}
+            className={`story story-${s.accent ?? "blue"}${i === active ? " on" : ""}`}
+          >
+            <div className="story-pic">
+              <Image src={s.image} alt={s.alt} fill quality={75} sizes="(max-width: 860px) 100vw, 1240px" />
+            </div>
+            <div className="story-copy">
+              <h2>
+                <span>{s.title[0]}</span>
+                <span className="story-accent">{s.title[1]}</span>
+              </h2>
+              <p className="story-lede">{s.text}</p>
+              <ul className="story-points">
+                {s.points.map((pt, j) => (
+                  <li key={pt.title} style={{ "--d": `${250 + j * 110}ms` } as React.CSSProperties}>
+                    <span className="story-icon">
+                      <Icon name={pt.icon} />
+                    </span>
+                    <span>
+                      <strong>{pt.title}</strong>
+                      <span>{pt.text}</span>
+                    </span>
+                  </li>
                 ))}
               </ul>
-            )}
+              {s.tags && (
+                <ul className="story-tags">
+                  {s.tags.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
-        </section>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
   );
 }

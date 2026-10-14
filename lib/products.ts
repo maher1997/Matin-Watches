@@ -52,6 +52,8 @@ export type Product = {
   stories?: {
     image: string;
     alt: string;
+    // Short name on the slider button
+    tab: string;
     title: [string, string];
     accent?: "blue" | "gold";
     text: string;
@@ -160,6 +162,7 @@ export const products: Product[] = [
     stories: [
       {
         image: "/products/life/matin-trekon-built-for-the-tough.webp",
+        tab: "Tough",
         alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist",
         title: ["Built for", "the tough"],
         accent: "gold",
@@ -174,6 +177,7 @@ export const products: Product[] = [
       },
       {
         image: "/products/life/matin-trekon-built-tough-outdoors.webp",
+        tab: "Outdoors",
         alt: "MATIN Trekon smartwatch splashed with water on a mountain rock",
         title: ["Built", "tough"],
         text: "Designed for real adventures, ready for any environment.",
@@ -186,6 +190,7 @@ export const products: Product[] = [
       },
       {
         image: "/products/life/matin-trekon-heart-rate-monitoring.webp",
+        tab: "Heart rate",
         alt: "Hiker checking his heart rate on the MATIN Trekon smartwatch",
         title: ["Heart rate", "monitoring"],
         text: "Track your heart rate in real time and stay in control of your health every day.",
@@ -197,6 +202,7 @@ export const products: Product[] = [
       },
       {
         image: "/products/life/matin-trekon-built-in-gps.webp",
+        tab: "GPS",
         alt: "MATIN Trekon smartwatch showing a GPS route map on a mountain top",
         title: ["Built-in", "GPS"],
         text: "Track your route, distance and pace with high-precision GPS.",
@@ -208,6 +214,7 @@ export const products: Product[] = [
       },
       {
         image: "/products/life/matin-trekon-1000mah-battery.webp",
+        tab: "Battery",
         alt: "MATIN Trekon smartwatch with its 1000mAh large battery at 100%",
         title: ["1000mAh", "large battery"],
         text: "Go further with long-lasting power for all your adventures.",
