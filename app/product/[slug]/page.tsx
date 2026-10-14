@@ -197,26 +197,44 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      {product.chapters?.map((c, i) => (
-        <section key={c.title} className={`section chapter ${i % 2 ? "chapter-flip" : ""}`}>
-          <Reveal className="chapter-text">
-            <p className="eyebrow">{c.eyebrow}</p>
-            <h2>{c.title}</h2>
-            <p className="lead">{c.text}</p>
+      {product.chapters && (
+        <section className="section showcase">
+          <Reveal className="showcase-head">
+            <p className="eyebrow">Made for the outdoors</p>
+            <h2>Go further with {product.name}</h2>
           </Reveal>
-          {c.image && (
-            <Reveal className="chapter-media" delay={120}>
-              <Image
-                src={c.image}
-                alt={c.imageAlt ?? c.title}
-                width={product.posters?.find((p) => p.src === c.image)?.width ?? 1200}
-                height={product.posters?.find((p) => p.src === c.image)?.height ?? 1500}
-                sizes="(max-width: 860px) 100vw, 50vw"
-              />
-            </Reveal>
-          )}
+          <div className="showcase-row">
+            {product.chapters.map((c, i) => {
+              const poster = product.posters?.find((p) => p.src === c.image);
+              const w = poster?.width ?? 1200;
+              const h = poster?.height ?? 1500;
+              return (
+                // Cards grow in proportion to their picture, so both pictures end up the same height.
+                <div key={c.title} className="showcase-card" style={{ "--ar": (w / h).toFixed(3) } as React.CSSProperties}>
+                  <Reveal className="showcase-sizer" delay={i * 140}>
+                    {c.image && (
+                      <div className="showcase-media">
+                        <Image
+                          src={c.image}
+                          alt={c.imageAlt ?? c.title}
+                          width={w}
+                          height={h}
+                          sizes="(max-width: 860px) 85vw, 600px"
+                        />
+                      </div>
+                    )}
+                    <div className="showcase-text">
+                      <p className="eyebrow">{c.eyebrow}</p>
+                      <h3>{c.title}</h3>
+                      <p>{c.text}</p>
+                    </div>
+                  </Reveal>
+                </div>
+              );
+            })}
+          </div>
         </section>
-      ))}
+      )}
 
       <section className="section">
         <h2 className="spec-title">{product.name} specifications</h2>
