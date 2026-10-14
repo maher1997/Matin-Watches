@@ -4,166 +4,129 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import type { Product } from "@/lib/products";
 
-type Stop = { s: number; r: number; hx: number; hy: number; fx: number; fy: number };
-
-const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
-// Apple-style "closer look": the watch stays pinned on screen and, as you
-// scroll, a camera glides in to each part (screen, GPS, battery...) while its
-// note slides in beside it, then pulls back out to the whole watch. Scroll
-// sets the target; each frame eases toward it so the movement stays smooth.
+// "Turn it around": the section pins while you scroll and the watch turns
+// from the front, to an angle, to the side and round to the back, then
+// moves in close on the screen. Each photo turns in with a 3D swing and
+// its headline swaps beside it. Scroll sets a target; every frame eases
+// toward it so the motion stays smooth on any device.
 export default function ScrollStory({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null);
-  const watchRef = useRef<HTMLDivElement>(null);
-  const callouts = product.callouts ?? [];
-  const src = product.images[0];
-  const n = callouts.length;
+  const views = (product.views ?? []).filter((v) => product.images[v.image]);
+  const n = views.length;
 
   useEffect(() => {
     const el = ref.current;
-    const watch = watchRef.current;
-    if (!el || !watch) return;
+    if (!el || n === 0) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.classList.add("story-static");
+      el.classList.add("turn-static");
       return;
     }
-    const notes = [...el.querySelectorAll<HTMLElement>("[data-stop]")];
-    const spots = [...el.querySelectorAll<HTMLElement>(".story-spot")];
+    const layers = [...el.querySelectorAll<HTMLElement>(".turn-photo")];
+    const texts = [...el.querySelectorAll<HTMLElement>(".turn-text")];
+    const steps = [...el.querySelectorAll<HTMLElement>(".turn-steps li")];
+    let target = 0;
+    let cur = 0;
     let raf = 0;
     let active = -1;
-    const cur: Stop = { s: 0.92, r: -8, hx: 0.5, hy: 0.5, fx: 0, fy: 0 };
-    let p = 0;
-
-    const stops = (): Stop[] => {
-      const w = el.clientWidth;
-      const h = innerHeight;
-      const phone = w < 860;
-      const intro = { s: phone ? 0.95 : 1.05, r: -8, hx: 0.5, hy: 0.5, fx: 0, fy: phone ? -0.06 * h : 0 };
-      const parts = callouts.map((c) => ({
-        s: (c.zoom ?? 2) * (phone ? 0.9 : 0.85),
-        r: 0,
-        hx: c.at?.[0] ?? 0.5,
-        hy: c.at?.[1] ?? 0.5,
-        fx: phone ? 0 : -0.22 * w,
-        fy: phone ? -0.12 * h : 0,
-      }));
-      return [intro, ...parts, { s: 1, r: 0, hx: 0.5, hy: 0.5, fx: 0, fy: phone ? -0.06 * h : 0 }];
-    };
-    let list = stops();
-
-    const target = (): [Stop, number] => {
-      // A short hold on the intro, then one slice of scroll per stop.
-      const t = clamp(p * (n + 1.5) - 0.25, 0, n + 1);
-      const k = Math.min(n, Math.floor(t));
-      const e = ease(clamp((t - k) / 0.6, 0, 1));
-      const a = list[k];
-      const b = list[k + 1] ?? a;
-      const mix = {} as Stop;
-      for (const key of Object.keys(a) as (keyof Stop)[]) mix[key] = a[key] + (b[key] - a[key]) * e;
-      return [mix, e > 0.5 ? k + 1 : k];
-    };
 
     const frame = () => {
       raf = 0;
-      const [t, stop] = target();
-      let moving = false;
-      for (const key of Object.keys(cur) as (keyof Stop)[]) {
-        const d = t[key] - cur[key];
-        cur[key] = Math.abs(d) < 0.0005 ? t[key] : cur[key] + d * 0.14;
-        if (cur[key] !== t[key]) moving = true;
+      cur += (target - cur) * 0.12;
+      if (Math.abs(target - cur) < 0.001) cur = target;
+      layers.forEach((layer, i) => {
+        const d = cur - i; // <0: still to come, >0: already turned past
+        const o = clamp(1 - Math.abs(d) * 1.8, 0, 1);
+        const rot = clamp(-d * 40, -60, 60);
+        const sc = 1 - Math.min(Math.abs(d), 1) * 0.12;
+        layer.style.opacity = o.toFixed(3);
+        layer.style.transform = `translateX(${(-d * 6).toFixed(2)}%) rotateY(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+        layer.style.visibility = o > 0 ? "visible" : "hidden";
+      });
+      el.style.setProperty("--p", (cur / Math.max(1, n - 1)).toFixed(4));
+      const now = Math.round(cur);
+      if (now !== active) {
+        active = now;
+        texts.forEach((t, i) => t.classList.toggle("on", i === now));
+        steps.forEach((s, i) => s.classList.toggle("on", i === now));
       }
-      // Move the watch so the chosen spot lands on the focus point.
-      const size = watch.offsetWidth;
-      const rad = (cur.r * Math.PI) / 180;
-      const ox = (cur.hx - 0.5) * size;
-      const oy = (cur.hy - 0.5) * size;
-      const rx = ox * Math.cos(rad) - oy * Math.sin(rad);
-      const ry = ox * Math.sin(rad) + oy * Math.cos(rad);
-      const dx = cur.fx - rx * cur.s;
-      const dy = cur.fy - ry * cur.s;
-      watch.style.transform = `translate(-50%, -50%) translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(${cur.r.toFixed(2)}deg) scale(${cur.s.toFixed(4)})`;
-      watch.style.setProperty("--s", cur.s.toFixed(3));
-      el.style.setProperty("--p", p.toFixed(4));
-
-      if (stop !== active) {
-        active = stop;
-        notes.forEach((note) => note.classList.toggle("on", Number(note.dataset.stop) === stop));
-        spots.forEach((spot, i) => spot.classList.toggle("on", i + 1 === stop));
-        el.classList.toggle("story-end", stop === n + 1);
-      }
-      if (moving) raf = requestAnimationFrame(frame);
+      if (cur !== target) raf = requestAnimationFrame(frame);
     };
 
     const onScroll = () => {
       const r = el.getBoundingClientRect();
-      p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+      const p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+      // Each photo holds for a moment before the next one turns in.
+      const t = p * (n - 1);
+      const k = Math.floor(t);
+      const f = t - k;
+      const eased = f < 0.35 ? 0 : f > 0.85 ? 1 : (f - 0.35) / 0.5;
+      target = Math.min(n - 1, k + eased);
       if (!raf) raf = requestAnimationFrame(frame);
-    };
-    const onResize = () => {
-      list = stops();
-      onScroll();
     };
     onScroll();
     addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onResize);
+    addEventListener("resize", onScroll);
     return () => {
       removeEventListener("scroll", onScroll);
-      removeEventListener("resize", onResize);
+      removeEventListener("resize", onScroll);
       cancelAnimationFrame(raf);
     };
-  }, [callouts, n]);
+  }, [n]);
 
-  if (!src || n === 0) return null;
+  if (n === 0) return null;
 
   return (
     <section
       ref={ref}
-      className="story"
+      className="turn"
       style={{ "--n": n } as React.CSSProperties}
-      aria-label={`${product.name} closer look`}
+      aria-label={`${product.name} from every angle`}
     >
-      <div className="story-stage">
-        <span className="story-word" aria-hidden="true">
-          {product.name.replace(/^MATIN\s+/i, "")}
-        </span>
-        <span className="story-glow" aria-hidden="true" />
-        <div ref={watchRef} className="story-watch">
-          <Image
-            src={src}
-            alt={product.imageAlts?.[0] ?? product.name}
-            fill
-            sizes="(max-width: 860px) 190vw, 1200px"
-            style={{ objectFit: "contain" }}
-          />
-          {callouts.map((c) => (
-            <span
-              key={c.title}
-              className="story-spot"
-              aria-hidden="true"
-              style={{ left: `${(c.at?.[0] ?? 0.5) * 100}%`, top: `${(c.at?.[1] ?? 0.5) * 100}%` }}
-            />
+      <div className="turn-stage">
+        <span className="turn-glow" aria-hidden="true" />
+        <span className="turn-ring" aria-hidden="true" />
+        <div className="turn-photos">
+          {views.map((v, i) => (
+            <div
+              key={v.title}
+              className="turn-photo"
+              style={i === 0 ? undefined : { opacity: 0, visibility: "hidden" }}
+            >
+              <Image
+                src={product.images[v.image]}
+                alt={product.imageAlts?.[v.image] ?? product.name}
+                fill
+                sizes="(max-width: 860px) 90vw, 620px"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
           ))}
         </div>
 
-        <h2 className="story-intro on" data-stop={0}>
-          Take a closer look<span className="accent">.</span>
-        </h2>
-        <ol className="story-notes">
-          {callouts.map((c, i) => (
-            <li key={c.title} data-stop={i + 1}>
-              <span className="story-num">
-                {String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
-              </span>
-              <strong>{c.title}</strong>
-              <p>{c.text}</p>
-            </li>
-          ))}
-        </ol>
-        <p className="story-outro" data-stop={n + 1}>
-          Built for hard places<span className="accent">.</span>
-        </p>
-        <span className="story-bar" aria-hidden="true" />
+        <div className="turn-copy">
+          <p className="turn-kicker">{product.name} from every angle</p>
+          <div className="turn-texts">
+            {views.map((v, i) => (
+              <div key={v.title} className={`turn-text${i === 0 ? " on" : ""}`}>
+                <p className="eyebrow">
+                  {String(i + 1).padStart(2, "0")} · {v.eyebrow}
+                </p>
+                <h2>{v.title}</h2>
+                <p>{v.text}</p>
+              </div>
+            ))}
+          </div>
+          <ol className="turn-steps" aria-hidden="true">
+            {views.map((v, i) => (
+              <li key={v.title} className={i === 0 ? "on" : undefined}>
+                {v.eyebrow}
+              </li>
+            ))}
+          </ol>
+        </div>
+        <span className="turn-bar" aria-hidden="true" />
       </div>
     </section>
   );

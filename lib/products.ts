@@ -28,12 +28,11 @@ export type Product = {
   features?: string[];
   // Optional list of sports shown on the product page.
   sports?: string[];
-  // "Take a closer look" scroll story: short notes that appear around the watch.
-  // `at` is the spot on the main photo (0 to 1 across and down) the camera
-  // zooms to for this note; `zoom` is how close it gets.
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
-  callouts?: { title: string; text: string; at?: [number, number]; zoom?: number }[];
+  // "Turn it around" scroll section: each step shows one photo (index into
+  // `images`) with a short headline. Order them like a turn: front, angle, side, back.
+  views?: { image: number; eyebrow: string; title: string; text: string }[];
   // Big counting numbers band (e.g. 170 + "+" / "Sport modes").
   bigStats?: { value: number; suffix?: string; label: string }[];
   // Apple-style feature chapters: short headline, one paragraph, optional picture.
@@ -133,13 +132,37 @@ export const products: Product[] = [
       { title: "Stay connected", icon: "smart", items: ["Call reminders", "Message and app notifications", "Sedentary reminder"] },
       { title: "Everyday tools", icon: "tools", items: ["Alarm clock", "Calendar", "Calculator", "World time"] },
     ],
-    callouts: [
-      { title: '1.95" AMOLED', text: "A big, bright screen you can read in full sun.", at: [0.33, 0.45], zoom: 1.55 },
-      { title: "Built-in GPS", text: "Maps your route, distance and pace. No phone needed.", at: [0.22, 0.42], zoom: 2.1 },
-      { title: "1000mAh battery", text: "Up to 30 days on one charge.", at: [0.335, 0.33], zoom: 2.3 },
-      { title: "Heart rate", text: "Keeps an eye on your effort, day and night.", at: [0.43, 0.57], zoom: 2.3 },
-      { title: "Zinc alloy case", text: "An armoured frame with four solid keys that takes the knocks.", at: [0.56, 0.45], zoom: 2 },
-      { title: "3ATM", text: "Rain, sweat and splashes are no problem.", at: [0.66, 0.58], zoom: 1.45 },
+    views: [
+      {
+        image: 1,
+        eyebrow: "Design",
+        title: "Built to take a beating.",
+        text: "An armoured octagonal case in zinc alloy, with screws, guards and a strap made for hard days.",
+      },
+      {
+        image: 0,
+        eyebrow: "Display",
+        title: "Bright in full sun.",
+        text: 'A big 1.95" AMOLED touchscreen with sharp, vivid colours you can read outdoors.',
+      },
+      {
+        image: 3,
+        eyebrow: "Controls",
+        title: "Four solid keys.",
+        text: "Big textured buttons for sport, GPS, select and back. Easy to find and press on the move.",
+      },
+      {
+        image: 4,
+        eyebrow: "Health",
+        title: "Your heart, on your wrist.",
+        text: "The heart rate sensor tracks your effort all day, and the magnetic charger snaps on in a second.",
+      },
+      {
+        image: 2,
+        eyebrow: "Watch face",
+        title: "Everything at a glance.",
+        text: "Time, battery, steps, heart rate and weather on one face. Up to 30 days between charges.",
+      },
     ],
     bigStats: [
       { value: 170, suffix: "+", label: "Sport modes" },
