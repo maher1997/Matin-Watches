@@ -2024,7 +2024,17 @@ h3 {
   }
 }
 
+.showcase-bodies {
+  display: grid;
+}
+
 .showcase-body {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.showcase-body.on {
+  visibility: visible;
   animation: showcase-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -2095,7 +2105,7 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .showcase-body {
+  .showcase-body.on {
     animation: none;
   }
   .showcase-pics img {

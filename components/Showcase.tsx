@@ -1,31 +1,49 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/lib/products";
 
 const AUTOPLAY_MS = 6000;
 
 // One compact panel: tabs on the left switch the story and the picture on the
 // right. Pictures keep their real shape (no crop). It moves on by itself
-// every few seconds until someone picks a tab.
+// every few seconds while it is on screen (always starting from the first tab
+// when you arrive), until someone picks a tab.
 export default function Showcase({ product }: { product: Product }) {
   const chapters = product.chapters ?? [];
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(true);
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Only run while at least half the panel is visible; restart from the
+  // first tab each time it comes back into view.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+        if (entry.isIntersecting) setActive((a) => (auto ? 0 : a));
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [auto]);
 
   useEffect(() => {
-    if (!auto || chapters.length < 2) return;
+    if (!auto || !inView || chapters.length < 2) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setTimeout(() => setActive((a) => (a + 1) % chapters.length), AUTOPLAY_MS);
     return () => clearTimeout(id);
-  }, [active, auto, chapters.length]);
+  }, [active, auto, inView, chapters.length]);
 
   if (chapters.length === 0) return null;
-  const c = chapters[active];
 
   return (
-    <div className={`showcase-panel${auto ? " is-auto" : ""}`}>
+    <div ref={ref} className={`showcase-panel${auto && inView ? " is-auto" : ""}`}>
       <div className="showcase-copy">
         <div className="showcase-tabs" role="tablist" aria-label="Highlights">
           {chapters.map((ch, i) => (
@@ -44,13 +62,25 @@ export default function Showcase({ product }: { product: Product }) {
             >
               {ch.eyebrow}
               {/* Keyed so the bar restarts each time this tab becomes active */}
-              {i === active && <span key={active} className="showcase-progress" aria-hidden="true" />}
+              {i === active && <span key={`${active}-${inView}`} className="showcase-progress" aria-hidden="true" />}
             </button>
           ))}
         </div>
-        <div id="showcase-body" role="tabpanel" aria-labelledby={`showcase-tab-${active}`} key={active} className="showcase-body">
-          <h3>{c.title}</h3>
-          <p>{c.text}</p>
+        {/* All texts share one spot so the panel keeps the height of the longest */}
+        <div className="showcase-bodies">
+          {chapters.map((ch, i) => (
+            <div
+              key={ch.title}
+              id={i === active ? "showcase-body" : undefined}
+              role={i === active ? "tabpanel" : undefined}
+              aria-labelledby={i === active ? `showcase-tab-${i}` : undefined}
+              aria-hidden={i === active ? undefined : true}
+              className={`showcase-body${i === active ? " on" : ""}`}
+            >
+              <h3>{ch.title}</h3>
+              <p>{ch.text}</p>
+            </div>
+          ))}
         </div>
       </div>
       <div className="showcase-pics">

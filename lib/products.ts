@@ -177,14 +177,14 @@ export const products: Product[] = [
       {
         src: "/products/matin-trekon-gps-rugged-smartwatch-outdoors.webp",
         alt: "MATIN Trekon rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
-        width: 1121,
-        height: 1403,
+        width: 1080,
+        height: 1430,
       },
       {
         src: "/products/matin-trekon-170-sport-modes.webp",
         alt: "MATIN Trekon GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
-        width: 1200,
-        height: 1693,
+        width: 1080,
+        height: 1430,
       },
     ],
     faq: [
