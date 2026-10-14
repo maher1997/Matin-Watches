@@ -31,6 +31,8 @@ export type Product = {
   // "Take a closer look" scroll story: short notes that appear around the watch.
   // `at` is the spot on the main photo (0 to 1 across and down) the camera
   // zooms to for this note; `zoom` is how close it gets.
+  // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
+  featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   callouts?: { title: string; text: string; at?: [number, number]; zoom?: number }[];
   // Big counting numbers band (e.g. 170 + "+" / "Sport modes").
   bigStats?: { value: number; suffix?: string; label: string }[];
@@ -115,6 +117,12 @@ export const products: Product[] = [
       "Calculator",
       "World time",
     ],
+    featureGroups: [
+      { title: "Outdoor & GPS", icon: "outdoor", items: ["Built-in GPS", "170+ sport modes", "Altitude meter", "Compass"] },
+      { title: "Health", icon: "health", items: ["Heart rate monitor", "Step and distance tracker", "Calorie tracker", "Sleep tracker"] },
+      { title: "Stay connected", icon: "smart", items: ["Call reminders", "Message and app notifications", "Sedentary reminder"] },
+      { title: "Everyday tools", icon: "tools", items: ["Alarm clock", "Calendar", "Calculator", "World time"] },
+    ],
     callouts: [
       { title: '1.95" AMOLED', text: "A big, bright screen you can read in full sun.", at: [0.33, 0.45], zoom: 1.55 },
       { title: "Built-in GPS", text: "Maps your route, distance and pace. No phone needed.", at: [0.22, 0.42], zoom: 2.1 },
@@ -147,7 +155,24 @@ export const products: Product[] = [
           "MATIN Trekon GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
       },
     ],
-    sports: ["Running", "Cycling", "Hiking", "Climbing", "Tennis", "Basketball", "Yoga", "And 160+ more"],
+    sports: [
+      "Running",
+      "Cycling",
+      "Hiking",
+      "Climbing",
+      "Tennis",
+      "Basketball",
+      "Yoga",
+      "Walking",
+      "Football",
+      "Badminton",
+      "Rowing",
+      "Jump rope",
+      "Strength training",
+      "Dance",
+      "Table tennis",
+      "Volleyball",
+    ],
     posters: [
       {
         src: "/products/matin-trekon-gps-rugged-smartwatch-outdoors.webp",
