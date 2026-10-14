@@ -5,6 +5,21 @@
 
 export type Category = "tactical" | "outdoor" | "dive";
 
+export type StoryIcon =
+  | "shield"
+  | "drop"
+  | "dust"
+  | "mountain"
+  | "thermo"
+  | "heart"
+  | "chart"
+  | "run"
+  | "pin"
+  | "route"
+  | "battery"
+  | "bolt"
+  | "magnet";
+
 export type Product = {
   slug: string;
   name: string;
@@ -32,7 +47,17 @@ export type Product = {
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
   // `images`) with a short headline. Order them like a turn: front, angle, side, back.
-  views?: { image: number; eyebrow: string; title: string; text: string }[];
+  // Big lifestyle panels: a photo with the headline and icon points written
+  // as real text over it (so Google can read it and it stays sharp).
+  stories?: {
+    image: string;
+    alt: string;
+    title: [string, string];
+    accent?: "blue" | "gold";
+    text: string;
+    tags?: string[];
+    points: { icon: StoryIcon; title: string; text: string }[];
+  }[];
   // Big counting numbers band (e.g. 170 + "+" / "Sport modes").
   bigStats?: { value: number; suffix?: string; label: string }[];
   // Apple-style feature chapters: short headline, one paragraph, optional picture.
@@ -132,36 +157,65 @@ export const products: Product[] = [
       { title: "Stay connected", icon: "smart", items: ["Call reminders", "Message and app notifications", "Sedentary reminder"] },
       { title: "Everyday tools", icon: "tools", items: ["Alarm clock", "Calendar", "Calculator", "World time"] },
     ],
-    views: [
+    stories: [
       {
-        image: 1,
-        eyebrow: "Design",
-        title: "Built to take a beating.",
-        text: "An armoured octagonal case in zinc alloy, with screws, guards and a strap made for hard days.",
+        image: "/products/life/matin-trekon-built-for-the-tough.webp",
+        alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist",
+        title: ["Built for", "the tough"],
+        accent: "gold",
+        text: "For work. For mission. For more.",
+        tags: ["For work", "For mission", "For more"],
+        points: [
+          { icon: "shield", title: "Shock resistant", text: "Handles rough use in tough conditions" },
+          { icon: "drop", title: "Water resistant", text: "Ready for rain, dust and more" },
+          { icon: "mountain", title: "Built for extremes", text: "Reliable performance in any environment" },
+          { icon: "thermo", title: "Wide temp range", text: "-20°C to 60°C" },
+        ],
       },
       {
-        image: 0,
-        eyebrow: "Display",
-        title: "Bright in full sun.",
-        text: 'A big 1.95" AMOLED touchscreen with sharp, vivid colours you can read outdoors.',
+        image: "/products/life/matin-trekon-built-tough-outdoors.webp",
+        alt: "MATIN Trekon smartwatch splashed with water on a mountain rock",
+        title: ["Built", "tough"],
+        text: "Designed for real adventures, ready for any environment.",
+        points: [
+          { icon: "shield", title: "Shock resistant", text: "Built to handle rough conditions" },
+          { icon: "drop", title: "Water resistant", text: "Withstands rain, splash and more" },
+          { icon: "dust", title: "Dust resistant", text: "Keeps performing in tough environments" },
+          { icon: "thermo", title: "Wide temperature range", text: "Works from -20°C to 60°C" },
+        ],
       },
       {
-        image: 3,
-        eyebrow: "Controls",
-        title: "Four solid keys.",
-        text: "Big textured buttons for sport, GPS, select and back. Easy to find and press on the move.",
+        image: "/products/life/matin-trekon-heart-rate-monitoring.webp",
+        alt: "Hiker checking his heart rate on the MATIN Trekon smartwatch",
+        title: ["Heart rate", "monitoring"],
+        text: "Track your heart rate in real time and stay in control of your health every day.",
+        points: [
+          { icon: "heart", title: "Real-time heart rate", text: "24/7 continuous monitoring" },
+          { icon: "chart", title: "Heart rate trends", text: "View your daily, weekly and monthly data" },
+          { icon: "run", title: "Stay active and healthy", text: "Get insights to improve your fitness" },
+        ],
       },
       {
-        image: 4,
-        eyebrow: "Health",
-        title: "Your heart, on your wrist.",
-        text: "The heart rate sensor tracks your effort all day, and the magnetic charger snaps on in a second.",
+        image: "/products/life/matin-trekon-built-in-gps.webp",
+        alt: "MATIN Trekon smartwatch showing a GPS route map on a mountain top",
+        title: ["Built-in", "GPS"],
+        text: "Track your route, distance and pace with high-precision GPS.",
+        points: [
+          { icon: "pin", title: "Accurate GPS tracking", text: "Find your way anywhere" },
+          { icon: "route", title: "Real-time route map", text: "Track distance, time and pace" },
+          { icon: "mountain", title: "Perfect for outdoor adventures", text: "Hiking, running, cycling and more" },
+        ],
       },
       {
-        image: 2,
-        eyebrow: "Watch face",
-        title: "Everything at a glance.",
-        text: "Time, battery, steps, heart rate and weather on one face. Up to 30 days between charges.",
+        image: "/products/life/matin-trekon-1000mah-battery.webp",
+        alt: "MATIN Trekon smartwatch with its 1000mAh large battery at 100%",
+        title: ["1000mAh", "large battery"],
+        text: "Go further with long-lasting power for all your adventures.",
+        points: [
+          { icon: "battery", title: "Up to 20 days", text: "Typical use" },
+          { icon: "bolt", title: "Up to 50 days", text: "Standby time" },
+          { icon: "magnet", title: "Magnetic charging", text: "The charger snaps on in a second" },
+        ],
       },
     ],
     bigStats: [
