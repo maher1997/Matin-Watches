@@ -2053,42 +2053,42 @@ button.thumb:focus-visible {
     min-height: 0;
     display: block;
   }
+  /* Full width, whole square photo, edge to edge */
   .story-pic {
-    height: min(60vw, 250px);
-    padding-bottom: 0;
-    margin: 0.75rem 0.75rem 0;
-    border-radius: 18px;
+    height: 0;
+    padding-bottom: 100%;
+    margin: 0;
+    border-radius: 0;
   }
   .story-pic::after {
     background: none;
   }
   .story-copy {
     justify-content: flex-start;
-    padding: 1rem 1.1rem 1.3rem;
+    padding: 0.85rem 1.1rem 1.1rem;
   }
   .story h2 {
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: 0.3em;
-    font-size: clamp(1.7rem, 8vw, 2.2rem);
+    font-size: clamp(1.45rem, 6.6vw, 1.9rem);
     line-height: 1.05;
   }
-  .story-lede {
-    margin-top: 0.4rem;
-    font-size: 0.92rem;
-    line-height: 1.4;
-  }
+  /* Points as one row of icons with short titles under them */
   .story-points {
-    grid-template-columns: 1fr 1fr;
-    margin-top: 1rem;
-    gap: 0.7rem 0.6rem;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    margin-top: 0.8rem;
+    gap: 0.4rem;
   }
   .story-points li {
-    gap: 0.55rem;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: center;
   }
   .story-icon {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-width: 1.5px;
   }
   .story-icon svg {
@@ -2096,10 +2096,11 @@ button.thumb:focus-visible {
     height: 18px;
   }
   .story-points strong {
-    font-size: 0.82rem;
-    line-height: 1.25;
+    font-size: 0.72rem;
+    line-height: 1.2;
   }
   /* Short version on phones: titles only */
+  .story-lede,
   .story-points li > span:last-child > span,
   .story-tags {
     display: none;
