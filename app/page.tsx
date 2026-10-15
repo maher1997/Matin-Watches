@@ -6,9 +6,9 @@ import ProductImage from "@/components/ProductImage";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: { absolute: "MATIN | Rugged GPS Smartwatches Built for Hard Places" },
+  title: { absolute: "MATIN | Rugged Military & Tactical Smartwatches for Men" },
   description:
-    "MATIN rugged GPS smartwatches: tough zinc alloy cases, bright AMOLED screens, 170+ sport modes and up to 30 days of battery. Free worldwide shipping.",
+    "Rugged military-style and tactical smartwatches for men: GPS, Bluetooth calling, AMOLED screens, heart rate and up to 30 days battery. Free shipping.",
   alternates: { canonical: "/" },
 };
 
@@ -39,8 +39,8 @@ export default function Home() {
             Built for <span className="accent">hard</span> places.
           </h1>
           <p className="lead">
-            Rugged GPS smartwatches with tough metal cases, big AMOLED screens, 170+ sport modes and
-            weeks of battery. Made to keep up with whatever you put them through.
+            Rugged military-style smartwatches for men, with tough metal cases, bright AMOLED screens, GPS
+            or Bluetooth calling and weeks of battery. Made to keep up with whatever you put them through.
           </p>
           <div className="hero-cta">
             <Link href="/shop" className="btn btn-primary">Shop watches</Link>

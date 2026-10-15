@@ -7,9 +7,9 @@ export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || fallback).replace(/\
 
 export const site = {
   name: "MATIN",
-  title: "MATIN | Rugged Smartwatches",
+  title: "MATIN | Rugged Military & Tactical Smartwatches",
   description:
-    "MATIN makes rugged smartwatches built for hard places: tough cases, bright AMOLED screens and weeks of battery. Free worldwide shipping.",
+    "MATIN makes rugged military-style and tactical smartwatches for men: tough cases, bright AMOLED screens and weeks of battery. Free worldwide shipping.",
   currency: "USD",
 };
 

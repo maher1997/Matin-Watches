@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import ShopGrid, { ShopGridView } from "@/components/ShopGrid";
 
 export const metadata: Metadata = {
-  title: "Shop Rugged Smartwatches",
+  title: "Shop Rugged, Military & Tactical Smartwatches",
   description:
-    "Shop MATIN rugged smartwatches: tough tactical, outdoor and water-resistant watches with AMOLED screens and long battery life. Free worldwide shipping.",
+    "Shop MATIN rugged smartwatches for men: military-style, tactical and outdoor watches with GPS, AMOLED screens and long battery life. Free shipping.",
   alternates: { canonical: "/shop" },
   openGraph: {
     url: "/shop",

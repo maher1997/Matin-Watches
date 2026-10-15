@@ -106,7 +106,7 @@ export const products: Product[] = [
     shareImage: "/products/matin-trekon-share.jpg",
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Trekon is a rugged GPS smartwatch built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
+      'The MATIN Trekon is a rugged tactical GPS smartwatch for men, built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
     highlights: [
       { value: "GPS", label: "Route tracking" },
       { value: "170+", label: "Sport modes" },
@@ -310,9 +310,9 @@ export const products: Product[] = [
         a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
       },
     ],
-    seoTitle: "MATIN Trekon Rugged GPS Smartwatch | 170+ Sport Modes",
+    seoTitle: "MATIN Trekon Tactical GPS Smartwatch for Men | Rugged",
     seoDescription:
-      'MATIN Trekon rugged GPS smartwatch with 170+ sport modes, 1.95" AMOLED, heart rate, up to 30 days battery and a tough zinc alloy case. Free shipping.',
+      'MATIN Trekon rugged tactical GPS smartwatch for men: 170+ sport modes, 1.95" AMOLED, heart rate, 30 day battery, zinc alloy case. iPhone and Android.',
     art: { case: "#2a2e38", strap: "#16181e", accent: "#e0b45a" },
   },
   {
@@ -339,7 +339,7 @@ export const products: Product[] = [
     ],
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Torvan is a round rugged smartwatch with a stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) is sharp and bright, and you can take calls right from your wrist over Bluetooth. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM, and works with both iPhone and Android.',
+      'The MATIN Torvan is a round, military-style rugged smartwatch with a stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) is sharp and bright, and you can take calls right from your wrist over Bluetooth. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM water resistant, it is a tough outdoor smartwatch that works with both iPhone and Android.',
     highlights: [
       { value: '1.43"', label: "AMOLED screen" },
       { value: "30d", label: "Battery life" },
@@ -404,9 +404,9 @@ export const products: Product[] = [
         a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
       },
     ],
-    seoTitle: "MATIN Torvan Rugged Smartwatch | AMOLED, Bluetooth Calls",
+    seoTitle: "MATIN Torvan Military Smartwatch | Bluetooth Calling, AMOLED",
     seoDescription:
-      'MATIN Torvan round rugged smartwatch: 1.43" AMOLED, sapphire glass, Bluetooth calls, heart rate, SpO2, up to 30 days battery, 5ATM. Free shipping.',
+      'MATIN Torvan rugged military-style smartwatch for men: Bluetooth calling, 1.43" AMOLED, sapphire glass, heart rate, SpO2, 30 day battery, 5ATM waterproof.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#2f62e0" },
   },
   {
