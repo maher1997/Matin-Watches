@@ -271,7 +271,7 @@ export const products: Product[] = [
         src: "/products/matin-trekon-sport-fitness-modes.webp",
         alt: "MATIN Trekon rugged smartwatch on a hiker's wrist showing the workout menu with running, cycling, hiking and gym sport modes",
         width: 2000,
-        height: 1744,
+        height: 2000,
       },
       {
         src: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",

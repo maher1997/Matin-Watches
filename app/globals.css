@@ -2573,9 +2573,18 @@ button.thumb:focus-visible {
 @media (max-width: 860px) {
   .showcase-panel {
     grid-template-columns: 1fr;
+    overflow: hidden;
+    --pad: clamp(1.5rem, 4vw, 3rem);
   }
+  /* Phones: the photo runs edge to edge across the top of the card */
   .showcase-pics {
     order: -1;
+    place-items: start center;
+    margin: calc(-1 * var(--pad)) calc(-1 * var(--pad)) 0;
+  }
+  .showcase-pics img {
+    border-radius: 0;
+    box-shadow: none;
   }
   .showcase-tabs {
     flex-wrap: nowrap;
