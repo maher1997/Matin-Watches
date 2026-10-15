@@ -208,7 +208,7 @@ export const products: Product[] = [
         points: [
           { icon: "pin", title: "Accurate GPS tracking", text: "Find your way anywhere" },
           { icon: "route", title: "Real-time route map", text: "Track distance, time and pace" },
-          { icon: "mountain", title: "Perfect for outdoor adventures", text: "Hiking, running, cycling and more" },
+          { icon: "mountain", title: "Made for the outdoors", text: "Hiking, running, cycling and more" },
         ],
       },
       {
