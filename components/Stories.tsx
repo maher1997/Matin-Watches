@@ -170,13 +170,26 @@ export default function Stories({ product }: { product: Product }) {
             className={`story story-${s.accent ?? "blue"}${i === active ? " on" : ""}`}
           >
             <div className="story-pic">
+              {/* Phones only: a blurred copy of the same photo fills the card's
+                  sides, so the whole photo shows with no dark strips. */}
               <Image
+                className="story-pic-fill"
                 src={s.image}
-                alt={s.alt}
+                alt=""
+                aria-hidden="true"
                 fill
-                quality={75}
-                sizes="(max-width: 860px) 100vw, 1240px"
+                quality={40}
+                sizes="64px"
               />
+              <span className="story-pic-main">
+                <Image
+                  src={s.image}
+                  alt={s.alt}
+                  fill
+                  quality={75}
+                  sizes="(max-width: 860px) 100vw, 1240px"
+                />
+              </span>
             </div>
             {/* Keyed on `shown`: the words are already there at load, and they
                 play in again the first time the slider comes into view. */}
