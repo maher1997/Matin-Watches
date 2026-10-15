@@ -754,8 +754,8 @@ button.thumb:focus-visible {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transform: scale(0.97);
-  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: scale(0.985);
+  transition: opacity 0.28s ease, transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .pdp-slide.on {
@@ -765,13 +765,13 @@ button.thumb:focus-visible {
 
 /* Fade only after the first tap, so the first photo shows instantly */
 .fx .pdp-slide.on {
-  animation: slide-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: slide-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 @keyframes slide-in {
   from {
     opacity: 0;
-    transform: scale(0.97);
+    transform: scale(0.985);
   }
 }
 
