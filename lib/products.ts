@@ -33,7 +33,9 @@ export type Product = {
   imageAlts?: string[];
   // 1200x630 picture shown when the page link is shared (WhatsApp, Facebook, X).
   shareImage?: string;
-  colors: { name: string; hex: string }[];
+  // `from`: index in `images` where this color's photos start (they run to
+  // the next color's `from`). Picking the color shows only its photos.
+  colors: { name: string; hex: string; from?: number }[];
   description: string;
   // `group` sorts the spec table into sections (Display, Battery...).
   specs: { label: string; value: string; group?: string }[];
@@ -95,6 +97,11 @@ export const products: Product[] = [
       "/products/matin-trekon-amoled-display-closeup.webp",
       "/products/matin-trekon-side-buttons.webp",
       "/products/matin-trekon-heart-rate-sensor-back.webp",
+      "/products/matin-trekon-orange-rugged-smartwatch.webp",
+      "/products/matin-trekon-orange-angle.webp",
+      "/products/matin-trekon-orange-front-view.webp",
+      "/products/matin-trekon-orange-side-buttons.webp",
+      "/products/matin-trekon-orange-heart-rate-sensor-back.webp",
     ],
     imageAlts: [
       'MATIN Trekon rugged GPS smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
@@ -102,9 +109,17 @@ export const products: Product[] = [
       'Close-up of the MATIN Trekon 1.95" AMOLED display showing time, battery, steps and heart rate',
       "MATIN Trekon side view showing the SEL and BACK buttons and textured grip keys",
       "Back of the MATIN Trekon with heart rate sensor and magnetic charging pins",
+      "MATIN Trekon rugged GPS smartwatch in orange with a bright orange silicone strap and AMOLED tactical watch face",
+      "MATIN Trekon orange tactical smartwatch angled view with armored case and orange sport strap",
+      "MATIN Trekon orange rugged smartwatch front view showing the 1.95 inch AMOLED screen",
+      "MATIN Trekon orange smartwatch side view with textured buttons and orange strap",
+      "Back of the orange MATIN Trekon with heart rate sensor, magnetic charging pins and metal buckle",
     ],
     shareImage: "/products/matin-trekon-share.jpg",
-    colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
+    colors: [
+      { name: "Stealth Black", hex: "#1c1f26" },
+      { name: "Orange", hex: "#f2731d", from: 5 },
+    ],
     description:
       'The MATIN Trekon is a rugged tactical GPS smartwatch for men, built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armored zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
     highlights: [
@@ -560,4 +575,15 @@ export function getProduct(slug: string) {
 
 export function formatPrice(n: number) {
   return `$${n.toFixed(2)}`;
+}
+
+// The photos (start and end index in `images`) that belong to one color.
+export function colorRange(p: Product, color: number): [number, number] {
+  const c = p.colors[color];
+  if (!c || c.from === undefined) {
+    const firstOther = p.colors.find((x) => x.from !== undefined)?.from;
+    return [0, firstOther ?? p.images.length];
+  }
+  const next = p.colors.slice(color + 1).find((x) => x.from !== undefined)?.from;
+  return [c.from, next ?? p.images.length];
 }

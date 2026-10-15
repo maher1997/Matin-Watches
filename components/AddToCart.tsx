@@ -17,13 +17,19 @@ export default function AddToCart({ product }: { product: Product }) {
         Color: <strong>{color}</strong>
       </p>
       <div className="color-pick">
-        {product.colors.map((c) => (
+        {product.colors.map((c, i) => (
           <button
             key={c.name}
             className={c.name === color ? "active" : ""}
             style={{ background: c.hex }}
             aria-label={c.name}
-            onClick={() => setColor(c.name)}
+            aria-pressed={c.name === color}
+            onClick={() => {
+              setColor(c.name);
+              window.dispatchEvent(
+                new CustomEvent("matin:color", { detail: { slug: product.slug, color: i } }),
+              );
+            }}
           />
         ))}
       </div>

@@ -1,16 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Product } from "@/lib/products";
+import { colorRange, type Product } from "@/lib/products";
 import ProductImage from "./ProductImage";
 
 // Product photos: a big picture plus a row of thumbnails. Tapping a
 // thumbnail (or swiping the big picture) fades over to that photo.
 export default function PdpGallery({ product }: { product: Product }) {
+  // Picking a color (in AddToCart) swaps the gallery to that color's photos.
+  const [color, setColor] = useState(0);
+  const [start, end] = colorRange(product, color);
+  const photos = product.images.slice(start, end);
   const [active, setActive] = useState(0);
   // Only photos someone has opened are loaded, so the first one paints fast.
   const [seen, setSeen] = useState<number[]>([0]);
-  const count = product.images.length;
+  const count = photos.length;
   // Fade only after the first tap, so the first photo shows instantly.
   const [fx, setFx] = useState(false);
   const touchX = useRef(0);
@@ -19,15 +23,32 @@ export default function PdpGallery({ product }: { product: Product }) {
   // background so switching is instant instead of waiting on a download.
   useEffect(() => {
     if (count < 2) return;
-    const id = setTimeout(() => setSeen(product.images.map((_, i) => i)), 2500);
+    const id = setTimeout(
+      () => setSeen((v) => [...new Set([...v, ...photos.map((_, i) => start + i)])]),
+      2500,
+    );
     return () => clearTimeout(id);
-  }, [count, product.images]);
+  }, [count, start]);
+
+  useEffect(() => {
+    const onColor = (e: Event) => {
+      const d = (e as CustomEvent<{ slug: string; color: number }>).detail;
+      if (d.slug !== product.slug) return;
+      const [s] = colorRange(product, d.color);
+      setFx(true);
+      setColor(d.color);
+      setActive(0);
+      setSeen((v) => (v.includes(s) ? v : [...v, s]));
+    };
+    window.addEventListener("matin:color", onColor);
+    return () => window.removeEventListener("matin:color", onColor);
+  }, [product]);
 
   const show = (i: number) => {
     const next = (i + count) % count;
     setFx(true);
     setActive(next);
-    setSeen((v) => (v.includes(next) ? v : [...v, next]));
+    setSeen((v) => (v.includes(start + next) ? v : [...v, start + next]));
   };
 
   return (
@@ -48,8 +69,8 @@ export default function PdpGallery({ product }: { product: Product }) {
             sizes="(max-width: 900px) 100vw, 50vw"
           />
         ) : (
-          product.images.map((src, i) =>
-            seen.includes(i) ? (
+          photos.map((src, i) =>
+            seen.includes(start + i) ? (
               <div
                 key={src}
                 className={`pdp-slide${i === active ? " on" : ""}`}
@@ -57,8 +78,8 @@ export default function PdpGallery({ product }: { product: Product }) {
               >
                 <ProductImage
                   product={product}
-                  index={i}
-                  priority={i === 0}
+                  index={start + i}
+                  priority={start + i === 0}
                   sizes="(max-width: 900px) 100vw, 50vw"
                 />
               </div>
@@ -71,7 +92,7 @@ export default function PdpGallery({ product }: { product: Product }) {
           className="pdp-thumbs"
           style={{ gridTemplateColumns: `repeat(${Math.max(4, count)}, 1fr)` }}
         >
-          {product.images.map((src, i) => (
+          {photos.map((src, i) => (
             <button
               key={src}
               type="button"
@@ -80,7 +101,7 @@ export default function PdpGallery({ product }: { product: Product }) {
               aria-pressed={i === active}
               onClick={() => show(i)}
             >
-              <ProductImage product={product} index={i} sizes="120px" alt="" />
+              <ProductImage product={product} index={start + i} sizes="120px" alt="" />
             </button>
           ))}
         </div>
