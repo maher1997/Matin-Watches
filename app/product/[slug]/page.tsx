@@ -13,6 +13,7 @@ import CountUp from "@/components/CountUp";
 import Reveal from "@/components/Reveal";
 import Showcase from "@/components/Showcase";
 import PdpGallery from "@/components/PdpGallery";
+import SpecSheet from "@/components/SpecSheet";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -192,35 +193,7 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      <section className="section">
-        <h2 className="spec-title">{product.name} specifications</h2>
-        {specGroups.length > 1 || specGroups[0]?.[0] ? (
-          <div className="spec-groups">
-            {specGroups.map(([group, rows]) => (
-              <div key={group} className="spec-group">
-                <h3>{group}</h3>
-                <dl>
-                  {rows.map((s) => (
-                    <div key={s.label}>
-                      <dt>{s.label}</dt>
-                      <dd>{s.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <dl className="specs">
-            {product.specs.map((s) => (
-              <div key={s.label}>
-                <dt>{s.label}</dt>
-                <dd>{s.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-      </section>
+      {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
 
       {product.featureGroups ? (
         <section className="section">
