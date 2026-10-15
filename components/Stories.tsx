@@ -178,7 +178,9 @@ export default function Stories({ product }: { product: Product }) {
                 sizes="(max-width: 860px) 100vw, 1240px"
               />
             </div>
-            <div className="story-copy">
+            {/* Keyed on `shown`: the words are already there at load, and they
+                play in again the first time the slider comes into view. */}
+            <div key={`${i}-${shown}`} className="story-copy">
               <h3>
                 <span>{s.title[0]}</span>
                 <span className="story-accent">{s.title[1]}</span>
