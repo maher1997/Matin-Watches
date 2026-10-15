@@ -2122,22 +2122,22 @@ button.thumb:focus-visible {
    scrolling and works the same on phones. */
 @media (prefers-reduced-motion: no-preference) {
   .story.on h2 span {
-    animation: story-rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s both;
+    animation: story-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 0.08s both;
   }
   .story.on h2 .story-accent {
-    animation-delay: 0.27s;
+    animation-delay: 0.16s;
   }
   .story.on .story-lede {
-    animation: story-rise 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s both;
+    animation: story-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 0.22s both;
   }
   .story.on .story-points li {
-    animation: story-slide 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--d) + 0.2s) both;
+    animation: story-slide 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--d) * 0.6) both;
   }
   .story.on .story-points .story-icon {
-    animation: story-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--d) + 0.25s) both;
+    animation: story-pop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) calc(var(--d) * 0.6 + 0.05s) both;
   }
   .story.on .story-tags li {
-    animation: story-rise 0.6s ease 0.9s both;
+    animation: story-rise 0.5s ease 0.6s both;
   }
   .story.on .story-pic img {
     animation: story-zoom 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
