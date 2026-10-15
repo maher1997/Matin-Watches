@@ -1898,6 +1898,35 @@ button.thumb:focus-visible {
   margin-top: 5rem;
 }
 
+.stories-head {
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+
+.stories-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.6rem;
+}
+
+.stories-head h2 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.stories-head h2 span {
+  background: linear-gradient(90deg, #5285f7, #5fd6d0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stories-bar {
+  position: relative;
+}
+
 .stories-tabs {
   display: flex;
   justify-content: center;
@@ -2090,7 +2119,7 @@ button.thumb:focus-visible {
   justify-content: center;
 }
 
-.story h2 {
+.story h3 {
   display: flex;
   flex-direction: column;
   font-size: clamp(2.6rem, 5.6vw, 4.6rem);
@@ -2099,11 +2128,11 @@ button.thumb:focus-visible {
   text-transform: uppercase;
 }
 
-.story h2 span {
+.story h3 span {
   transition: opacity 0.8s ease 0.15s, transform 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s;
 }
 
-.story h2 .story-accent {
+.story h3 .story-accent {
   transition-delay: 0.25s;
   background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
   -webkit-background-clip: text;
@@ -2120,7 +2149,7 @@ button.thumb:focus-visible {
   transition: opacity 0.8s ease 0.2s;
 }
 
-.stories.in .story.on h2 span,
+.stories.in .story.on h3 span,
 .stories.in .story.on .story-lede {
   opacity: 1;
   transform: none;
@@ -2239,7 +2268,7 @@ button.thumb:focus-visible {
     justify-content: flex-start;
     padding: 0.85rem 1.1rem 1.1rem;
   }
-  .story h2 {
+  .story h3 {
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: 0.3em;
@@ -2293,10 +2322,10 @@ button.thumb:focus-visible {
    the icons one by one. Pure CSS on the active class, so it never waits on
    scrolling and works the same on phones. */
 @media (prefers-reduced-motion: no-preference) {
-  .story.on h2 span {
+  .story.on h3 span {
     animation: story-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 0.08s both;
   }
-  .story.on h2 .story-accent {
+  .story.on h3 .story-accent {
     animation-delay: 0.16s;
   }
   .story.on .story-lede {
@@ -2345,7 +2374,7 @@ button.thumb:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .story-pic,
   .story-pic img,
-  .story h2 span,
+  .story h3 span,
   .story-lede,
   .story-points li {
     opacity: 1;
