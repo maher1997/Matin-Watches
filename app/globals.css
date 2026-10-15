@@ -1237,7 +1237,8 @@ button.thumb:focus-visible {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 
-/* Real product photos: soft studio light behind, shadow and a faint blue rim */
+/* Real product photos: soft studio light behind and a shadow. (No thin rim:
+   it drew a pale outline along photos whose strap fades out softly.) */
 .photo-glow {
   position: absolute;
   inset: 4%;
@@ -1249,8 +1250,7 @@ button.thumb:focus-visible {
 }
 
 .product-photo {
-  filter: drop-shadow(0 0 1.5px rgba(160, 190, 255, 0.55)) drop-shadow(0 0 22px rgba(82, 133, 247, 0.3))
-    drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 0 22px rgba(82, 133, 247, 0.3)) drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
 }
 
 /* Product key numbers under the price */
