@@ -2617,3 +2617,27 @@ button.thumb:focus-visible {
 .pdp-main .badge {
   z-index: 2;
 }
+
+/* Counting numbers: fixed width and even-width digits so nothing shifts */
+.count-up {
+  position: relative;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+.count-up > span:last-child {
+  position: absolute;
+  right: 0;
+  top: 0;
+  white-space: nowrap;
+  /* WebKit won't paint the parent's gradient text onto a positioned child */
+  background: linear-gradient(180deg, #fff 30%, #5285f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.count-up-size {
+  visibility: hidden;
+}
+.sports-count {
+  flex-shrink: 0;
+}
