@@ -99,11 +99,13 @@ export default async function ProductPage({ params }: Props) {
           shippingDetails: {
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "0", currency: site.currency },
+            shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
           },
           hasMerchantReturnPolicy: {
             "@type": "MerchantReturnPolicy",
             returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
             merchantReturnDays: 30,
+            applicableCountry: "US",
           },
         },
       },
@@ -161,7 +163,7 @@ export default async function ProductPage({ params }: Props) {
           <p className="pdp-desc">{product.description}</p>
           <AddToCart product={product} />
           <ul className="perks">
-            <li>Free worldwide shipping</li>
+            <li>Free shipping across the USA</li>
             <li>2 year warranty</li>
             <li>30 day returns</li>
           </ul>

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const features = [
-  { title: "Tough metal case", text: "An armoured zinc alloy case built to take knocks." },
+  { title: "Tough metal case", text: "An armored zinc alloy case built to take knocks." },
   { title: "Built-in GPS", text: "Track your route, distance and pace without your phone." },
   { title: "30 day battery", text: "A 1000mAh battery that lasts weeks on one charge." },
   { title: "170+ sport modes", text: "Running, cycling, hiking, climbing and many more." },
@@ -119,7 +119,7 @@ export default function Home() {
           </p>
         </div>
         <ul className="test-list">
-          {["1.5m drop onto steel", "-30°C to +70°C", "100m pressure", "Sand and dust", "Shock and vibration", "Salt fog"].map((t) => (
+          {["5 ft drop onto steel", "-22°F to 158°F", "330 ft pressure", "Sand and dust", "Shock and vibration", "Salt fog"].map((t) => (
             <li key={t}>{t}</li>
           ))}
         </ul>
@@ -127,7 +127,7 @@ export default function Home() {
 
       <section className="section trust">
         {[
-          ["Free shipping", "On every order, worldwide"],
+          ["Free shipping", "On every US order"],
           ["2 year warranty", "We stand behind every watch"],
           ["30 day returns", "Not right? Send it back"],
           ["Secure checkout", "Card, Apple Pay, PayPal"],

@@ -9,7 +9,7 @@ export const site = {
   name: "MATIN",
   title: "MATIN | Rugged Military & Tactical Smartwatches",
   description:
-    "MATIN makes rugged military-style and tactical smartwatches for men: tough cases, bright AMOLED screens and weeks of battery. Free worldwide shipping.",
+    "MATIN makes rugged military-style and tactical smartwatches for men: tough cases, bright AMOLED screens and weeks of battery. Free US shipping.",
   currency: "USD",
 };
 

@@ -98,7 +98,7 @@ export const products: Product[] = [
     ],
     imageAlts: [
       'MATIN Trekon rugged GPS smartwatch in black with a 1.95" AMOLED tactical watch face and silicone strap',
-      "MATIN Trekon rugged smartwatch front view with octagonal armoured case and black silicone strap",
+      "MATIN Trekon rugged smartwatch front view with octagonal armored case and black silicone strap",
       'Close-up of the MATIN Trekon 1.95" AMOLED display showing time, battery, steps and heart rate',
       "MATIN Trekon side view showing the SEL and BACK buttons and textured grip keys",
       "Back of the MATIN Trekon with heart rate sensor and magnetic charging pins",
@@ -106,7 +106,7 @@ export const products: Product[] = [
     shareImage: "/products/matin-trekon-share.jpg",
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Trekon is a rugged tactical GPS smartwatch for men, built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armoured zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
+      'The MATIN Trekon is a rugged tactical GPS smartwatch for men, built for hard workdays, long trails and serious training. Built-in GPS tracks your route, distance and pace, a heart rate monitor keeps an eye on your effort, and more than 170 sport modes cover everything from running and cycling to hiking, climbing and basketball. A big 1.95" AMOLED touchscreen stays easy to read in bright sun, the armored zinc alloy case takes the knocks, and the 1000mAh battery lasts up to 30 days on a charge. Rated 3ATM against rain, sweat and splashes, and works with both iPhone and Android.',
     highlights: [
       { value: "GPS", label: "Route tracking" },
       { value: "170+", label: "Sport modes" },
@@ -171,7 +171,7 @@ export const products: Product[] = [
           { icon: "shield", title: "Shock resistant", text: "Handles rough use in tough conditions" },
           { icon: "drop", title: "Water resistant", text: "Ready for rain, dust and more" },
           { icon: "mountain", title: "Built for extremes", text: "Reliable performance in any environment" },
-          { icon: "thermo", title: "Wide temp range", text: "-20°C to 60°C" },
+          { icon: "thermo", title: "Wide temp range", text: "-4°F to 140°F" },
         ],
       },
       {
@@ -184,7 +184,7 @@ export const products: Product[] = [
           { icon: "shield", title: "Shock resistant", text: "Built to handle rough conditions" },
           { icon: "drop", title: "Water resistant", text: "Withstands rain, splash and more" },
           { icon: "dust", title: "Dust resistant", text: "Keeps performing in tough environments" },
-          { icon: "thermo", title: "Wide temperature range", text: "Works from -20°C to 60°C" },
+          { icon: "thermo", title: "Wide temperature range", text: "Works from -4°F to 140°F" },
         ],
       },
       {
@@ -303,11 +303,11 @@ export const products: Product[] = [
       },
       {
         q: "What is the screen like?",
-        a: 'A big 1.95 inch AMOLED touchscreen with bright, sharp colours that stays readable outdoors.',
+        a: 'A big 1.95 inch AMOLED touchscreen with bright, sharp colors that stays readable outdoors.',
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
       },
     ],
     seoTitle: "MATIN Trekon Tactical GPS Smartwatch for Men | Rugged",
@@ -401,7 +401,7 @@ export const products: Product[] = [
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
       },
     ],
     seoTitle: "MATIN Torvan Military Smartwatch | Bluetooth Calling, AMOLED",

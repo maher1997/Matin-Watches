@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="announce">Free shipping worldwide · 2 year warranty · 30 day returns</div>
+      <div className="announce">Free US shipping · 2 year warranty · 30 day returns</div>
       <header className="header">
         <div className="header-inner">
           <button
