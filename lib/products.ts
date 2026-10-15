@@ -323,12 +323,14 @@ export const products: Product[] = [
     category: "outdoor",
     badge: "New",
     images: [
+      "/products/matin-torvan-rugged-smartwatch-angle.webp",
       "/products/matin-torvan-rugged-smartwatch.webp",
       "/products/matin-torvan-front-view.webp",
       "/products/matin-torvan-side-buttons.webp",
       "/products/matin-torvan-heart-rate-sensor-back.webp",
     ],
     imageAlts: [
+      "MATIN Torvan round rugged smartwatch with blue side button, textured grip keys and black silicone strap",
       'MATIN Torvan round rugged smartwatch in black with a blue side plate, 1.43" AMOLED display and silicone strap',
       "MATIN Torvan front view with round AMOLED display showing steps, heart rate, weather, date and moon phase",
       "MATIN Torvan side view with two buttons and a blue stainless steel side plate",
