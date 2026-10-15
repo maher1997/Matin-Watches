@@ -9,7 +9,6 @@ import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
 import JsonLd from "@/components/JsonLd";
 import Stories from "@/components/Stories";
-import CountUp from "@/components/CountUp";
 import Reveal from "@/components/Reveal";
 import Showcase from "@/components/Showcase";
 import PdpGallery from "@/components/PdpGallery";
@@ -175,7 +174,8 @@ export default async function ProductPage({ params }: Props) {
           {product.bigStats.map((b, i) => (
             <Reveal key={b.label} className="big-stat" delay={i * 90}>
               <strong>
-                <CountUp to={b.value} suffix={b.suffix} />
+                {b.value}
+                {b.suffix}
               </strong>
               <span>{b.label}</span>
             </Reveal>
@@ -233,7 +233,7 @@ export default async function ProductPage({ params }: Props) {
         <section className="section sports">
           <Reveal className="sports-head">
             <strong className="sports-count">
-              <CountUp to={170} suffix="+" />
+              170+
             </strong>
             <div>
               <h2 className="spec-title">Sport modes</h2>
