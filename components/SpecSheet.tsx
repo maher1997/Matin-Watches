@@ -27,7 +27,8 @@ function iconFor(group: string) {
 // Specification section: the watch on one side, the specs as icon cards on
 // the other. Plain HTML, so Google reads every row.
 export default function SpecSheet({ product, groups }: { product: Product; groups: [string, Product["specs"]][] }) {
-  const photo = product.images[1] ?? product.images[0];
+  // The straight-on front photo reads best next to the specs.
+  const photo = product.images.find((src) => src.includes("front-view")) ?? product.images[1] ?? product.images[0];
   return (
     <section className="section spec-sheet" aria-labelledby="specs-title">
       <div className="spec-aside">
