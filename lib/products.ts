@@ -163,7 +163,7 @@ export const products: Product[] = [
       {
         image: "/products/life/matin-trekon-built-for-the-tough.webp",
         tab: "Tough",
-        alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist",
+        alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist in the mountains",
         title: ["Built for", "the tough"],
         accent: "gold",
         text: "For work. For mission. For more.",
@@ -178,7 +178,7 @@ export const products: Product[] = [
       {
         image: "/products/life/matin-trekon-built-tough-outdoors.webp",
         tab: "Outdoors",
-        alt: "MATIN Trekon smartwatch splashed with water on a mountain rock",
+        alt: "Hiker checking a GPS route on the MATIN Trekon smartwatch above a mountain lake",
         title: ["Built", "tough"],
         text: "Designed for real adventures, ready for any environment.",
         points: [
@@ -203,7 +203,7 @@ export const products: Product[] = [
       {
         image: "/products/life/matin-trekon-built-in-gps.webp",
         tab: "GPS",
-        alt: "MATIN Trekon smartwatch showing a GPS route map on a mountain top",
+        alt: "MATIN Trekon smartwatch showing a GPS route map, distance and pace on a mountain rock",
         title: ["Built-in", "GPS"],
         text: "Track your route, distance and pace with high-precision GPS.",
         points: [
