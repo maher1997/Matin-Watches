@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@/lib/products";
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 3500;
 
 // One compact panel: tabs on the left switch the story and the picture on the
 // right. Pictures keep their real shape (no crop). It moves on by itself

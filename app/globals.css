@@ -2502,7 +2502,7 @@ button.thumb:focus-visible {
 }
 
 .is-auto .showcase-progress {
-  animation: showcase-fill 6s linear forwards;
+  animation: showcase-fill 3.5s linear forwards;
 }
 
 @keyframes showcase-fill {
@@ -2522,7 +2522,7 @@ button.thumb:focus-visible {
 
 .showcase-body.on {
   visibility: visible;
-  animation: showcase-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: showcase-in 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .showcase-body h3 {
@@ -2551,21 +2551,18 @@ button.thumb:focus-visible {
 .showcase-pics {
   display: grid;
   place-items: center;
-  height: 520px;
 }
 
 /* Both pictures share one spot and cross-fade; each keeps its own shape */
 .showcase-pics img {
   grid-area: 1 / 1;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  max-height: 520px;
   border-radius: 18px;
   box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
   opacity: 0;
   transform: scale(0.96) translateY(10px);
-  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .showcase-pics img.on {
@@ -2580,14 +2577,15 @@ button.thumb:focus-visible {
   .showcase-pics {
     order: -1;
   }
-  .showcase-pics {
-    height: 420px;
-  }
-  .showcase-pics img {
-    max-height: 420px;
-  }
   .showcase-tabs {
+    flex-wrap: nowrap;
     margin-bottom: 1.2rem;
+  }
+  .showcase-tabs button {
+    padding: 0.6rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
   }
 }
 

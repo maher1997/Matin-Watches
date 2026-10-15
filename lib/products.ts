@@ -232,20 +232,20 @@ export const products: Product[] = [
     ],
     chapters: [
       {
-        eyebrow: "GPS",
-        title: "Find your way. Anywhere.",
-        text: "Built-in GPS maps your route, distance and time on every run, ride and hike. Head out further and always know how far you have come.",
-        image: "/products/matin-trekon-gps-rugged-smartwatch-outdoors.webp",
+        eyebrow: "Sport & fitness",
+        title: "Every sport. Covered.",
+        text: "Running, cycling, hiking, gym, basketball and more: over 170 sport modes in all. Pick your workout and the Trekon tracks heart rate, calories, distance and time.",
+        image: "/products/matin-trekon-sport-fitness-modes.webp",
         imageAlt:
-          "MATIN Trekon rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
+          "MATIN Trekon rugged smartwatch on a hiker's wrist showing the workout menu with running, cycling, hiking and gym sport modes",
       },
       {
-        eyebrow: "170+ sport modes",
-        title: "Every sport. Covered.",
-        text: "Running, cycling, hiking, climbing, tennis, basketball, yoga and more than 160 others. Pick your sport and the Trekon tracks heart rate, calories and time.",
-        image: "/products/matin-trekon-170-sport-modes.webp",
+        eyebrow: "Waterproof",
+        title: "Rain or river. Keep going.",
+        text: "Rain, splashes, sweat and stream crossings don't slow it down. Wear it on every trail and never stop to take it off.",
+        image: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",
         imageAlt:
-          "MATIN Trekon GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
+          "Waterproof MATIN Trekon rugged smartwatch splashed with water on a hiker's wrist by a mountain river",
       },
     ],
     sports: [
@@ -268,16 +268,16 @@ export const products: Product[] = [
     ],
     posters: [
       {
-        src: "/products/matin-trekon-gps-rugged-smartwatch-outdoors.webp",
-        alt: "MATIN Trekon rugged GPS smartwatch on a mountain rock showing route tracking, 1000mAh battery and rugged build",
-        width: 1080,
-        height: 1430,
+        src: "/products/matin-trekon-sport-fitness-modes.webp",
+        alt: "MATIN Trekon rugged smartwatch on a hiker's wrist showing the workout menu with running, cycling, hiking and gym sport modes",
+        width: 2000,
+        height: 1744,
       },
       {
-        src: "/products/matin-trekon-170-sport-modes.webp",
-        alt: "MATIN Trekon GPS sports watch with 170+ sport modes for hiking, running, cycling, climbing, tennis, basketball and yoga",
-        width: 1080,
-        height: 1430,
+        src: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",
+        alt: "Waterproof MATIN Trekon rugged smartwatch splashed with water on a hiker's wrist by a mountain river",
+        width: 2000,
+        height: 2000,
       },
     ],
     faq: [
