@@ -587,3 +587,9 @@ export function colorRange(p: Product, color: number): [number, number] {
   const next = p.colors.slice(color + 1).find((x) => x.from !== undefined)?.from;
   return [c.from, next ?? p.images.length];
 }
+
+// Index of the first photo of a color, looked up by its name (used in the cart).
+export function colorPhoto(p: Product, colorName: string): number {
+  const i = p.colors.findIndex((c) => c.name === colorName);
+  return i < 0 ? 0 : colorRange(p, i)[0];
+}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCart } from "@/components/Cart";
 import ProductImage from "@/components/ProductImage";
-import { formatPrice, getProduct } from "@/lib/products";
+import { colorPhoto, formatPrice, getProduct } from "@/lib/products";
 
 export default function CartPage() {
   const { lines, setQty, remove } = useCart();
@@ -27,7 +27,7 @@ export default function CartPage() {
             {items.map(({ product: p, color, qty }) => (
               <li key={p!.slug + color} className="cart-line">
                 <Link href={`/product/${p!.slug}`} className="cart-img">
-                  <ProductImage product={p!} sizes="100px" />
+                  <ProductImage product={p!} index={colorPhoto(p!, color)} sizes="100px" />
                 </Link>
                 <div className="cart-info">
                   <Link href={`/product/${p!.slug}`}><h3>{p!.name}</h3></Link>
