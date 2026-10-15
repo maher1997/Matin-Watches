@@ -312,7 +312,7 @@ export const products: Product[] = [
     ],
     seoTitle: "MATIN Trekon Rugged GPS Smartwatch | 170+ Sport Modes",
     seoDescription:
-      'MATIN Trekon rugged GPS smartwatch for men: built-in GPS, 170+ sport modes, 1.95" AMOLED screen, 1000mAh battery up to 30 days, zinc alloy case, 3ATM. Free shipping.',
+      'MATIN Trekon rugged GPS smartwatch with 170+ sport modes, 1.95" AMOLED, heart rate, up to 30 days battery and a tough zinc alloy case. Free shipping.',
     art: { case: "#2a2e38", strap: "#16181e", accent: "#e0b45a" },
   },
   {
@@ -320,6 +320,7 @@ export const products: Product[] = [
     name: "MATIN Torvan",
     tagline: "Round rugged smartwatch with sapphire glass and Bluetooth calls",
     price: 140,
+    shareImage: "/products/matin-torvan-share.jpg",
     category: "outdoor",
     badge: "New",
     images: [
@@ -403,9 +404,9 @@ export const products: Product[] = [
         a: "No. Shipping is free worldwide, and you get a 2 year warranty and 30 day returns.",
       },
     ],
-    seoTitle: "MATIN Torvan Rugged Smartwatch | AMOLED, Sapphire, Bluetooth Calls",
+    seoTitle: "MATIN Torvan Rugged Smartwatch | AMOLED, Bluetooth Calls",
     seoDescription:
-      'MATIN Torvan round rugged smartwatch: 1.43" AMOLED, sapphire glass, Bluetooth calls, heart rate and SpO2, up to 30 days battery, 5ATM, stainless steel case. Free shipping.',
+      'MATIN Torvan round rugged smartwatch: 1.43" AMOLED, sapphire glass, Bluetooth calls, heart rate, SpO2, up to 30 days battery, 5ATM. Free shipping.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#2f62e0" },
   },
   {

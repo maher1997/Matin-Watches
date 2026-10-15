@@ -33,7 +33,7 @@ export default function SpecSheet({ product, groups }: { product: Product; group
       <div className="spec-aside">
         <p className="spec-eyebrow">Tech specs</p>
         <h2 id="specs-title" className="spec-title">
-          {product.name}
+          {product.name}{" "}
           <span>specifications</span>
         </h2>
         {photo && (
