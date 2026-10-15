@@ -165,7 +165,6 @@ export const products: Product[] = [
         tab: "Tough",
         alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist in the mountains",
         title: ["Built for", "the tough"],
-        accent: "gold",
         text: "For work. For mission. For more.",
         tags: ["For work", "For mission", "For more"],
         points: [
