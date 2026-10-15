@@ -1,5 +1,5 @@
 :root {
-  --bg-top: #12131b;
+  --bg-top: #181d2b;
   --bg-mid: #181926;
   --bg-bottom: #241f36;
   --surface: rgba(255, 255, 255, 0.035);
@@ -43,11 +43,14 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* Dark navy with soft cloudy shading and a fine dot grid (Maher's pick, 2026-10-15).
+     The dots are drawn in CSS so they stay sharp on every screen. */
+  background-color: #181d2b;
   background-image:
-    url("/stars.svg"),
-    radial-gradient(ellipse 70% 45% at 50% 30%, rgba(120, 100, 200, 0.12), transparent 70%),
-    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%);
-  background-size: 1200px 1600px, 100% 100%, 100% 100%;
+    radial-gradient(circle at center, rgba(150, 160, 185, 0.32) 0.8px, transparent 1.3px),
+    url("/bg-clouds.webp");
+  background-size: 25px 25px, cover;
+  background-position: 12px 12px, center;
 }
 
 a {
