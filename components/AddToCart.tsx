@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "@/lib/products";
 import { useCart } from "./Cart";
 
@@ -10,6 +10,18 @@ export default function AddToCart({ product }: { product: Product }) {
   const [color, setColor] = useState(product.colors[0].name);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+
+  const pick = (i: number) => {
+    setColor(product.colors[i].name);
+    window.dispatchEvent(new CustomEvent("matin:color", { detail: { slug: product.slug, color: i } }));
+  };
+
+  // Opened from the cart with ?color=Orange: start on that color and its photos.
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get("color");
+    const i = product.colors.findIndex((c) => c.name === wanted);
+    if (i > 0) pick(i);
+  }, [product]);
 
   return (
     <div className="buy">
@@ -24,12 +36,7 @@ export default function AddToCart({ product }: { product: Product }) {
             style={{ background: c.hex }}
             aria-label={c.name}
             aria-pressed={c.name === color}
-            onClick={() => {
-              setColor(c.name);
-              window.dispatchEvent(
-                new CustomEvent("matin:color", { detail: { slug: product.slug, color: i } }),
-              );
-            }}
+            onClick={() => pick(i)}
           />
         ))}
       </div>
