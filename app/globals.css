@@ -3320,14 +3320,14 @@ button.thumb:focus-visible {
   }
 
   .sx-orbit {
+    position: relative;
     display: flex;
     gap: 0.75rem;
     margin-top: 0.75rem;
-    padding: 1rem 1.25rem 0.5rem;
+    padding: 1rem calc(50% - 52px) 0.5rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding: 0 1.25rem;
-    scrollbar-width: none;
+        scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -3339,7 +3339,7 @@ button.thumb:focus-visible {
     position: static;
     flex: 0 0 auto;
     transform: none;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
   }
 
   .sx-orbit button {
@@ -3357,12 +3357,13 @@ button.thumb:focus-visible {
   }
 
   .sx-name {
-    opacity: 0.75;
+    opacity: 0;
     transform: none;
     font-size: 0.8rem;
   }
 
   .sx-orbit .on .sx-name {
+    opacity: 1;
     color: #7ea4ff;
     transform: translateY(3px);
   }
