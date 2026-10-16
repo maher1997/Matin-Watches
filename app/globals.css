@@ -2895,3 +2895,19 @@ button.thumb:focus-visible {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
 }
+
+/* Spec cards pack like a wall of bricks (no stretched, half-empty cards). */
+@media (min-width: 861px) {
+  .spec-cards {
+    display: block;
+    columns: 2;
+    column-gap: 1rem;
+  }
+  .spec-card {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+  .spec-card.wide {
+    column-span: all;
+  }
+}
