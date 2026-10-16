@@ -15,6 +15,7 @@ import Showcase from "@/components/Showcase";
 import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
+import HealthMonitoring from "@/components/HealthMonitoring";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -197,6 +198,8 @@ export default async function ProductPage({ params }: Props) {
       )}
 
       {product.sportModes && <SportsUniverse count={product.sportModes.count} ids={product.sportModes.ids} />}
+
+      {product.healthMonitoring && <HealthMonitoring />}
 
       {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
 

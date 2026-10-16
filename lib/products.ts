@@ -48,6 +48,9 @@ export type Product = {
   // Animated sport modes section: the headline count and the ids (from
   // components/sports/library.tsx) of the sports this watch really tracks.
   sportModes?: { count: string; ids: string[] };
+  // Animated health monitoring section (heart rate, resting heart rate, SpO2).
+  // Only for watches that really have all three.
+  healthMonitoring?: boolean;
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
@@ -407,6 +410,7 @@ export const products: Product[] = [
       { title: "Sport & activity", icon: "outdoor", items: ["9 sport modes", "Steps and distance", "Calorie tracker", "Real-time pace"] },
       { title: "Everyday tools", icon: "tools", items: ["Weather", "Music control", "Stopwatch and timer", "Alarm and calendar"] },
     ],
+    healthMonitoring: true,
     sportModes: {
       count: "9",
       ids: ["running", "walking", "hiking", "cycling", "basketball", "soccer", "badminton", "yoga", "jump-rope"],

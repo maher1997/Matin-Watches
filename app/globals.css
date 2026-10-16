@@ -3507,3 +3507,1034 @@ button.thumb:focus-visible {
   stroke-width: 1.2;
   stroke-dasharray: 2 3;
 }
+
+/* Health monitoring (Torvan): beating heart, resting trend, oxygen ring.
+   Everything is visible by default; animations only run while on screen. */
+.hm {
+  --beat: 0.8333s;
+}
+
+.hm-stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 40% 45% at 22% 62%, rgba(236, 48, 72, 0.1), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 90% 10%, rgba(82, 133, 247, 0.13), transparent 70%),
+    linear-gradient(180deg, #13161e 0%, #0c0e13 100%);
+}
+
+.hm-head {
+  text-align: center;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.hm-head h2 {
+  font-size: clamp(2.1rem, 4.8vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.hm-head h2 span {
+  background: linear-gradient(90deg, #ff6b7a 0%, #c78bff 50%, #7fa8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hm-sub {
+  color: var(--muted);
+  margin-top: 0.9rem;
+  font-size: 1.05rem;
+}
+
+/* Metric switcher */
+.hm-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  max-width: 760px;
+  margin: 2rem auto 1.75rem;
+}
+
+.hm-tab {
+  --c: #ff5a6e;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "icon name" "icon val";
+  align-items: center;
+  column-gap: 0.8rem;
+  min-height: 68px;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: var(--fg);
+  font: inherit;
+  cursor: pointer;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.05), transparent 60%),
+    rgba(255, 255, 255, 0.025);
+  overflow: hidden;
+  transition:
+    border-color 0.4s,
+    background 0.4s,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.4s;
+}
+
+.hm-tab-rest {
+  --c: #4fb4ff;
+}
+
+.hm-tab-spo2 {
+  --c: #5fd6d0;
+}
+
+.hm-tab svg {
+  grid-area: icon;
+  width: 40px;
+  height: 24px;
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.6;
+  transition: opacity 0.4s;
+}
+
+.hm-tab svg .hm-ti-track {
+  stroke-opacity: 0.25;
+}
+
+.hm-tab-name {
+  grid-area: name;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hm-tab-val {
+  grid-area: val;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hm-tab-val small {
+  font-size: 0.7rem;
+  margin-left: 0.25rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.hm-tab-bar {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--c);
+  box-shadow: 0 0 14px var(--c);
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition:
+    opacity 0.4s,
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hm-tab:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.hm-tab.on {
+  border-color: color-mix(in srgb, var(--c) 55%, transparent);
+  background:
+    radial-gradient(120% 90% at 50% 120%, color-mix(in srgb, var(--c) 22%, transparent), transparent 70%),
+    rgba(255, 255, 255, 0.04);
+  box-shadow: 0 16px 40px -22px var(--c);
+}
+
+.hm-tab.on svg {
+  opacity: 1;
+}
+
+.hm-tab.on .hm-tab-bar {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.hm-tab:focus-visible {
+  outline: 2px solid #7ea4ff;
+  outline-offset: 3px;
+}
+
+/* Visual + text */
+.hm-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+}
+
+.hm-visual {
+  position: relative;
+  height: 440px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background:
+    radial-gradient(100% 60% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%),
+    linear-gradient(180deg, rgba(10, 12, 18, 0.6), rgba(10, 12, 18, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 30px 60px -40px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  touch-action: pan-y;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
+}
+
+.hm-visual:hover {
+  transform: scale(1.01);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 36px 70px -40px rgba(82, 133, 247, 0.45);
+}
+
+.hm-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b9c3dc;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hm-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.97);
+  transition:
+    opacity 0.6s ease,
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s linear 0.6s;
+}
+
+.hm-scene.on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.6s ease,
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s;
+}
+
+/* Only the scene on show (and only on screen) keeps moving. */
+.hm-scene:not(.on) *,
+.hm-paused * {
+  animation-play-state: paused !important;
+}
+
+.hm-dots {
+  display: none;
+}
+
+/* Heart */
+.hm-heart-scene {
+  position: absolute;
+  inset: 0;
+}
+
+.hm-heart-glow {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(78%, 420px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(236, 48, 72, 0.42) 0%, rgba(160, 60, 160, 0.14) 38%, rgba(82, 133, 247, 0.1) 52%, transparent 70%);
+  animation: hm-glow var(--beat) ease-out infinite;
+  animation-delay: calc(var(--beat) * -0.1);
+}
+
+.hm-heart {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(74%, 360px);
+  height: auto;
+  translate: -50% -50%;
+  overflow: visible;
+}
+
+.hm-beat,
+.hm-ripple,
+.hm-orbit,
+.hm-spark,
+.hm-wbeat,
+.hm-dot,
+.hm-o2-breath {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hm-beat {
+  animation: hm-beat var(--beat) cubic-bezier(0.3, 0, 0.3, 1) infinite;
+  animation-delay: calc(var(--beat) * -0.1);
+}
+
+.hm-contour {
+  fill: none;
+  stroke: rgba(255, 214, 220, 0.16);
+  stroke-width: 0.9;
+}
+
+.hm-ripple {
+  fill: none;
+  stroke-width: 1.2;
+  opacity: 0;
+  animation: hm-ripple calc(var(--beat) * 2) cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.hm-ripple-red {
+  stroke: #ff5a6e;
+}
+
+.hm-ripple-blue {
+  stroke: #6e9bff;
+  animation-delay: var(--beat);
+}
+
+.hm-orbit {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.hm-orbit-a {
+  rotate: -14deg;
+  stroke: rgba(110, 155, 255, 0.28);
+  stroke-width: 0.8;
+  stroke-dasharray: 1.5 6;
+  animation: hm-flow 14s linear infinite;
+}
+
+.hm-orbit-b {
+  rotate: 18deg;
+  stroke: #6e9bff;
+  stroke-width: 1.4;
+  stroke-dasharray: 70 520;
+  opacity: 0.75;
+  animation: hm-flow-fast 5.5s linear infinite;
+}
+
+.hm-orbit-c {
+  rotate: -4deg;
+  stroke: #ff6b7a;
+  stroke-width: 1.2;
+  stroke-dasharray: 40 560;
+  opacity: 0.6;
+  animation: hm-flow-fast 7.5s linear infinite reverse;
+}
+
+.hm-spark {
+  fill: #a9c4ff;
+  animation: hm-spin 30s linear infinite;
+}
+
+.hm-ecg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5%;
+  height: 24%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+
+.hm-ecg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hm-ecg-base {
+  stroke: rgba(110, 155, 255, 0.18);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hm-ecg-run {
+  animation: hm-ecg var(--beat) linear infinite;
+}
+
+.hm-ecg-line,
+.hm-ecg-glow {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.hm-ecg-line {
+  stroke: #ff6b7a;
+  stroke-width: 2;
+}
+
+.hm-ecg-glow {
+  stroke: rgba(255, 90, 110, 0.22);
+  stroke-width: 8;
+}
+
+@keyframes hm-beat {
+  0% { transform: scale(1); }
+  10% { transform: scale(1.075); }
+  20% { transform: scale(0.985); }
+  30% { transform: scale(1.045); }
+  46%, 100% { transform: scale(1); }
+}
+
+@keyframes hm-glow {
+  0% { opacity: 0.7; scale: 1; }
+  12% { opacity: 1; scale: 1.06; }
+  45%, 100% { opacity: 0.72; scale: 1; }
+}
+
+@keyframes hm-ripple {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes hm-flow {
+  to { stroke-dashoffset: -150; }
+}
+
+@keyframes hm-flow-fast {
+  to { stroke-dashoffset: -590; }
+}
+
+@keyframes hm-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes hm-ecg {
+  to { transform: translateX(-100px); }
+}
+
+/* Resting heart rate */
+.hm-rest-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.2rem 1.4rem 1.6rem;
+  background: radial-gradient(70% 60% at 50% 70%, rgba(79, 180, 255, 0.12), transparent 70%);
+}
+
+.hm-rest-top {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.6rem 0.4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9fb6d8;
+}
+
+.hm-rest-heart {
+  width: 20px;
+  height: 20px;
+  fill: #4fb4ff;
+  filter: drop-shadow(0 0 6px rgba(79, 180, 255, 0.7));
+  animation: hm-beat 1.034s cubic-bezier(0.3, 0, 0.3, 1) infinite;
+}
+
+.hm-chart {
+  position: relative;
+}
+
+.hm-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.hm-grid {
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-dasharray: 3 6;
+}
+
+.hm-axis {
+  fill: rgba(255, 255, 255, 0.32);
+  font-size: 13px;
+  text-anchor: end;
+}
+
+.hm-curve,
+.hm-curve-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+}
+
+.hm-curve {
+  stroke: url(#hmRestLine);
+  stroke-width: 3.2;
+}
+
+.hm-curve-glow {
+  stroke: #4fb4ff;
+  stroke-width: 12;
+  opacity: 0.16;
+}
+
+.hm-drop {
+  stroke: rgba(95, 214, 208, 0.45);
+  stroke-dasharray: 3 4;
+}
+
+.hm-dot {
+  fill: #0b1422;
+  stroke: #5fd6d0;
+  stroke-width: 2.5;
+  transition: r 0.3s;
+}
+
+.hm-dot.on {
+  fill: #5fd6d0;
+  stroke: rgba(95, 214, 208, 0.35);
+  stroke-width: 8;
+}
+
+.hm-day {
+  fill: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  text-anchor: middle;
+  letter-spacing: 0.06em;
+}
+
+.hm-day.on {
+  fill: #fff;
+}
+
+.hm-scene.on .hm-curve,
+.hm-scene.on .hm-curve-glow {
+  animation: hm-draw 1.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.hm-scene.on .hm-area {
+  animation: hm-fade 1s ease 0.5s both;
+}
+
+.hm-scene.on .hm-dot {
+  animation: hm-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+
+.hm-tip {
+  position: absolute;
+  translate: -50% calc(-100% - 16px);
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #cfe9ff;
+  background: rgba(14, 26, 44, 0.85);
+  border: 1px solid rgba(95, 214, 208, 0.4);
+  box-shadow: 0 8px 24px -10px rgba(79, 180, 255, 0.6);
+  pointer-events: none;
+  transition:
+    left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    translate 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hm-tip b {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.hm-hit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 13%;
+  translate: -50% 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.hm-hit:focus-visible {
+  outline: 2px solid #5fd6d0;
+  outline-offset: -2px;
+}
+
+@keyframes hm-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes hm-fade {
+  from { opacity: 0; }
+}
+
+@keyframes hm-pop {
+  from { transform: scale(0); }
+}
+
+/* Blood oxygen */
+.hm-o2-scene {
+  position: absolute;
+  inset: 0;
+}
+
+.hm-o2-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(80%, 400px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79, 180, 255, 0.24) 0%, rgba(95, 214, 208, 0.08) 45%, transparent 70%);
+  animation: hm-breathe 5s ease-in-out infinite alternate;
+}
+
+.hm-o2 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(76%, 340px);
+  height: auto;
+  translate: -50% -50%;
+}
+
+.hm-o2-outer {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.07);
+}
+
+.hm-o2-tick {
+  stroke: rgba(124, 242, 255, 0.22);
+  stroke-width: 1;
+}
+
+.hm-o2-tick.big {
+  stroke: rgba(124, 242, 255, 0.5);
+  stroke-width: 1.5;
+}
+
+.hm-o2-track {
+  fill: none;
+  stroke: rgba(79, 180, 255, 0.12);
+  stroke-width: 8;
+}
+
+.hm-o2-arc {
+  fill: none;
+  stroke: url(#hmO2Ring);
+  stroke-width: 8;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(79, 200, 255, 0.55));
+}
+
+.hm-scene.on .hm-o2-arc {
+  animation: hm-ring 1.4s cubic-bezier(0.3, 0, 0.2, 1) both;
+}
+
+.hm-o2-rim {
+  fill: none;
+  stroke: rgba(124, 242, 255, 0.18);
+}
+
+.hm-o2-breath {
+  animation: hm-breathe-in 5s ease-in-out infinite alternate;
+}
+
+.hm-o2-wave {
+  fill: rgba(79, 180, 255, 0.16);
+  animation: hm-wave 6s linear infinite;
+}
+
+.hm-o2-wave.b {
+  fill: rgba(95, 214, 208, 0.12);
+  animation-duration: 9s;
+  animation-direction: reverse;
+}
+
+.hm-bubble {
+  fill: #a8f4ff;
+  opacity: 0;
+  animation: hm-bubble 6s ease-in infinite;
+}
+
+.hm-o2-read {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -54%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.hm-o2-num {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3.2rem, 7vw, 4.4rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.6ch;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 30px rgba(79, 180, 255, 0.5);
+}
+
+.hm-o2-num small {
+  font-size: 0.42em;
+  margin-left: 0.08em;
+  color: #9fe9f5;
+}
+
+.hm-o2-label {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8fc7e6;
+}
+
+@keyframes hm-ring {
+  from { stroke-dasharray: 0 100; }
+  to { stroke-dasharray: 98 100; }
+}
+
+@keyframes hm-breathe {
+  from { opacity: 0.65; scale: 0.96; }
+  to { opacity: 1; scale: 1.04; }
+}
+
+@keyframes hm-breathe-in {
+  from { transform: scale(0.985); }
+  to { transform: scale(1.025); }
+}
+
+@keyframes hm-wave {
+  to { transform: translateX(64px); }
+}
+
+@keyframes hm-bubble {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.85; }
+  100% { transform: translateY(-120px); opacity: 0; }
+}
+
+/* Text side */
+.hm-info {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.hm-info-in {
+  animation: hm-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hm-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.6rem;
+}
+
+.hm-visual-hr ~ .hm-info .hm-kicker {
+  color: #ff7a88;
+}
+
+.hm-visual-rest ~ .hm-info .hm-kicker {
+  color: #6cc2ff;
+}
+
+.hm-info h3 {
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.1;
+}
+
+.hm-text {
+  color: var(--muted);
+  margin-top: 0.7rem;
+  line-height: 1.55;
+}
+
+.hm-read {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-top: 1.2rem;
+}
+
+.hm-value {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3rem, 5vw, 4.2rem);
+  line-height: 1;
+}
+
+.hm-digits {
+  display: inline-block;
+  min-width: 2ch;
+  font-variant-numeric: tabular-nums;
+  animation: hm-roll 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hm-value small {
+  font-size: 0.34em;
+  letter-spacing: 0.1em;
+  margin-left: 0.3rem;
+  color: var(--muted);
+}
+
+.hm-read-note {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7f879c;
+}
+
+.hm-caption {
+  margin-top: 1rem;
+  padding-left: 0.8rem;
+  border-left: 2px solid rgba(95, 214, 208, 0.5);
+  font-size: 0.88rem;
+  color: #b3bacb;
+  line-height: 1.5;
+}
+
+.hm-visual-hr ~ .hm-info .hm-caption {
+  border-left-color: rgba(255, 107, 122, 0.6);
+}
+
+.hm-visual-rest ~ .hm-info .hm-caption {
+  border-left-color: rgba(79, 180, 255, 0.6);
+}
+
+.hm-watch {
+  width: 150px;
+  height: auto;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.7));
+}
+
+.hm-wscreen {
+  animation: hm-fade 0.5s ease;
+}
+
+.hm-wbeat {
+  animation: hm-beat var(--beat) cubic-bezier(0.3, 0, 0.3, 1) infinite;
+}
+
+.hm-wt {
+  font-family: var(--font-display), sans-serif;
+  text-anchor: middle;
+  fill: #fff;
+}
+
+.hm-wt-big {
+  font-size: 38px;
+}
+
+.hm-wt-small {
+  font-size: 10px;
+  letter-spacing: 2px;
+  fill: #9aa3b8;
+}
+
+.hm-wline {
+  fill: none;
+  stroke: #5285f7;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.hm-note {
+  margin: 1.75rem auto 0;
+  max-width: 46rem;
+  text-align: center;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: #737a8d;
+}
+
+@keyframes hm-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes hm-roll {
+  from { opacity: 0.25; transform: translateY(0.2em); }
+}
+
+@media (max-width: 900px) {
+  .hm-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .hm-visual {
+    height: auto;
+    aspect-ratio: 1 / 0.86;
+    max-height: 460px;
+  }
+
+  .hm-visual:hover {
+    transform: none;
+  }
+
+  .hm-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    translate: -50% 0;
+    z-index: 3;
+    display: flex;
+    gap: 6px;
+  }
+
+  .hm-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.25);
+    transition: width 0.35s, background 0.35s;
+  }
+
+  .hm-dots span.on {
+    width: 18px;
+    background: #fff;
+  }
+}
+
+@media (max-width: 560px) {
+  .hm-stage {
+    border-radius: 22px;
+    padding: 1.6rem 0.85rem 1.2rem;
+  }
+
+  .hm-sub {
+    font-size: 0.95rem;
+  }
+
+  .hm-tabs {
+    gap: 0.45rem;
+    margin: 1.4rem 0 1rem;
+  }
+
+  .hm-tab {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "icon" "name" "val";
+    justify-items: center;
+    text-align: center;
+    row-gap: 0.2rem;
+    padding: 0.65rem 0.3rem 0.7rem;
+    min-height: 92px;
+    border-radius: 16px;
+  }
+
+  .hm-tab svg {
+    width: 34px;
+    height: 20px;
+  }
+
+  .hm-tab-name {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hm-tab-val {
+    font-size: 1.2rem;
+  }
+
+  .hm-visual {
+    border-radius: 20px;
+  }
+
+  .hm-rest-scene {
+    padding: 2.8rem 0.6rem 1.6rem;
+  }
+
+  .hm-rest-top {
+    font-size: 0.66rem;
+  }
+
+  .hm-info {
+    grid-template-columns: minmax(0, 1fr) 96px;
+    gap: 0.75rem;
+    align-items: start;
+    padding: 0 0.3rem;
+  }
+
+  .hm-watch {
+    width: 96px;
+    margin-top: 0.4rem;
+  }
+
+  .hm-read {
+    flex-wrap: wrap;
+    gap: 0.2rem 0.7rem;
+  }
+
+  .hm-info h3 {
+    font-size: 1.45rem;
+  }
+
+  .hm-text {
+    font-size: 0.93rem;
+    margin-top: 0.5rem;
+  }
+
+  .hm-read {
+    margin-top: 0.8rem;
+  }
+
+  .hm-value {
+    font-size: 2.8rem;
+  }
+
+  .hm-caption {
+    margin-top: 0.7rem;
+    font-size: 0.82rem;
+  }
+
+  /* Fewer moving dots on small screens. */
+  .hm-spark:nth-child(n + 6),
+  .hm-bubble:nth-of-type(n + 7) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm *,
+  .hm *::before,
+  .hm *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
