@@ -3329,6 +3329,7 @@ button.thumb:focus-visible {
   /* A track that slides with transform (no native scrolling, which iPhone
      Safari would not move from code reliably). */
   .sx-orbit {
+    position: relative;
     display: flex;
     gap: 12px;
     width: max-content;
@@ -3349,7 +3350,12 @@ button.thumb:focus-visible {
     position: static;
     flex: 0 0 104px;
     width: 104px;
+    min-width: 0;
     transform: none;
+  }
+
+  .sx-orbit button {
+    width: 100%;
   }
 
   .sx-orbit .sx-name {

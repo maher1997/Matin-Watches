@@ -19,11 +19,14 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
   // Phone row: the list is drawn three times and `pos` is the tile in the
   // middle of the screen, so it can run forward forever and never rewind.
   const [pos, setPos] = useState(n);
-  const [jump, setJump] = useState(false);
   const [drag, setDrag] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const touched = useRef(0);
   const live = useRef(false);
+  const row = useRef<HTMLUListElement>(null);
+  // Centre of every tile in the phone row, measured (tile sizes can differ
+  // between phones, so a fixed step drifts off centre).
+  const [centers, setCenters] = useState<number[] | null>(null);
   const swipe = useRef<{ x: number; y: number; on: boolean; dx: number } | null>(null);
   const noClick = useRef(0);
 
@@ -71,14 +74,38 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     setPos((p) => (p % n === active ? p : p + ((active - (p % n) + n) % n)));
   }, [active, n]);
 
+  useEffect(() => {
+    const r = row.current;
+    if (!r) return;
+    const measure = () =>
+      setCenters(Array.from(r.children).map((c) => (c as HTMLElement).offsetLeft + (c as HTMLElement).offsetWidth / 2));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(r);
+    return () => ro.disconnect();
+  }, []);
+
+  const txFor = (p: number) => (centers?.[p] !== undefined ? -centers[p] : -p * STEP - HALF);
+
   // After sliding into the first or last copy, hop back to the same tile in
-  // the middle copy without animation (it looks identical).
-  const settle = () => {
+  // the middle copy. The hop is applied straight to the element with
+  // transitions off and a forced layout, so no browser animates it backwards.
+  useEffect(() => {
     if (pos >= n && pos < 2 * n) return;
-    setJump(true);
-    setPos(((pos % n) + n) % n + n);
-    requestAnimationFrame(() => requestAnimationFrame(() => setJump(false)));
-  };
+    const t = window.setTimeout(() => {
+      const r = row.current;
+      const np = (((pos % n) + n) % n) + n;
+      if (r) {
+        r.style.transition = "none";
+        r.style.setProperty("--tx", `${txFor(np)}px`);
+        void r.offsetWidth;
+        r.style.transition = "";
+      }
+      setPos(np);
+    }, 700);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pos, n]);
 
   const pick = (i: number, p: number) => {
     if (Date.now() < noClick.current) return;
@@ -98,7 +125,7 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     const t = e.touches[0];
     const dx = t.clientX - s.x;
     const dy = t.clientY - s.y;
-    if (!s.on && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) s.on = true;
+    if (!s.on && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.5) s.on = true;
     if (s.on) {
       s.dx = dx;
       setDrag(dx);
@@ -139,15 +166,13 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
         </div>
 
         <ul
-          className={`sx-orbit${jump || drag ? " sx-still" : ""}`}
-          style={{ "--tx": `${-pos * STEP - HALF + drag}px` } as React.CSSProperties}
+          className={`sx-orbit${drag ? " sx-still" : ""}`}
+          ref={row}
+          style={{ "--tx": `${txFor(pos) + drag}px` } as React.CSSProperties}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           onTouchCancel={onTouchEnd}
-          onTransitionEnd={(e) => {
-            if (e.target === e.currentTarget) settle();
-          }}
         >
           {[0, 1, 2].flatMap((copy) =>
             sports.map((s, i) => {
