@@ -9,12 +9,16 @@ export default function AddToCart({ product }: { product: Product }) {
   const { add } = useCart();
   const [color, setColor] = useState(product.colors[0].name);
   const [qty, setQty] = useState(1);
+  // "Added ✓" only for the colour and amount just added; any change resets it.
   const [added, setAdded] = useState(false);
+  const [inCart, setInCart] = useState(false);
   // Phone bar: shown while the main Add to cart row is off screen.
   const rowRef = useRef<HTMLDivElement>(null);
   const [rowHidden, setRowHidden] = useState(false);
 
   const pick = (i: number) => {
+    setAdded(false);
+    setQty(1);
     setColor(product.colors[i].name);
     window.dispatchEvent(new CustomEvent("matin:color", { detail: { slug: product.slug, color: i } }));
   };
@@ -37,6 +41,7 @@ export default function AddToCart({ product }: { product: Product }) {
   const addNow = () => {
     add(product.slug, color, qty);
     setAdded(true);
+    setInCart(true);
   };
 
   return (
@@ -58,9 +63,9 @@ export default function AddToCart({ product }: { product: Product }) {
       </div>
       <div className="buy-row" ref={rowRef}>
         <div className="qty">
-          <button aria-label="Less" onClick={() => setQty(Math.max(1, qty - 1))}>−</button>
+          <button aria-label="Less" onClick={() => { setQty(Math.max(1, qty - 1)); setAdded(false); }}>−</button>
           <span>{qty}</span>
-          <button aria-label="More" onClick={() => setQty(qty + 1)}>+</button>
+          <button aria-label="More" onClick={() => { setQty(qty + 1); setAdded(false); }}>+</button>
         </div>
         <button
           className="btn btn-primary btn-wide"
@@ -69,7 +74,7 @@ export default function AddToCart({ product }: { product: Product }) {
           {added ? "Added ✓" : "Add to cart"}
         </button>
       </div>
-      {added && (
+      {inCart && (
         <Link href="/cart" className="btn btn-ghost btn-wide">
           View cart and checkout
         </Link>
