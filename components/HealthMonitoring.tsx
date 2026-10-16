@@ -196,7 +196,7 @@ export default function HealthMonitoring() {
           >
             <span className="hm-badge">Illustrative</span>
             <div className={`hm-scene${active === 0 ? " on" : ""}`} aria-hidden={active !== 0} inert={active !== 0}>
-              <HeartScene />
+              <HeartScene bpm={BPMS[bpmStep]} />
             </div>
             <div className={`hm-scene${active === 1 ? " on" : ""}`} aria-hidden={active !== 1} inert={active !== 1}>
               <RestingScene

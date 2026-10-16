@@ -3,87 +3,67 @@
 // render on the server and need no animation library. All numbers shown are
 // illustrative samples, never live readings.
 
-const HEART =
-  "M100 176 C62 146 20 114 20 72 C20 43 42 24 67 24 C83 24 95 33 100 45 C105 33 117 24 133 24 C158 24 180 43 180 72 C180 114 138 146 100 176 Z";
-
 // One heartbeat of a monitor-style trace, 100 units wide, baseline at 50.
 const BEAT = (x: number) =>
   `L${x + 16} 50 Q${x + 20} 43 ${x + 24} 50 L${x + 33} 50 L${x + 36} 55 L${x + 40} 14 L${x + 44} 68 L${x + 47} 50 L${x + 57} 50 Q${x + 66} 36 ${x + 75} 50 L${x + 100} 50`;
 const TRACE = `M0 50 ${Array.from({ length: 8 }, (_, i) => BEAT(i * 100)).join(" ")}`;
 
-// Small dots that drift around the heart: [orbit radius, start angle, size, seconds per turn].
-const SPARKS: [number, number, number, number][] = [
-  [92, 10, 2.2, 26],
-  [104, 80, 1.6, 34],
-  [86, 150, 1.9, 22],
-  [110, 215, 1.4, 40],
-  [96, 280, 2.1, 30],
-  [118, 330, 1.3, 46],
-  [100, 45, 1.2, 38],
-  [90, 190, 1.5, 28],
-  [114, 120, 1.8, 50],
-  [106, 250, 1.1, 36],
-];
-
-export function HeartScene() {
+// A heart rate monitor dial: a scanning ring, a pulse wave on every beat
+// and the sample reading in the middle.
+export function HeartScene({ bpm }: { bpm: number }) {
+  const ticks = Array.from({ length: 72 }, (_, i) => {
+    const a = (i / 72) * Math.PI * 2;
+    const r0 = i % 6 === 0 ? 103 : 107;
+    return (
+      <line
+        key={i}
+        x1={(120 + r0 * Math.sin(a)).toFixed(2)}
+        y1={(120 - r0 * Math.cos(a)).toFixed(2)}
+        x2={(120 + 112 * Math.sin(a)).toFixed(2)}
+        y2={(120 - 112 * Math.cos(a)).toFixed(2)}
+        className={i % 6 === 0 ? "hm-hr-tick big" : "hm-hr-tick"}
+      />
+    );
+  });
   return (
     <div className="hm-heart-scene">
-      <div className="hm-heart-glow" aria-hidden="true" />
-      <svg className="hm-heart" viewBox="-40 -40 280 280" aria-hidden="true" focusable="false">
-        <defs>
-          <radialGradient id="hmHeartFill" cx="36%" cy="30%" r="78%">
-            <stop offset="0" stopColor="#ff8b95" />
-            <stop offset="0.3" stopColor="#ec3048" />
-            <stop offset="0.72" stopColor="#a1122a" />
-            <stop offset="1" stopColor="#4c0714" />
-          </radialGradient>
-          <linearGradient id="hmHeartRim" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#ffb3ba" stopOpacity="0.55" />
-            <stop offset="0.45" stopColor="#ff6b7a" stopOpacity="0" />
-            <stop offset="0.7" stopColor="#5285f7" stopOpacity="0" />
-            <stop offset="1" stopColor="#7fa8ff" stopOpacity="0.95" />
-          </linearGradient>
-          <radialGradient id="hmHeartShine" cx="50%" cy="50%" r="50%">
-            <stop offset="0" stopColor="#fff" stopOpacity="0.75" />
-            <stop offset="1" stopColor="#fff" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="hmHeartShade" cx="70%" cy="85%" r="60%">
-            <stop offset="0" stopColor="#1b0610" stopOpacity="0.55" />
-            <stop offset="1" stopColor="#1b0610" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        {/* Energy orbits */}
-        <g className="hm-orbits">
-          <ellipse cx="100" cy="100" rx="128" ry="46" className="hm-orbit hm-orbit-a" />
-          <ellipse cx="100" cy="100" rx="122" ry="58" className="hm-orbit hm-orbit-b" />
-          <ellipse cx="100" cy="100" rx="136" ry="38" className="hm-orbit hm-orbit-c" />
-        </g>
-
-        {/* Pulse waves, one per beat */}
-        <path d={HEART} className="hm-ripple hm-ripple-red" />
-        <path d={HEART} className="hm-ripple hm-ripple-blue" />
-
-        <g className="hm-sparks">
-          {SPARKS.map(([r, a, s, d], i) => (
-            <g key={i} className="hm-spark" style={{ animationDuration: `${d}s`, animationDelay: `${(-(a / 360) * d).toFixed(2)}s` }}>
-              <circle cx={100} cy={100} r={r} fill="none" />
-              <circle cx={100 + r} cy={100} r={s} />
-            </g>
-          ))}
-        </g>
-
-        <g className="hm-beat">
-          <path d={HEART} fill="url(#hmHeartFill)" />
-          <path d={HEART} fill="url(#hmHeartShade)" />
-          <path d={HEART} className="hm-contour" transform="translate(100 100) scale(0.8) translate(-100 -100)" />
-          <path d={HEART} className="hm-contour" transform="translate(100 100) scale(0.58) translate(-100 -100)" />
-          <path d={HEART} className="hm-contour" transform="translate(100 100) scale(0.36) translate(-100 -100)" />
-          <ellipse cx="66" cy="58" rx="24" ry="12" transform="rotate(-32 66 58)" fill="url(#hmHeartShine)" />
-          <ellipse cx="140" cy="50" rx="10" ry="5" transform="rotate(28 140 50)" fill="url(#hmHeartShine)" opacity="0.5" />
-          <path d={HEART} fill="none" stroke="url(#hmHeartRim)" strokeWidth="2.6" />
-        </g>
-      </svg>
+      <div className="hm-hr-glow" aria-hidden="true" />
+      <div className="hm-hr">
+        <svg viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="hmHrFace" cx="50%" cy="45%" r="60%">
+              <stop offset="0" stopColor="#2a0d16" />
+              <stop offset="0.65" stopColor="#120a10" />
+              <stop offset="1" stopColor="#0a0b10" />
+            </radialGradient>
+            <radialGradient id="hmHrCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stopColor="#ff4d62" stopOpacity="0.45" />
+              <stop offset="1" stopColor="#ff4d62" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <circle cx="120" cy="120" r="117" className="hm-hr-outer" />
+          {ticks}
+          <circle cx="120" cy="120" r="96" className="hm-hr-track" />
+          <g className="hm-hr-scan">
+            <circle cx="120" cy="120" r="96" pathLength={100} strokeDasharray="22 78" strokeDashoffset="-4" className="hm-hr-arc a" transform="rotate(-90 120 120)" />
+            <circle cx="120" cy="120" r="96" pathLength={100} strokeDasharray="12 88" strokeDashoffset="-14" className="hm-hr-arc b" transform="rotate(-90 120 120)" />
+            <circle cx="120" cy="120" r="96" pathLength={100} strokeDasharray="3 97" strokeDashoffset="-23" className="hm-hr-arc c" transform="rotate(-90 120 120)" />
+          </g>
+          <circle cx="120" cy="120" r="74" className="hm-hr-wave red" />
+          <circle cx="120" cy="120" r="74" className="hm-hr-wave blue" />
+          <circle cx="120" cy="120" r="78" fill="url(#hmHrFace)" />
+          <circle cx="120" cy="120" r="78" fill="url(#hmHrCore)" className="hm-hr-core" />
+          <circle cx="120" cy="120" r="78" className="hm-hr-rim" />
+          <g className="hm-hr-icon">
+            <path d="M120 88 C113 83 106 78.5 106 71.5 C106 67 109.5 64 113.2 64 C116.2 64 118.7 65.8 120 68.3 C121.3 65.8 123.8 64 126.8 64 C130.5 64 134 67 134 71.5 C134 78.5 127 83 120 88 Z" />
+            <path d="M104.5 74.5 H113 L115.5 70 L119 79.5 L122 69 L124.5 74.5 H135.5" className="hm-hr-icon-line" />
+          </g>
+        </svg>
+        <div className="hm-hr-read">
+          <span className="hm-hr-num">{bpm}</span>
+          <span className="hm-hr-unit">BPM</span>
+        </div>
+      </div>
 
       <div className="hm-ecg" aria-hidden="true">
         <svg viewBox="0 0 400 100" preserveAspectRatio="none" focusable="false">
@@ -339,7 +319,10 @@ export function MiniWatch({ metric, bpm }: { metric: number; bpm: number }) {
           <>
             <path
               d="M100 82 C92 76 84 71 84 63 C84 58 88 55 92 55 C95 55 98 57 100 60 C102 57 105 55 108 55 C112 55 116 58 116 63 C116 71 108 76 100 82 Z"
-              fill="#ff4d62"
+              fill="none"
+              stroke="#ff4d62"
+              strokeWidth="2.4"
+              strokeLinejoin="round"
               className="hm-wbeat"
             />
             <text x="100" y="124" className="hm-wt hm-wt-big">
