@@ -31,7 +31,7 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
         else {
           svg.pauseAnimations();
           if (reduce.matches) {
-            const s = sports[i];
+            const s = sports[i % sports.length];
             if (s) svg.setCurrentTime((s.still ?? 0) * s.dur);
           }
         }
@@ -57,17 +57,44 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Phone row: slide the active sport to the middle when it changes on its own.
+  // Phone row. The list is drawn three times so it can run on forever:
+  // after the last sport it carries on to the first, never rewinding.
+  // `pos` is the tile in the middle; it is kept in the middle copy.
+  const pos = useRef(-1);
+  const center = (r: HTMLElement, p: number, smooth: boolean) => {
+    const li = r.children[p] as HTMLElement | undefined;
+    if (!li) return;
+    r.scrollTo({ left: li.offsetLeft + li.offsetWidth / 2 - r.clientWidth / 2, behavior: smooth ? "smooth" : "auto" });
+  };
+  const n0 = sports.length;
+  const recenter = (r: HTMLElement) => {
+    if (pos.current < n0 || pos.current >= 2 * n0) {
+      pos.current = (pos.current % n0) + n0;
+      autoUntil.current = Date.now() + 300;
+      center(r, pos.current, false);
+    }
+  };
+
+  // Slide forward to the next sport when it changes on its own.
   useEffect(() => {
     const r = row.current;
-    if (!r || r.scrollWidth <= r.clientWidth || Date.now() - touched.current < 1500) return;
-    const li = r.children[active] as HTMLElement | undefined;
-    if (!li) return;
-    autoUntil.current = Date.now() + 1400;
-    r.scrollTo({ left: li.offsetLeft + li.offsetWidth / 2 - r.clientWidth / 2, behavior: "smooth" });
+    if (!r || r.scrollWidth <= r.clientWidth) return;
+    if (pos.current < 0) {
+      pos.current = n0 + active;
+      autoUntil.current = Date.now() + 300;
+      center(r, pos.current, false);
+      return;
+    }
+    if (pos.current % n0 === active) return;
+    pos.current = pos.current + ((active - (pos.current % n0) + n0) % n0);
+    autoUntil.current = Date.now() + 1200;
+    center(r, pos.current, true);
+    const t = window.setTimeout(() => recenter(r), 1250);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
-  // Phone row: whichever sport the visitor swipes to the middle becomes active.
+  // Whichever sport the visitor swipes to the middle becomes active.
   useEffect(() => {
     const r = row.current;
     if (!r) return;
@@ -87,9 +114,11 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
             best = i;
           }
         });
+        pos.current = best;
+        recenter(r);
         touched.current = Date.now();
-        setActive(best);
-      }, 90);
+        setActive(best % n0);
+      }, 120);
     };
     const hold = () => {
       touched.current = Date.now();
@@ -102,10 +131,19 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
       r.removeEventListener("touchstart", hold);
       window.clearTimeout(t);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pick = (i: number) => {
+  const pick = (i: number, p: number) => {
     touched.current = Date.now();
+    const r = row.current;
+    if (r && r.scrollWidth > r.clientWidth && pos.current !== p) {
+      // Tapped on the phone row: bring that tile to the middle.
+      pos.current = p;
+      autoUntil.current = Date.now() + 1200;
+      center(r, p, true);
+      window.setTimeout(() => recenter(r), 1250);
+    }
     setActive(i);
   };
 
@@ -132,36 +170,41 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
         </div>
 
         <ul className="sx-orbit" ref={row}>
-          {sports.map((s, i) => {
-            // Spread the athletes evenly on an ellipse, starting at the top.
-            const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
-            return (
-              <li
-                key={s.id}
-                className={i === active ? "on" : undefined}
-                style={
-                  {
-                    "--x": `${(50 + 43 * Math.cos(a)).toFixed(2)}%`,
-                    "--y": `${(50 + 37 * Math.sin(a)).toFixed(2)}%`,
-                    "--d": `${(-i * 0.73).toFixed(2)}s`,
-                  } as React.CSSProperties
-                }
-              >
-                <button
-                  type="button"
-                  aria-pressed={i === active}
-                  onMouseEnter={() => pick(i)}
-                  onFocus={() => pick(i)}
-                  onClick={() => pick(i)}
+          {[0, 1, 2].flatMap((copy) =>
+            sports.map((s, i) => {
+              // Spread the athletes evenly on an ellipse, starting at the top.
+              const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+              const real = copy === 1;
+              return (
+                <li
+                  key={`${copy}-${s.id}`}
+                  className={[i === active ? "on" : "", real ? "" : "sx-copy"].join(" ").trim() || undefined}
+                  aria-hidden={real ? undefined : true}
+                  style={
+                    {
+                      "--x": `${(50 + 43 * Math.cos(a)).toFixed(2)}%`,
+                      "--y": `${(50 + 37 * Math.sin(a)).toFixed(2)}%`,
+                      "--d": `${(-i * 0.73).toFixed(2)}s`,
+                    } as React.CSSProperties
+                  }
                 >
-                  <span className="sx-tile">
-                    <Athlete sport={s} />
-                  </span>
-                  <span className="sx-name">{s.name}</span>
-                </button>
-              </li>
-            );
-          })}
+                  <button
+                    type="button"
+                    tabIndex={real ? undefined : -1}
+                    aria-pressed={real ? i === active : undefined}
+                    onMouseEnter={() => pick(i, copy * n + i)}
+                    onFocus={() => pick(i, copy * n + i)}
+                    onClick={() => pick(i, copy * n + i)}
+                  >
+                    <span className="sx-tile">
+                      <Athlete sport={s} />
+                    </span>
+                    <span className="sx-name">{s.name}</span>
+                  </button>
+                </li>
+              );
+            }),
+          )}
         </ul>
       </div>
     </section>

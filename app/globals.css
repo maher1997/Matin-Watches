@@ -3119,6 +3119,13 @@ button.thumb:focus-visible {
   z-index: 3;
 }
 
+/* Extra copies are only used by the endless phone row. */
+@media (min-width: 861px) {
+  .sx-orbit .sx-copy {
+    display: none;
+  }
+}
+
 .sx-orbit .on .sx-tile {
   transform: scale(1.2);
   border-color: rgba(82, 133, 247, 0.7);
