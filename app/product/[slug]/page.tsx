@@ -14,6 +14,7 @@ import Reveal from "@/components/Reveal";
 import Showcase from "@/components/Showcase";
 import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
+import SportsUniverse from "@/components/SportsUniverse";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -194,6 +195,8 @@ export default async function ProductPage({ params }: Props) {
           <Showcase product={product} />
         </section>
       )}
+
+      {product.sportModes && <SportsUniverse count={product.sportModes.count} ids={product.sportModes.ids} />}
 
       {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
 

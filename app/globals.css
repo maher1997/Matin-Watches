@@ -2927,3 +2927,463 @@ button.thumb:focus-visible {
 .fgroup-icon svg {
   stroke-width: 1.5;
 }
+
+/* Sport modes: count on a watch dial with moving athletes around it */
+.sx-stage {
+  position: relative;
+  height: clamp(600px, calc(100vh - 110px), 700px);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 45% 40% at 50% 46%, rgba(82, 133, 247, 0.16), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(82, 133, 247, 0.1), transparent 70%),
+    linear-gradient(180deg, #13161e 0%, #0c0e13 100%);
+}
+
+.sx-stage::before,
+.sx-stage::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sx-stage::before {
+  inset: 9% 7%;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.sx-stage::after {
+  inset: 25% 27%;
+  border: 1px solid rgba(82, 133, 247, 0.12);
+}
+
+.sx-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.sx-dial {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(82, 133, 247, 0.2), rgba(82, 133, 247, 0.04) 55%, transparent 71%);
+}
+
+.sx-ticks,
+.sx-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.sx-ticks {
+  background: repeating-conic-gradient(rgba(255, 255, 255, 0.32) 0 0.8deg, transparent 0.8deg 6deg);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+}
+
+.sx-sweep {
+  background: conic-gradient(from 0deg, transparent 0 60%, rgba(126, 164, 255, 0.95) 100%);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 11px), #000 calc(100% - 10px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 11px), #000 calc(100% - 10px));
+  opacity: 0.75;
+  animation: sx-spin 6s linear infinite;
+}
+
+.sx-title {
+  position: relative;
+  height: 250px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sx-num {
+  font-family: var(--font-display), sans-serif;
+  font-size: 7.5rem;
+  font-weight: 600;
+  line-height: 0.9;
+  background: linear-gradient(180deg, #fff 35%, #5285f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 28px rgba(82, 133, 247, 0.35));
+}
+
+.sx-word {
+  margin-top: 0.5rem;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #cfd9f5;
+}
+
+.sx-sub {
+  margin-top: 1rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.sx-now {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.sx-now strong {
+  display: inline-block;
+  color: #7ea4ff;
+  animation: sx-in 0.5s ease both;
+}
+
+.sx-orbit {
+  list-style: none;
+}
+
+.sx-orbit li {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+
+.sx-orbit button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: sx-float 6s ease-in-out var(--d) infinite;
+}
+
+.sx-tile {
+  display: block;
+  width: 112px;
+  height: 112px;
+  padding: 6px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(160deg, #1c2029 0%, #111318 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 30px -18px rgba(0, 0, 0, 0.9);
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.45s,
+    box-shadow 0.45s,
+    background 0.45s;
+}
+
+.sx-tile .ath {
+  width: 100%;
+  height: 100%;
+  opacity: 0.82;
+  transition: opacity 0.45s;
+}
+
+.sx-name {
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e6ecfb;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.35s,
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sx-orbit li.on {
+  z-index: 3;
+}
+
+.sx-orbit .on .sx-tile {
+  transform: scale(1.2);
+  border-color: rgba(82, 133, 247, 0.7);
+  background: linear-gradient(160deg, #1b2540 0%, #10141f 100%);
+  box-shadow:
+    0 0 0 1px rgba(82, 133, 247, 0.3),
+    0 18px 50px -12px rgba(82, 133, 247, 0.55);
+}
+
+.sx-orbit .on .ath {
+  opacity: 1;
+}
+
+.sx-orbit .on .sx-name {
+  opacity: 1;
+  transform: translateY(10px);
+}
+
+.sx-orbit button:focus-visible .sx-tile {
+  outline: 2px solid #7ea4ff;
+  outline-offset: 3px;
+}
+
+/* Athlete drawing */
+.ath {
+  display: block;
+  overflow: hidden;
+}
+
+.ath .lf,
+.ath .lb,
+.ath .lt {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ath .lf {
+  stroke: #f2f5ff;
+  stroke-width: 6.2;
+}
+
+.ath .lb {
+  stroke: #5285f7;
+  stroke-width: 6.2;
+}
+
+.ath .lt {
+  stroke: #f2f5ff;
+  stroke-width: 8.4;
+}
+
+.ath .hd,
+.ath .pw {
+  fill: #f2f5ff;
+}
+
+.ath .pf {
+  fill: #5285f7;
+}
+
+.ath .pfb {
+  fill: #2a3550;
+}
+
+.ath .psk {
+  fill: rgba(242, 245, 255, 0.85);
+}
+
+.ath .pmat {
+  fill: rgba(82, 133, 247, 0.45);
+}
+
+.ath .pg,
+.ath .pd,
+.ath .pa,
+.ath .pt,
+.ath .ps,
+.ath .pm,
+.ath .prope {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ath .pg {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.2;
+}
+
+.ath .pd {
+  stroke: rgba(126, 164, 255, 0.45);
+  stroke-width: 1.4;
+}
+
+.ath .pa {
+  stroke: #7ea4ff;
+  stroke-width: 2.2;
+}
+
+.ath .pt {
+  stroke: rgba(126, 164, 255, 0.55);
+  stroke-width: 1;
+}
+
+.ath .ps {
+  stroke: #0d1220;
+  stroke-width: 0.9;
+}
+
+.ath .pm {
+  stroke: rgba(126, 164, 255, 0.3);
+  stroke-width: 1.4;
+}
+
+.ath .prope {
+  stroke: #7ea4ff;
+  stroke-width: 1.5;
+}
+
+.sx:not(.is-live) .sx-sweep,
+.sx:not(.is-live) .sx-orbit button {
+  animation-play-state: paused;
+}
+
+@keyframes sx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sx-float {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes sx-in {
+  from {
+    opacity: 0.2;
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 861px) {
+  .sx-tile {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* Phone and tablet: the dial on top, the athletes in a row to swipe */
+@media (max-width: 860px) {
+  .sx-stage {
+    height: auto;
+    padding: 1.75rem 0 1rem;
+  }
+
+  .sx-stage::before {
+    display: none;
+  }
+
+  .sx-stage::after {
+    inset: 1.75rem auto auto 50%;
+    width: 290px;
+    height: 290px;
+    transform: translate(-50%, -20px);
+  }
+
+  .sx-core {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    transform: none;
+  }
+
+  .sx-dial,
+  .sx-title {
+    width: 220px;
+    height: 220px;
+  }
+
+  .sx-title {
+    margin: 0 auto;
+  }
+
+  .sx-num {
+    font-size: 6.4rem;
+  }
+
+  .sx-sub {
+    margin-top: 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  .sx-orbit {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    padding: 1rem 1.25rem 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 1.25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sx-orbit::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sx-orbit li {
+    position: static;
+    flex: 0 0 auto;
+    transform: none;
+    scroll-snap-align: start;
+  }
+
+  .sx-orbit button {
+    animation: none;
+  }
+
+  .sx-tile {
+    width: 104px;
+    height: 104px;
+    border-radius: 24px;
+  }
+
+  .sx-orbit .on .sx-tile {
+    transform: scale(1.06);
+  }
+
+  .sx-name {
+    opacity: 0.75;
+    transform: none;
+    font-size: 0.8rem;
+  }
+
+  .sx-orbit .on .sx-name {
+    color: #7ea4ff;
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sx-sweep,
+  .sx-orbit button,
+  .sx-now strong {
+    animation: none;
+  }
+
+  .sx-tile,
+  .sx-name {
+    transition: none;
+  }
+}
+
+.ath .ptrail {
+  fill: none;
+  stroke: rgba(126, 164, 255, 0.16);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 3;
+}

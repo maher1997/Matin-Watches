@@ -45,6 +45,9 @@ export type Product = {
   features?: string[];
   // Optional list of sports shown on the product page.
   sports?: string[];
+  // Animated sport modes section: the headline count and the ids (from
+  // components/sports/library.tsx) of the sports this watch really tracks.
+  sportModes?: { count: string; ids: string[] };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
@@ -404,6 +407,10 @@ export const products: Product[] = [
       { title: "Sport & activity", icon: "outdoor", items: ["9 sport modes", "Steps and distance", "Calorie tracker", "Real-time pace"] },
       { title: "Everyday tools", icon: "tools", items: ["Weather", "Music control", "Stopwatch and timer", "Alarm and calendar"] },
     ],
+    sportModes: {
+      count: "9",
+      ids: ["running", "walking", "hiking", "cycling", "basketball", "soccer", "badminton", "yoga", "jump-rope"],
+    },
     faq: [
       {
         q: "Can I take calls on the MATIN Torvan?",
