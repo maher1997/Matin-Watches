@@ -100,7 +100,7 @@ export const products: Product[] = [
       "/products/matin-trekon-orange-rugged-smartwatch.webp",
       "/products/matin-trekon-orange-angle.webp",
       "/products/matin-trekon-orange-front-view.webp",
-      "/products/matin-trekon-orange-side-buttons.webp",
+      "/products/matin-trekon-orange-side-view.webp",
       "/products/matin-trekon-orange-heart-rate-sensor-back.webp",
       "/products/matin-trekon-green-rugged-smartwatch.webp",
       "/products/matin-trekon-green-angle.webp",
