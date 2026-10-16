@@ -133,7 +133,7 @@ export default async function ProductPage({ params }: Props) {
   };
 
   return (
-    <div className="container page-pad">
+    <div className="container page-pad pdp-page">
       <JsonLd data={productData} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / <span>{product.name}</span>
@@ -160,13 +160,13 @@ export default async function ProductPage({ params }: Props) {
               ))}
             </ul>
           )}
-          <p className="pdp-desc">{product.description}</p>
           <AddToCart product={product} />
           <ul className="perks">
             <li>Free shipping across the USA</li>
             <li>2 year warranty</li>
             <li>30 day returns</li>
           </ul>
+          <p className="pdp-desc">{product.description}</p>
         </div>
       </div>
 
