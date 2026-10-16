@@ -2951,7 +2951,8 @@ button.thumb:focus-visible {
 
 .sx-stage::before {
   inset: 9% 7%;
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 60px rgba(82, 133, 247, 0.04);
 }
 
 .sx-stage::after {
@@ -2973,83 +2974,153 @@ button.thumb:focus-visible {
   position: absolute;
   left: 50%;
   top: 0;
-  width: 250px;
-  height: 250px;
+  width: var(--dial);
+  height: var(--dial);
   border-radius: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(82, 133, 247, 0.2), rgba(82, 133, 247, 0.04) 55%, transparent 71%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 90px -10px rgba(82, 133, 247, 0.35),
+    0 40px 70px -30px rgba(0, 0, 0, 0.9);
 }
 
-.sx-ticks,
-.sx-sweep {
+.sx-bezel,
+.sx-hand,
+.sx-hand svg {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
 }
 
-.sx-ticks {
-  background: repeating-conic-gradient(rgba(255, 255, 255, 0.32) 0 0.8deg, transparent 0.8deg 6deg);
-  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
-  mask: radial-gradient(closest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+.sx-bez-edge,
+.sx-face-edge {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
 }
 
-.sx-sweep {
-  background: conic-gradient(from 0deg, transparent 0 60%, rgba(126, 164, 255, 0.95) 100%);
-  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 11px), #000 calc(100% - 10px));
-  mask: radial-gradient(closest-side, transparent calc(100% - 11px), #000 calc(100% - 10px));
-  opacity: 0.75;
-  animation: sx-spin 6s linear infinite;
+.sx-face-edge {
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 2;
+}
+
+.sx-track-ring {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 9;
+}
+
+.sx-tk {
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.sx-tk-big {
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-width: 2;
+}
+
+.sx-mark {
+  fill: rgba(255, 255, 255, 0.35);
+}
+
+.sx-hand {
+  transition: transform 0.8s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.sx-hand-arc {
+  fill: none;
+  stroke: url(#sxHand);
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(82, 133, 247, 0.9));
+}
+
+.sx-hand-dot {
+  fill: #fff;
+  filter: drop-shadow(0 0 5px rgba(126, 164, 255, 1));
+}
+
+.sx-core {
+  --dial: 270px;
 }
 
 .sx-title {
   position: relative;
-  height: 250px;
+  height: var(--dial);
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-bottom: 1.6rem;
 }
 
 .sx-num {
   font-family: var(--font-display), sans-serif;
-  font-size: 7.5rem;
+  font-size: 6.6rem;
   font-weight: 600;
   line-height: 0.9;
-  background: linear-gradient(180deg, #fff 35%, #5285f7);
+  background: linear-gradient(180deg, #fff 30%, #8fb0ff 70%, #5285f7);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 28px rgba(82, 133, 247, 0.35));
+  filter: drop-shadow(0 0 24px rgba(82, 133, 247, 0.45));
 }
 
 .sx-word {
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
   font-family: var(--font-display), sans-serif;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
   text-transform: uppercase;
-  color: #cfd9f5;
+  color: #b9c6e6;
 }
 
-.sx-sub {
-  margin-top: 1rem;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
+/* Active sport, shown low inside the dial face */
 .sx-now {
-  margin-top: 0.35rem;
-  color: var(--muted);
-  font-size: 0.95rem;
+  position: absolute;
+  left: 50%;
+  top: calc(var(--dial) * 0.7);
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(82, 133, 247, 0.12);
+  border: 1px solid rgba(82, 133, 247, 0.35);
+  white-space: nowrap;
+}
+
+.sx-now-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8fb0ff;
+  box-shadow: 0 0 8px #5285f7;
 }
 
 .sx-now strong {
   display: inline-block;
-  color: #7ea4ff;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #dbe5ff;
   animation: sx-in 0.5s ease both;
+}
+
+.sx-sub {
+  margin-top: 1.4rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .sx-orbit {
@@ -3086,8 +3157,13 @@ button.thumb:focus-visible {
   padding: 6px;
   border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(160deg, #1c2029 0%, #111318 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 30px -18px rgba(0, 0, 0, 0.9);
+  background:
+    radial-gradient(120% 70% at 30% 0%, rgba(255, 255, 255, 0.07), transparent 60%),
+    linear-gradient(160deg, #1c2029 0%, #111318 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -14px 24px -18px rgba(82, 133, 247, 0.35),
+    0 14px 30px -18px rgba(0, 0, 0, 0.9);
   transition:
     transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     border-color 0.45s,
@@ -3126,10 +3202,15 @@ button.thumb:focus-visible {
 
 .sx-orbit .on .sx-tile {
   transform: scale(1.2);
-  border-color: rgba(82, 133, 247, 0.7);
-  background: linear-gradient(160deg, #1b2540 0%, #10141f 100%);
+  border-color: rgba(126, 164, 255, 0.75);
+  background:
+    radial-gradient(120% 70% at 30% 0%, rgba(255, 255, 255, 0.1), transparent 60%),
+    radial-gradient(90% 60% at 50% 100%, rgba(82, 133, 247, 0.35), transparent 70%),
+    linear-gradient(160deg, #1b2540 0%, #10141f 100%);
   box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
     0 0 0 1px rgba(82, 133, 247, 0.3),
+    0 0 28px -6px rgba(82, 133, 247, 0.6),
     0 18px 50px -12px rgba(82, 133, 247, 0.55);
 }
 
@@ -3140,6 +3221,10 @@ button.thumb:focus-visible {
 .sx-orbit .on .sx-name {
   opacity: 1;
   transform: translateY(10px);
+}
+
+.sx-orbit li:not(.on) button:hover .sx-tile {
+  border-color: rgba(126, 164, 255, 0.35);
 }
 
 .sx-orbit button:focus-visible .sx-tile {
@@ -3244,7 +3329,6 @@ button.thumb:focus-visible {
   stroke-width: 1.5;
 }
 
-.sx:not(.is-live) .sx-sweep,
 .sx:not(.is-live) .sx-orbit button {
   animation-play-state: paused;
 }
@@ -3305,22 +3389,21 @@ button.thumb:focus-visible {
     transform: none;
   }
 
-  .sx-dial,
-  .sx-title {
-    width: 220px;
-    height: 220px;
+  .sx-core {
+    --dial: 240px;
   }
 
   .sx-title {
+    width: var(--dial);
     margin: 0 auto;
   }
 
   .sx-num {
-    font-size: 6.4rem;
+    font-size: 5.8rem;
   }
 
   .sx-sub {
-    margin-top: 0.8rem;
+    margin-top: 1.1rem;
     font-size: 1.2rem;
   }
 
@@ -3376,10 +3459,15 @@ button.thumb:focus-visible {
 
   .sx-item.on .sx-tile {
     transform: scale(1.06);
-    border-color: rgba(82, 133, 247, 0.7);
-    background: linear-gradient(160deg, #1b2540 0%, #10141f 100%);
+    border-color: rgba(126, 164, 255, 0.75);
+    background:
+      radial-gradient(120% 70% at 30% 0%, rgba(255, 255, 255, 0.1), transparent 60%),
+      radial-gradient(90% 60% at 50% 100%, rgba(82, 133, 247, 0.35), transparent 70%),
+      linear-gradient(160deg, #1b2540 0%, #10141f 100%);
     box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
       0 0 0 1px rgba(82, 133, 247, 0.3),
+      0 0 28px -6px rgba(82, 133, 247, 0.6),
       0 18px 50px -12px rgba(82, 133, 247, 0.55);
   }
 
@@ -3401,14 +3489,14 @@ button.thumb:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sx-sweep,
   .sx-orbit button,
   .sx-now strong {
     animation: none;
   }
 
   .sx-tile,
-  .sx-name {
+  .sx-name,
+  .sx-hand {
     transition: none;
   }
 }

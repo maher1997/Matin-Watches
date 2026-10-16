@@ -8,10 +8,74 @@ import { sportLibrary } from "./sports/library";
 // the watch really tracks drawn as a moving athlete around it.
 // Everything is visible without JavaScript; motion is an extra and stops
 // off screen or when the visitor prefers reduced motion.
+// SVG arc on a circle of radius r around the dial centre, angles in degrees
+// clockwise from 12 o'clock.
+function arc(r: number, a0: number, a1: number) {
+  const pt = (a: number) => {
+    const t = (a * Math.PI) / 180;
+    return `${(120 + r * Math.sin(t)).toFixed(2)} ${(120 - r * Math.cos(t)).toFixed(2)}`;
+  };
+  return `M${pt(a0)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${pt(a1)}`;
+}
+
+// The watch-style dial: steel bezel, dark face, minute ticks and one
+// marker per sport on the ring.
+function Bezel({ n }: { n: number }) {
+  const ticks = Array.from({ length: 60 }, (_, i) => {
+    const t = (i * 6 * Math.PI) / 180;
+    const big = i % 5 === 0;
+    const r0 = big ? 88 : 93;
+    const r1 = 99;
+    return (
+      <line
+        key={i}
+        x1={(120 + r0 * Math.sin(t)).toFixed(2)}
+        y1={(120 - r0 * Math.cos(t)).toFixed(2)}
+        x2={(120 + r1 * Math.sin(t)).toFixed(2)}
+        y2={(120 - r1 * Math.cos(t)).toFixed(2)}
+        className={big ? "sx-tk sx-tk-big" : "sx-tk"}
+      />
+    );
+  });
+  return (
+    <svg viewBox="0 0 240 240" className="sx-bezel">
+      <defs>
+        <linearGradient id="sxBez" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#4a5160" />
+          <stop offset="0.35" stopColor="#171a21" />
+          <stop offset="0.65" stopColor="#2e3440" />
+          <stop offset="1" stopColor="#0e1015" />
+        </linearGradient>
+        <radialGradient id="sxFace" cx="0.5" cy="0.42" r="0.6">
+          <stop offset="0" stopColor="#1d2a52" />
+          <stop offset="0.55" stopColor="#0f1426" />
+          <stop offset="1" stopColor="#080a10" />
+        </radialGradient>
+        <linearGradient id="sxHand" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#5285f7" stopOpacity="0.2" />
+          <stop offset="0.5" stopColor="#8fb0ff" />
+          <stop offset="1" stopColor="#5285f7" stopOpacity="0.2" />
+        </linearGradient>
+      </defs>
+      <circle cx={120} cy={120} r={118} fill="url(#sxBez)" />
+      <circle cx={120} cy={120} r={117} className="sx-bez-edge" />
+      <circle cx={120} cy={120} r={110} className="sx-track-ring" />
+      <circle cx={120} cy={120} r={103} fill="url(#sxFace)" />
+      <circle cx={120} cy={120} r={103} className="sx-face-edge" />
+      {ticks}
+      {Array.from({ length: n }, (_, i) => {
+        const t = ((i * 360) / n) * (Math.PI / 180);
+        return <circle key={i} cx={(120 + 110 * Math.sin(t)).toFixed(2)} cy={(120 - 110 * Math.cos(t)).toFixed(2)} r={2.1} className="sx-mark" />;
+      })}
+    </svg>
+  );
+}
+
 export default function SportsUniverse({ count, ids }: { count: string; ids: string[] }) {
   const sports = ids.map((id) => sportLibrary[id]).filter(Boolean);
   const n = sports.length;
   const [active, setActive] = useState(0);
+  const [turn, setTurn] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const touched = useRef(0);
   const live = useRef(false);
@@ -117,6 +181,15 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Turn the dial hand to the active sport the short way round.
+  useEffect(() => {
+    setTurn((t) => {
+      let d = (((active - t) % n) + n) % n;
+      if (d > n / 2) d -= n;
+      return t + d;
+    });
+  }, [active, n]);
+
   // Keep the reel on the active sport, always moving forward.
   useEffect(() => {
     const p = pos.current;
@@ -185,18 +258,24 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
       <div className="sx-stage">
         <div className="sx-core">
           <div className="sx-dial" aria-hidden="true">
-            <span className="sx-ticks" />
-            <span className="sx-sweep" />
+            <Bezel n={n} />
+            {/* The blue hand moves to the sport being shown. */}
+            <div className="sx-hand" style={{ transform: `rotate(${(turn * 360) / n}deg)` }}>
+              <svg viewBox="0 0 240 240">
+                <path d={arc(110, (-180 / n) * 0.72, (180 / n) * 0.72)} className="sx-hand-arc" />
+                <circle cx={120} cy={10} r={4.6} className="sx-hand-dot" />
+              </svg>
+            </div>
           </div>
           <h2 id="sx-title" className="sx-title">
             <span className="sx-num">{count}</span>
             <span className="sx-word">Sport modes</span>
           </h2>
-          <p className="sx-sub">One Watch. Every Move.</p>
           <p className="sx-now" aria-live="polite">
-            <span>Tracking</span>{" "}
+            <span className="sx-now-dot" aria-hidden="true" />
             <strong key={active}>{sports[active].name}</strong>
           </p>
+          <p className="sx-sub">One Watch. Every Move.</p>
         </div>
 
         {/* Desktop: the athletes float around the dial. */}
