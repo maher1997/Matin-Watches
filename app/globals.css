@@ -1229,7 +1229,7 @@ button.thumb:focus-visible {
   .collections,
   .features,
   .footer-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .hero-stats {
     gap: 1.5rem;
@@ -2931,7 +2931,7 @@ button.thumb:focus-visible {
 /* Sport modes: count on a watch dial with moving athletes around it */
 .sx-stage {
   position: relative;
-  height: clamp(600px, calc(100vh - 110px), 700px);
+  height: clamp(650px, calc(100vh - 110px), 700px);
   border: 1px solid var(--border);
   border-radius: 28px;
   overflow: hidden;
@@ -3326,27 +3326,34 @@ button.thumb:focus-visible {
     font-size: 1.2rem;
   }
 
+  /* A track that slides with transform (no native scrolling, which iPhone
+     Safari would not move from code reliably). */
   .sx-orbit {
-    position: relative;
     display: flex;
-    gap: 0.75rem;
-    margin-top: 0.75rem;
-    padding: 1rem calc(50% - 52px) 0.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    width: max-content;
+    margin: 0.75rem 0 0 50%;
+    padding: 1rem 0 0.5rem;
+    transform: translateX(var(--tx, -52px));
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
-  .sx-orbit::-webkit-scrollbar {
-    display: none;
+  .sx-orbit.sx-still {
+    transition: none;
   }
 
   .sx-orbit li {
     position: static;
-    flex: 0 0 auto;
+    flex: 0 0 104px;
+    width: 104px;
     transform: none;
-    scroll-snap-align: center;
+  }
+
+  .sx-orbit .sx-name {
+    white-space: nowrap;
   }
 
   .sx-orbit button {

@@ -8,15 +8,24 @@ import { sportLibrary } from "./sports/library";
 // the watch really tracks drawn as a moving athlete around it.
 // Everything is visible without JavaScript; motion is an extra and stops
 // off screen or when the visitor prefers reduced motion.
+// Phone row: one tile is 104px wide with a 12px gap.
+const STEP = 116;
+const HALF = 52;
+
 export default function SportsUniverse({ count, ids }: { count: string; ids: string[] }) {
   const sports = ids.map((id) => sportLibrary[id]).filter(Boolean);
+  const n = sports.length;
   const [active, setActive] = useState(0);
+  // Phone row: the list is drawn three times and `pos` is the tile in the
+  // middle of the screen, so it can run forward forever and never rewind.
+  const [pos, setPos] = useState(n);
+  const [jump, setJump] = useState(false);
+  const [drag, setDrag] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const touched = useRef(0);
   const live = useRef(false);
-  const row = useRef<HTMLUListElement>(null);
-  // Set while the row is being slid by code, so it isn't taken as a swipe.
-  const autoUntil = useRef(0);
+  const swipe = useRef<{ x: number; y: number; on: boolean; dx: number } | null>(null);
+  const noClick = useRef(0);
 
   useEffect(() => {
     const el = ref.current;
@@ -31,7 +40,7 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
         else {
           svg.pauseAnimations();
           if (reduce.matches) {
-            const s = sports[i % sports.length];
+            const s = sports[i % n];
             if (s) svg.setCurrentTime((s.still ?? 0) * s.dur);
           }
         }
@@ -47,7 +56,7 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     // Gently walk through the sports until the visitor picks one.
     const timer = window.setInterval(() => {
       if (!live.current || reduce.matches || Date.now() - touched.current < 7000) return;
-      setActive((a) => (a + 1) % sports.length);
+      setActive((a) => (a + 1) % n);
     }, 2600);
     return () => {
       io.disconnect();
@@ -57,98 +66,58 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Phone row. The list is drawn three times so it can run on forever:
-  // after the last sport it carries on to the first, never rewinding.
-  // `pos` is the tile in the middle; it is kept in the middle copy.
-  const pos = useRef(-1);
-  const center = (r: HTMLElement, p: number, smooth: boolean) => {
-    const li = r.children[p] as HTMLElement | undefined;
-    if (!li) return;
-    r.scrollTo({ left: li.offsetLeft + li.offsetWidth / 2 - r.clientWidth / 2, behavior: smooth ? "smooth" : "auto" });
-  };
-  const n0 = sports.length;
-  const recenter = (r: HTMLElement) => {
-    if (pos.current < n0 || pos.current >= 2 * n0) {
-      pos.current = (pos.current % n0) + n0;
-      autoUntil.current = Date.now() + 300;
-      center(r, pos.current, false);
-    }
-  };
-
-  // Slide forward to the next sport when it changes on its own.
+  // Keep the phone row on the active sport, always moving forward.
   useEffect(() => {
-    const r = row.current;
-    if (!r || r.scrollWidth <= r.clientWidth) return;
-    if (pos.current < 0) {
-      pos.current = n0 + active;
-      autoUntil.current = Date.now() + 300;
-      center(r, pos.current, false);
-      return;
-    }
-    if (pos.current % n0 === active) return;
-    pos.current = pos.current + ((active - (pos.current % n0) + n0) % n0);
-    autoUntil.current = Date.now() + 1200;
-    center(r, pos.current, true);
-    const t = window.setTimeout(() => recenter(r), 1250);
-    return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
+    setPos((p) => (p % n === active ? p : p + ((active - (p % n) + n) % n)));
+  }, [active, n]);
 
-  // Whichever sport the visitor swipes to the middle becomes active.
-  useEffect(() => {
-    const r = row.current;
-    if (!r) return;
-    let t = 0;
-    const onScroll = () => {
-      if (r.scrollWidth <= r.clientWidth || Date.now() < autoUntil.current) return;
-      window.clearTimeout(t);
-      t = window.setTimeout(() => {
-        const mid = r.scrollLeft + r.clientWidth / 2;
-        let best = 0;
-        let dist = Infinity;
-        Array.from(r.children).forEach((c, i) => {
-          const el = c as HTMLElement;
-          const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid);
-          if (d < dist) {
-            dist = d;
-            best = i;
-          }
-        });
-        pos.current = best;
-        recenter(r);
-        touched.current = Date.now();
-        setActive(best % n0);
-      }, 120);
-    };
-    const hold = () => {
-      touched.current = Date.now();
-      autoUntil.current = 0;
-    };
-    r.addEventListener("scroll", onScroll, { passive: true });
-    r.addEventListener("touchstart", hold, { passive: true });
-    return () => {
-      r.removeEventListener("scroll", onScroll);
-      r.removeEventListener("touchstart", hold);
-      window.clearTimeout(t);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // After sliding into the first or last copy, hop back to the same tile in
+  // the middle copy without animation (it looks identical).
+  const settle = () => {
+    if (pos >= n && pos < 2 * n) return;
+    setJump(true);
+    setPos(((pos % n) + n) % n + n);
+    requestAnimationFrame(() => requestAnimationFrame(() => setJump(false)));
+  };
 
   const pick = (i: number, p: number) => {
+    if (Date.now() < noClick.current) return;
     touched.current = Date.now();
-    const r = row.current;
-    if (r && r.scrollWidth > r.clientWidth && pos.current !== p) {
-      // Tapped on the phone row: bring that tile to the middle.
-      pos.current = p;
-      autoUntil.current = Date.now() + 1200;
-      center(r, p, true);
-      window.setTimeout(() => recenter(r), 1250);
-    }
+    setPos(p);
     setActive(i);
   };
 
-  if (!sports.length) return null;
-  const n = sports.length;
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    swipe.current = { x: t.clientX, y: t.clientY, on: false, dx: 0 };
+    touched.current = Date.now();
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    const s = swipe.current;
+    if (!s) return;
+    const t = e.touches[0];
+    const dx = t.clientX - s.x;
+    const dy = t.clientY - s.y;
+    if (!s.on && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) s.on = true;
+    if (s.on) {
+      s.dx = dx;
+      setDrag(dx);
+    }
+  };
+  const onTouchEnd = () => {
+    const s = swipe.current;
+    swipe.current = null;
+    touched.current = Date.now();
+    if (!s?.on) return;
+    noClick.current = Date.now() + 350;
+    const steps = Math.round(-s.dx / STEP) || (s.dx < -30 ? 1 : s.dx > 30 ? -1 : 0);
+    setDrag(0);
+    const p = Math.max(0, Math.min(3 * n - 1, pos + steps));
+    setPos(p);
+    setActive(p % n);
+  };
+
+  if (!n) return null;
 
   return (
     <section className="section sx" ref={ref} aria-labelledby="sx-title">
@@ -169,7 +138,17 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
           </p>
         </div>
 
-        <ul className="sx-orbit" ref={row}>
+        <ul
+          className={`sx-orbit${jump || drag ? " sx-still" : ""}`}
+          style={{ "--tx": `${-pos * STEP - HALF + drag}px` } as React.CSSProperties}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onTouchCancel={onTouchEnd}
+          onTransitionEnd={(e) => {
+            if (e.target === e.currentTarget) settle();
+          }}
+        >
           {[0, 1, 2].flatMap((copy) =>
             sports.map((s, i) => {
               // Spread the athletes evenly on an ellipse, starting at the top.
