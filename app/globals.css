@@ -2911,3 +2911,19 @@ button.thumb:focus-visible {
     grid-template-columns: 7.5rem minmax(0, 1fr);
   }
 }
+
+/* Section icons: brushed-steel tile with a thin blue line icon (premium,
+   no bright gradient blob). */
+.spec-icon,
+.fgroup-icon {
+  color: #7ea4ff;
+  background: linear-gradient(160deg, #1c2029 0%, #111318 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 18px -12px rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+}
+
+.spec-icon svg,
+.fgroup-icon svg {
+  stroke-width: 1.5;
+}

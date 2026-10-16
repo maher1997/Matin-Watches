@@ -3,7 +3,7 @@ import type { Product } from "@/lib/products";
 
 // Simple line icons for the spec groups, matched by group name.
 const groupIcons: Record<string, string> = {
-  display: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M8 8h8 M8 12h5 M8 16h7",
+  display: "M9 2h6l1 3H8z M8 19h8l-1 3H9z M7.5 5h9A1.5 1.5 0 0 1 18 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 17.5v-11A1.5 1.5 0 0 1 7.5 5z M12 9v3l2 1.5",
   battery: "M8 4h8v17H8z M10 2h4 M10.5 8h3 M10.5 11.5h3 M10.5 15h3",
   gps: "M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z M12 7.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z",
   health:
