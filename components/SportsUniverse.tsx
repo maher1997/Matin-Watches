@@ -8,44 +8,78 @@ import { sportLibrary } from "./sports/library";
 // the watch really tracks drawn as a moving athlete around it.
 // Everything is visible without JavaScript; motion is an extra and stops
 // off screen or when the visitor prefers reduced motion.
-// Phone row: one tile is 104px wide with a 12px gap.
-const STEP = 116;
-const HALF = 52;
-
 export default function SportsUniverse({ count, ids }: { count: string; ids: string[] }) {
   const sports = ids.map((id) => sportLibrary[id]).filter(Boolean);
   const n = sports.length;
   const [active, setActive] = useState(0);
-  // Phone row: the list is drawn three times and `pos` is the tile in the
-  // middle of the screen, so it can run forward forever and never rewind.
-  const [pos, setPos] = useState(n);
-  const [drag, setDrag] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const touched = useRef(0);
   const live = useRef(false);
-  const row = useRef<HTMLUListElement>(null);
-  // Centre of every tile in the phone row, measured (tile sizes can differ
-  // between phones, so a fixed step drifts off centre).
-  const [centers, setCenters] = useState<number[] | null>(null);
-  const swipe = useRef<{ x: number; y: number; on: boolean; dx: number } | null>(null);
+
+  // Phone reel. The sports are drawn three times in a row and the row is
+  // moved frame by frame from JavaScript (no CSS transitions or scrolling,
+  // which behaved differently on some iPhones). `pos` is the tile in the
+  // middle; after passing the last sport it carries on to the first.
+  const track = useRef<HTMLDivElement>(null);
+  const pos = useRef(n);
+  const x = useRef(0);
+  const centers = useRef<number[]>([]);
+  const anim = useRef(0);
+  const swipe = useRef<{ x: number; y: number; x0: number; on: boolean } | null>(null);
   const noClick = useRef(0);
+  const reduced = useRef(false);
+
+  const paint = (v: number) => {
+    x.current = v;
+    if (track.current) track.current.style.transform = `translate3d(${v.toFixed(1)}px,0,0)`;
+  };
+  const target = (p: number) => -(centers.current[p] ?? p * 116 + 52);
+  const home = (p: number) => (((p % n) + n) % n) + n;
+  const goTo = (p: number, smooth = true) => {
+    cancelAnimationFrame(anim.current);
+    pos.current = p;
+    const from = x.current;
+    const to = target(p);
+    const done = () => {
+      // Back to the same tile in the middle copy: looks identical, no motion.
+      if (p < n || p >= 2 * n) {
+        pos.current = home(p);
+        paint(target(pos.current));
+      }
+    };
+    if (!smooth || reduced.current || Math.abs(to - from) < 1) {
+      paint(to);
+      done();
+      return;
+    }
+    let t0 = -1;
+    const step = (now: number) => {
+      if (t0 < 0) t0 = now;
+      const k = Math.min(1, (now - t0) / 650);
+      const e = 1 - Math.pow(1 - k, 3);
+      paint(from + (to - from) * e);
+      if (k < 1) anim.current = requestAnimationFrame(step);
+      else done();
+    };
+    anim.current = requestAnimationFrame(step);
+  };
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const svgs = Array.from(el.querySelectorAll<SVGSVGElement>("svg.ath"));
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    reduced.current = reduce.matches;
     const sync = () => {
+      reduced.current = reduce.matches;
       const play = live.current && !reduce.matches;
       el.classList.toggle("is-live", play);
-      svgs.forEach((svg, i) => {
+      svgs.forEach((svg) => {
         if (play) svg.unpauseAnimations();
         else {
           svg.pauseAnimations();
-          if (reduce.matches) {
-            const s = sports[i % n];
-            if (s) svg.setCurrentTime((s.still ?? 0) * s.dur);
-          }
+          const still = Number(svg.dataset.still);
+          if (reduce.matches && still >= 0) svg.setCurrentTime(still);
         }
       });
     };
@@ -61,62 +95,50 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
       if (!live.current || reduce.matches || Date.now() - touched.current < 7000) return;
       setActive((a) => (a + 1) % n);
     }, 2600);
+
+    // Measure where each reel tile really sits (sizes differ between phones).
+    const tr = track.current;
+    const measure = () => {
+      if (!tr) return;
+      centers.current = Array.from(tr.children).map((c) => (c as HTMLElement).offsetLeft + (c as HTMLElement).offsetWidth / 2);
+      cancelAnimationFrame(anim.current);
+      paint(target(pos.current));
+    };
+    measure();
+    const ro = tr ? new ResizeObserver(measure) : null;
+    if (tr) ro!.observe(tr);
     return () => {
       io.disconnect();
+      ro?.disconnect();
       reduce.removeEventListener("change", sync);
       window.clearInterval(timer);
+      cancelAnimationFrame(anim.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Keep the phone row on the active sport, always moving forward.
+  // Keep the reel on the active sport, always moving forward.
   useEffect(() => {
-    setPos((p) => (p % n === active ? p : p + ((active - (p % n) + n) % n)));
-  }, [active, n]);
-
-  useEffect(() => {
-    const r = row.current;
-    if (!r) return;
-    const measure = () =>
-      setCenters(Array.from(r.children).map((c) => (c as HTMLElement).offsetLeft + (c as HTMLElement).offsetWidth / 2));
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(r);
-    return () => ro.disconnect();
-  }, []);
-
-  const txFor = (p: number) => (centers?.[p] !== undefined ? -centers[p] : -p * STEP - HALF);
-
-  // After sliding into the first or last copy, hop back to the same tile in
-  // the middle copy. The hop is applied straight to the element with
-  // transitions off and a forced layout, so no browser animates it backwards.
-  useEffect(() => {
-    if (pos >= n && pos < 2 * n) return;
-    const t = window.setTimeout(() => {
-      const r = row.current;
-      const np = (((pos % n) + n) % n) + n;
-      if (r) {
-        r.style.transition = "none";
-        r.style.setProperty("--tx", `${txFor(np)}px`);
-        void r.offsetWidth;
-        r.style.transition = "";
-      }
-      setPos(np);
-    }, 700);
-    return () => window.clearTimeout(t);
+    const p = pos.current;
+    if (p % n !== active) goTo(p + ((active - (p % n) + n) % n));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pos, n]);
+  }, [active]);
 
-  const pick = (i: number, p: number) => {
+  const pick = (i: number) => {
+    touched.current = Date.now();
+    setActive(i);
+  };
+  const tapReel = (i: number, p: number) => {
     if (Date.now() < noClick.current) return;
     touched.current = Date.now();
-    setPos(p);
+    goTo(p);
     setActive(i);
   };
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0];
-    swipe.current = { x: t.clientX, y: t.clientY, on: false, dx: 0 };
+    cancelAnimationFrame(anim.current);
+    swipe.current = { x: t.clientX, y: t.clientY, x0: x.current, on: false };
     touched.current = Date.now();
   };
   const onTouchMove = (e: React.TouchEvent) => {
@@ -126,22 +148,34 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
     const dx = t.clientX - s.x;
     const dy = t.clientY - s.y;
     if (!s.on && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.5) s.on = true;
-    if (s.on) {
-      s.dx = dx;
-      setDrag(dx);
-    }
+    if (s.on) paint(s.x0 + dx);
   };
   const onTouchEnd = () => {
     const s = swipe.current;
     swipe.current = null;
     touched.current = Date.now();
-    if (!s?.on) return;
+    if (!s) return;
+    if (!s.on) {
+      // A tap or a vertical scroll: settle back where it was.
+      goTo(pos.current, false);
+      return;
+    }
     noClick.current = Date.now() + 350;
-    const steps = Math.round(-s.dx / STEP) || (s.dx < -30 ? 1 : s.dx > 30 ? -1 : 0);
-    setDrag(0);
-    const p = Math.max(0, Math.min(3 * n - 1, pos + steps));
-    setPos(p);
-    setActive(p % n);
+    const moved = x.current - s.x0;
+    // Nearest tile to where the finger left the row, at least one step.
+    let best = pos.current;
+    let dist = Infinity;
+    centers.current.forEach((c, i) => {
+      const d = Math.abs(-c - x.current);
+      if (d < dist) {
+        dist = d;
+        best = i;
+      }
+    });
+    if (best === pos.current && Math.abs(moved) > 30) best += moved < 0 ? 1 : -1;
+    best = Math.max(0, Math.min(3 * n - 1, best));
+    goTo(best);
+    setActive(best % n);
   };
 
   if (!n) return null;
@@ -165,51 +199,69 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
           </p>
         </div>
 
-        <ul
-          className={`sx-orbit${drag ? " sx-still" : ""}`}
-          ref={row}
-          style={{ "--tx": `${txFor(pos) + drag}px` } as React.CSSProperties}
+        {/* Desktop: the athletes float around the dial. */}
+        <ul className="sx-orbit">
+          {sports.map((s, i) => {
+            // Spread the athletes evenly on an ellipse, starting at the top.
+            const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+            return (
+              <li
+                key={s.id}
+                className={i === active ? "on" : undefined}
+                style={
+                  {
+                    "--x": `${(50 + 43 * Math.cos(a)).toFixed(2)}%`,
+                    "--y": `${(50 + 37 * Math.sin(a)).toFixed(2)}%`,
+                    "--d": `${(-i * 0.73).toFixed(2)}s`,
+                  } as React.CSSProperties
+                }
+              >
+                <button
+                  type="button"
+                  aria-pressed={i === active}
+                  onMouseEnter={() => pick(i)}
+                  onFocus={() => pick(i)}
+                  onClick={() => pick(i)}
+                >
+                  <span className="sx-tile">
+                    <Athlete sport={s} />
+                  </span>
+                  <span className="sx-name">{s.name}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Phone: a reel to swipe that also slides on its own. */}
+        <div
+          className="sx-reel"
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           onTouchCancel={onTouchEnd}
         >
-          {[0, 1, 2].flatMap((copy) =>
-            sports.map((s, i) => {
-              // Spread the athletes evenly on an ellipse, starting at the top.
-              const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
-              const real = copy === 1;
-              return (
-                <li
+          <div className="sx-track" ref={track} style={{ transform: `translate3d(${-(n * 116 + 52)}px,0,0)` }}>
+            {[0, 1, 2].flatMap((copy) =>
+              sports.map((s, i) => (
+                <button
                   key={`${copy}-${s.id}`}
-                  className={[i === active ? "on" : "", real ? "" : "sx-copy"].join(" ").trim() || undefined}
-                  aria-hidden={real ? undefined : true}
-                  style={
-                    {
-                      "--x": `${(50 + 43 * Math.cos(a)).toFixed(2)}%`,
-                      "--y": `${(50 + 37 * Math.sin(a)).toFixed(2)}%`,
-                      "--d": `${(-i * 0.73).toFixed(2)}s`,
-                    } as React.CSSProperties
-                  }
+                  type="button"
+                  tabIndex={copy === 1 ? undefined : -1}
+                  aria-hidden={copy === 1 ? undefined : true}
+                  aria-pressed={copy === 1 ? i === active : undefined}
+                  className={i === active ? "sx-item on" : "sx-item"}
+                  onClick={() => tapReel(i, copy * n + i)}
                 >
-                  <button
-                    type="button"
-                    tabIndex={real ? undefined : -1}
-                    aria-pressed={real ? i === active : undefined}
-                    onMouseEnter={() => pick(i, copy * n + i)}
-                    onFocus={() => pick(i, copy * n + i)}
-                    onClick={() => pick(i, copy * n + i)}
-                  >
-                    <span className="sx-tile">
-                      <Athlete sport={s} />
-                    </span>
-                    <span className="sx-name">{s.name}</span>
-                  </button>
-                </li>
-              );
-            }),
-          )}
-        </ul>
+                  <span className="sx-tile">
+                    <Athlete sport={s} />
+                  </span>
+                  <span className="sx-name">{s.name}</span>
+                </button>
+              )),
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

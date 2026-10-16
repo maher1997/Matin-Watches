@@ -3119,11 +3119,9 @@ button.thumb:focus-visible {
   z-index: 3;
 }
 
-/* Extra copies are only used by the endless phone row. */
-@media (min-width: 861px) {
-  .sx-orbit .sx-copy {
-    display: none;
-  }
+/* The swipe reel is only for phones. */
+.sx-reel {
+  display: none;
 }
 
 .sx-orbit .on .sx-tile {
@@ -3326,44 +3324,48 @@ button.thumb:focus-visible {
     font-size: 1.2rem;
   }
 
-  /* A track that slides with transform (no native scrolling, which iPhone
-     Safari would not move from code reliably). */
   .sx-orbit {
-    position: relative;
-    display: flex;
-    gap: 12px;
-    width: max-content;
-    margin: 0.75rem 0 0 50%;
+    display: none;
+  }
+
+  .sx-reel {
+    display: block;
+    margin-top: 0.75rem;
     padding: 1rem 0 0.5rem;
-    transform: translateX(var(--tx, -52px));
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
     touch-action: pan-y;
     -webkit-user-select: none;
     user-select: none;
   }
 
-  .sx-orbit.sx-still {
-    transition: none;
+  .sx-track {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    margin-left: 50%;
+    will-change: transform;
   }
 
-  .sx-orbit li {
-    position: static;
+  .sx-item {
     flex: 0 0 104px;
     width: 104px;
     min-width: 0;
-    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .sx-orbit button {
-    width: 100%;
-  }
-
-  .sx-orbit .sx-name {
+  .sx-item .sx-name {
     white-space: nowrap;
-  }
-
-  .sx-orbit button {
-    animation: none;
   }
 
   .sx-tile {
@@ -3372,8 +3374,17 @@ button.thumb:focus-visible {
     border-radius: 24px;
   }
 
-  .sx-orbit .on .sx-tile {
+  .sx-item.on .sx-tile {
     transform: scale(1.06);
+    border-color: rgba(82, 133, 247, 0.7);
+    background: linear-gradient(160deg, #1b2540 0%, #10141f 100%);
+    box-shadow:
+      0 0 0 1px rgba(82, 133, 247, 0.3),
+      0 18px 50px -12px rgba(82, 133, 247, 0.55);
+  }
+
+  .sx-item.on .ath {
+    opacity: 1;
   }
 
   .sx-name {
@@ -3382,7 +3393,7 @@ button.thumb:focus-visible {
     font-size: 0.8rem;
   }
 
-  .sx-orbit .on .sx-name {
+  .sx-item.on .sx-name {
     opacity: 1;
     color: #7ea4ff;
     transform: translateY(3px);

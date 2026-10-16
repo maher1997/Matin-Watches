@@ -257,7 +257,7 @@ export function Athlete({ sport }: { sport: Sport }) {
   );
 
   return (
-    <svg viewBox="0 0 100 100" className="ath" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 100 100" className="ath" aria-hidden="true" focusable="false" data-still={(sport.still ?? 0) * sport.dur}>
       {sport.scene?.(k)}
       <g transform={sport.fit}>
         {sport.under?.(k)}
