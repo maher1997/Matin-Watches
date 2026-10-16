@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatPrice, getProduct, products } from "@/lib/products";
+import { categories, formatPrice, getProduct, products, type Product } from "@/lib/products";
+import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
+import JsonLd from "@/components/JsonLd";
+import Stories from "@/components/Stories";
+import CountUp from "@/components/CountUp";
+import Reveal from "@/components/Reveal";
+import Showcase from "@/components/Showcase";
+import PdpGallery from "@/components/PdpGallery";
+import SpecSheet from "@/components/SpecSheet";
+import SportsUniverse from "@/components/SportsUniverse";
+import HealthMonitoring from "@/components/HealthMonitoring";
+import SectionHead from "@/components/SectionHead";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -14,70 +26,312 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = getProduct((await params).slug);
-  return { title: p ? `${p.name} | MATIN` : "MATIN" };
+  if (!p) return { title: "Watch not found", robots: { index: false } };
+  const url = `/product/${p.slug}`;
+  const title = p.seoTitle ?? `${p.name} Rugged Smartwatch | MATIN`;
+  const description = p.seoDescription ?? `${p.name}: ${p.tagline}. ${p.description}`.slice(0, 160);
+  // Link previews (WhatsApp, Facebook, X) use the share picture when there is one.
+  const images = p.shareImage
+    ? [{ url: p.shareImage, width: 1200, height: 630, alt: p.imageAlts?.[0] ?? p.name }]
+    : [{ url: "/og.jpg", width: 1200, height: 630, alt: p.name }];
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: url },
+    openGraph: { type: "website", siteName: site.name, url, title, description, images },
+    twitter: { card: "summary_large_image", title, description, images: images.map((i) => i.url) },
+  };
 }
+
+const svg = (d: string) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+
+const groupIcons = {
+  outdoor: svg("M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"),
+  health: svg("M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8zM3 12h4l2-3 3 6 2-3h7"),
+  smart: svg("M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"),
+  tools: svg("M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 9v4l2.5 2.5M5 3 2 6M19 3l3 3"),
+};
 
 export default async function ProductPage({ params }: Props) {
   const product = getProduct((await params).slug);
   if (!product) notFound();
   const related = products.filter((p) => p.slug !== product.slug).slice(0, 4);
-  const thumbs = product.images.length > 1 ? product.images.length : 3;
+  const category = categories.find((c) => c.id === product.category);
+  const url = absoluteUrl(`/product/${product.slug}`);
+  // Specs grouped by their `group` (in first-seen order); ungrouped ones share "".
+  const specGroups: [string, Product["specs"]][] = [];
+  for (const spec of product.specs) {
+    const group = spec.group ?? "";
+    const found = specGroups.find(([g]) => g === group);
+    if (found) found[1].push(spec);
+    else specGroups.push([group, [spec]]);
+  }
+
+  // Product data for Google Shopping and rich results (price, stock, photo).
+  const productData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `${url}#product`,
+        name: product.name,
+        description: product.description,
+        sku: product.slug,
+        url,
+        image: [...product.images, ...(product.posters ?? []).map((p) => p.src)].map((src) => absoluteUrl(src)),
+        brand: { "@type": "Brand", name: site.name },
+        category: "Smartwatches",
+        color: product.colors.map((c) => c.name).join(", "),
+        additionalProperty: product.specs.map((s) => ({
+          "@type": "PropertyValue",
+          name: s.label,
+          value: s.value,
+        })),
+        offers: {
+          "@type": "Offer",
+          url,
+          price: product.price.toFixed(2),
+          priceCurrency: site.currency,
+          availability: "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition",
+          seller: { "@id": `${siteUrl}/#org` },
+          shippingDetails: {
+            "@type": "OfferShippingDetails",
+            shippingRate: { "@type": "MonetaryAmount", value: "0", currency: site.currency },
+            shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
+          },
+          hasMerchantReturnPolicy: {
+            "@type": "MerchantReturnPolicy",
+            returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+            merchantReturnDays: 30,
+            applicableCountry: "US",
+          },
+        },
+      },
+      ...(product.faq
+        ? [
+            {
+              "@type": "FAQPage",
+              mainEntity: product.faq.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            },
+          ]
+        : []),
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Shop", item: absoluteUrl("/shop") },
+          { "@type": "ListItem", position: 3, name: product.name, item: url },
+        ],
+      },
+    ],
+  };
+
+  // Jump links to the main sections of this product page.
+  const toc = [
+    (product.featureGroups || product.features) && ["#features", "Features"],
+    product.healthMonitoring && ["#health", "Health"],
+    product.sportModes && ["#sports", "Sports"],
+    product.specs.length > 0 && ["#specs", "Specs"],
+    product.faq && ["#faq", "FAQ"],
+  ].filter(Boolean) as [string, string][];
 
   return (
-    <div className="container page-pad">
-      <nav className="crumbs">
+    <div className="container page-pad pdp-page">
+      <JsonLd data={productData} />
+      <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / <span>{product.name}</span>
       </nav>
 
       <div className="pdp">
-        <div className="pdp-gallery">
-          <div className="pdp-main">
-            {product.badge && <span className="badge">{product.badge}</span>}
-            <ProductImage product={product} priority sizes="(max-width: 900px) 100vw, 50vw" />
-          </div>
-          <div className="pdp-thumbs">
-            {Array.from({ length: thumbs }).map((_, i) => (
-              <div key={i} className={i === 0 ? "thumb active" : "thumb"}>
-                <ProductImage product={product} index={i} sizes="120px" />
-              </div>
-            ))}
-          </div>
-        </div>
+        <PdpGallery product={product} />
 
         <div className="pdp-info">
-          <p className="eyebrow">{product.category}</p>
+          <p className="eyebrow">{category?.name ?? product.category} smartwatch</p>
           <h1>{product.name}</h1>
           <p className="pdp-tag">{product.tagline}</p>
           <p className="pdp-price">
             {formatPrice(product.price)}
             {product.compareAt && <s>{formatPrice(product.compareAt)}</s>}
           </p>
-          <p className="pdp-desc">{product.description}</p>
+          {product.highlights && (
+            <ul className="pdp-stats">
+              {product.highlights.map((h) => (
+                <li key={h.label}>
+                  <strong>{h.value}</strong>
+                  <span>{h.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
           <AddToCart product={product} />
           <ul className="perks">
-            <li>Free worldwide shipping</li>
+            <li>Free shipping across the USA</li>
             <li>2 year warranty</li>
             <li>30 day returns</li>
           </ul>
+          <p className="pdp-desc">{product.description}</p>
         </div>
       </div>
 
-      <section className="section">
-        <h2 className="spec-title">Specifications</h2>
-        <dl className="specs">
-          {product.specs.map((s) => (
-            <div key={s.label}>
-              <dt>{s.label}</dt>
-              <dd>{s.value}</dd>
-            </div>
+      {toc.length > 2 && (
+        <nav className="pdp-toc" aria-label="On this page">
+          {toc.map(([href, label]) => (
+            <a key={href} href={href}>
+              {label}
+            </a>
           ))}
-        </dl>
-      </section>
+        </nav>
+      )}
 
-      <section className="section">
-        <div className="section-head">
-          <h2>You may also like</h2>
-        </div>
+      <Stories product={product} />
+
+      {product.bigStats && (
+        <section className="section big-stats" aria-label={`${product.name} in numbers`}>
+          {product.bigStats.map((b, i) => (
+            <Reveal key={b.label} className="big-stat" delay={i * 90}>
+              <strong>
+                <CountUp to={b.value} suffix={b.suffix} />
+              </strong>
+              <span>{b.label}</span>
+            </Reveal>
+          ))}
+        </section>
+      )}
+
+      {product.chapters && (
+        <section className="section showcase">
+          <Reveal className="showcase-head">
+            <p className="eyebrow">Made for the outdoors</p>
+            <h2>Go further with {product.name}</h2>
+          </Reveal>
+          <Showcase product={product} />
+        </section>
+      )}
+
+      {product.featureGroups ? (
+        <section className="section" id="features" aria-labelledby="features-title">
+          <SectionHead
+            id="features-title"
+            eyebrow="Features"
+            title={
+              <>
+                Everything the <span className="grad">{product.name}</span> can do
+              </>
+            }
+          />
+          <ul className="fgroups">
+            {product.featureGroups.map((g, i) => (
+              <Reveal as="li" key={g.title} className="fgroup" delay={i * 90}>
+                <span className="fgroup-icon" aria-hidden="true">
+                  {groupIcons[g.icon]}
+                </span>
+                <h3>{g.title}</h3>
+                <ul>
+                  {g.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        product.features && (
+          <section className="section" id="features" aria-labelledby="features-title">
+            <SectionHead
+              id="features-title"
+              eyebrow="Features"
+              title={
+                <>
+                  Everything the <span className="grad">{product.name}</span> can do
+                </>
+              }
+            />
+            <ul className="test-list feature-list">
+              {product.features.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      )}
+
+      {product.healthMonitoring && <HealthMonitoring />}
+
+      {product.sportModes && (
+        <SportsUniverse name={product.name} count={product.sportModes.count} ids={product.sportModes.ids} />
+      )}
+
+      {product.sports && (
+        <section className="section sports">
+          <Reveal className="sports-head">
+            <strong className="sports-count">
+              <CountUp to={170} suffix="+" />
+            </strong>
+            <div>
+              <h2 className="spec-title">Sport modes</h2>
+              <p>From your morning run to a weekend climb, the Trekon tracks it.</p>
+            </div>
+          </Reveal>
+          <div className="marquee" aria-label="Some of the sport modes">
+            {[0, 1].map((row) => {
+              const half = product.sports!.filter((_, i) => i % 2 === row);
+              return (
+                <div key={row} className={`marquee-row${row ? " marquee-rev" : ""}`}>
+                  {/* The list is drawn twice so the loop has no gap; the copy is hidden from screen readers. */}
+                  {[0, 1].map((copy) => (
+                    <ul key={copy} aria-hidden={copy === 1 || undefined}>
+                      {half.map((s) => (
+                        <li key={s}>{s}</li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
+
+      {product.faq && (
+        <section className="section" id="faq" aria-labelledby="faq-title">
+          <SectionHead
+            id="faq-title"
+            eyebrow="FAQ"
+            title={
+              <>
+                {product.name} <span className="grad">questions &amp; answers</span>
+              </>
+            }
+          />
+          <div className="faq">
+            {product.faq.map((f, i) => (
+              <details key={f.q} name="faq">
+                <summary>
+                  <span className="faq-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="faq-q">{f.q}</span>
+                  <span className="faq-icon" aria-hidden="true" />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="section" aria-labelledby="more-title">
+        <SectionHead id="more-title" eyebrow="More MATIN watches" title="You may also like" />
         <div className="grid">
           {related.map((p) => (
             <ProductCard key={p.slug} product={p} />

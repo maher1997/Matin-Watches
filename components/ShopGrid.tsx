@@ -51,8 +51,8 @@ export function ShopGridView({ active }: { active: Category | null }) {
       </div>
       <p className="result-count">{list.length} watches</p>
       <div className="grid">
-        {list.map((p) => (
-          <ProductCard key={p.slug} product={p} />
+        {list.map((p, i) => (
+          <ProductCard key={p.slug} product={p} priority={i === 0} />
         ))}
       </div>
     </>

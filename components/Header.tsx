@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="announce">Free shipping worldwide · 2 year warranty · 30 day returns</div>
+      <div className="announce">Free US shipping · 2 year warranty · 30 day returns</div>
       <header className="header">
         <div className="header-inner">
           <button
@@ -31,7 +31,7 @@ export default function Header() {
               {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M3 7h18M3 12h18M3 17h18" />}
             </svg>
           </button>
-          <Link href="/" className="header-logo" aria-label="MATIN home" onClick={() => setOpen(false)}>
+          <Link href="/" className="header-logo" aria-label="MATIN Rugged Smartwatches, home" onClick={() => setOpen(false)}>
             <Logo />
           </Link>
           <nav className={`nav ${open ? "open" : ""}`}>
