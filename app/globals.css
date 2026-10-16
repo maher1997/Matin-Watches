@@ -2896,18 +2896,18 @@ button.thumb:focus-visible {
   }
 }
 
-/* Spec cards pack like a wall of bricks (no stretched, half-empty cards). */
+/* Spec cards: one full-width card per group with its rows in two even
+   columns, so every card ends cleanly and nothing is left half empty. */
 @media (min-width: 861px) {
   .spec-cards {
-    display: block;
-    columns: 2;
-    column-gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
   }
-  .spec-card {
-    break-inside: avoid;
-    margin-bottom: 1rem;
+  .spec-card dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
   }
-  .spec-card.wide {
-    column-span: all;
+  .spec-card dl div {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
   }
 }
