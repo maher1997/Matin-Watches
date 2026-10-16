@@ -16,6 +16,7 @@ import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
+import SectionHead from "@/components/SectionHead";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -134,6 +135,15 @@ export default async function ProductPage({ params }: Props) {
     ],
   };
 
+  // Jump links to the main sections of this product page.
+  const toc = [
+    (product.featureGroups || product.features) && ["#features", "Features"],
+    product.healthMonitoring && ["#health", "Health"],
+    product.sportModes && ["#sports", "Sports"],
+    product.specs.length > 0 && ["#specs", "Specs"],
+    product.faq && ["#faq", "FAQ"],
+  ].filter(Boolean) as [string, string][];
+
   return (
     <div className="container page-pad pdp-page">
       <JsonLd data={productData} />
@@ -172,6 +182,16 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </div>
 
+      {toc.length > 2 && (
+        <nav className="pdp-toc" aria-label="On this page">
+          {toc.map(([href, label]) => (
+            <a key={href} href={href}>
+              {label}
+            </a>
+          ))}
+        </nav>
+      )}
+
       <Stories product={product} />
 
       {product.bigStats && (
@@ -197,17 +217,17 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      {product.sportModes && <SportsUniverse count={product.sportModes.count} ids={product.sportModes.ids} />}
-
-      {product.healthMonitoring && <HealthMonitoring />}
-
-      {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
-
       {product.featureGroups ? (
-        <section className="section">
-          <Reveal>
-            <h2 className="spec-title">What it does</h2>
-          </Reveal>
+        <section className="section" id="features" aria-labelledby="features-title">
+          <SectionHead
+            id="features-title"
+            eyebrow="Features"
+            title={
+              <>
+                Everything the <span className="grad">{product.name}</span> can do
+              </>
+            }
+          />
           <ul className="fgroups">
             {product.featureGroups.map((g, i) => (
               <Reveal as="li" key={g.title} className="fgroup" delay={i * 90}>
@@ -226,8 +246,16 @@ export default async function ProductPage({ params }: Props) {
         </section>
       ) : (
         product.features && (
-          <section className="section">
-            <h2 className="spec-title">What it does</h2>
+          <section className="section" id="features" aria-labelledby="features-title">
+            <SectionHead
+              id="features-title"
+              eyebrow="Features"
+              title={
+                <>
+                  Everything the <span className="grad">{product.name}</span> can do
+                </>
+              }
+            />
             <ul className="test-list feature-list">
               {product.features.map((f) => (
                 <li key={f}>{f}</li>
@@ -235,6 +263,12 @@ export default async function ProductPage({ params }: Props) {
             </ul>
           </section>
         )
+      )}
+
+      {product.healthMonitoring && <HealthMonitoring />}
+
+      {product.sportModes && (
+        <SportsUniverse name={product.name} count={product.sportModes.count} ids={product.sportModes.ids} />
       )}
 
       {product.sports && (
@@ -268,11 +302,19 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
+      {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
+
       {product.faq && (
-        <section className="section">
-          <Reveal>
-            <h2 className="spec-title">Frequently asked questions</h2>
-          </Reveal>
+        <section className="section" id="faq" aria-labelledby="faq-title">
+          <SectionHead
+            id="faq-title"
+            eyebrow="FAQ"
+            title={
+              <>
+                {product.name} <span className="grad">questions &amp; answers</span>
+              </>
+            }
+          />
           <div className="faq">
             {product.faq.map((f, i) => (
               <details key={f.q} name="faq">
@@ -288,10 +330,8 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      <section className="section">
-        <div className="section-head">
-          <h2>You may also like</h2>
-        </div>
+      <section className="section" aria-labelledby="more-title">
+        <SectionHead id="more-title" eyebrow="More MATIN watches" title="You may also like" />
         <div className="grid">
           {related.map((p) => (
             <ProductCard key={p.slug} product={p} />

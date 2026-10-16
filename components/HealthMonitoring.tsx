@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import SectionHead from "@/components/SectionHead";
 import { HeartScene, MiniWatch, OxygenScene, RESTING, RestingScene } from "@/components/health/visuals";
 
 // Animated health monitoring showcase: heart rate, daily resting heart rate
@@ -138,19 +139,23 @@ export default function HealthMonitoring() {
   return (
     <section
       ref={ref}
+      id="health"
       className={`section hm${live ? "" : " hm-paused"}`}
       aria-labelledby="hm-title"
       onMouseEnter={touch}
       onMouseMove={touch}
     >
       <div className="hm-stage">
-        <header className="hm-head">
-          <p className="eyebrow">Health monitoring</p>
-          <h2 id="hm-title">
-            Your Health. <span>In Every Beat.</span>
-          </h2>
-          <p className="hm-sub">Intelligent health monitoring that keeps you connected to what matters most.</p>
-        </header>
+        <SectionHead
+          id="hm-title"
+          eyebrow="Heart rate & SpO2"
+          title={
+            <>
+              Your Health. <span className="grad">In Every Beat.</span>
+            </>
+          }
+          intro="Intelligent health monitoring that keeps you connected to what matters most."
+        />
 
         <div className="hm-tabs" role="tablist" aria-label="Health features" onKeyDown={onKey}>
           {METRICS.map((t, i) => (
@@ -218,13 +223,13 @@ export default function HealthMonitoring() {
           </div>
 
           <div className="hm-info" id="hm-panel" role="tabpanel" aria-labelledby={`hm-tab-${m.id}`}>
-            <div key={m.id} className="hm-info-in">
+            <div key={m.id} className="hm-info-in hm-once">
               <p className="hm-kicker">{sub(m.kicker)}</p>
               <h3>{m.title}</h3>
               <p className="hm-text">{m.text}</p>
               <div className="hm-read">
                 <span className="hm-value" aria-live="off">
-                  <span key={value} className="hm-digits">
+                  <span key={value} className="hm-digits hm-once">
                     {value}
                   </span>
                   <small>{m.unit}</small>

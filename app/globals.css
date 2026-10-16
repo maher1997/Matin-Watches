@@ -3526,29 +3526,9 @@ button.thumb:focus-visible {
     linear-gradient(180deg, #13161e 0%, #0c0e13 100%);
 }
 
-.hm-head {
-  text-align: center;
-  max-width: 44rem;
-  margin: 0 auto;
-}
 
-.hm-head h2 {
-  font-size: clamp(2.1rem, 4.8vw, 3.5rem);
-  line-height: 1.05;
-}
 
-.hm-head h2 span {
-  background: linear-gradient(90deg, #ff6b7a 0%, #c78bff 50%, #7fa8ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
 
-.hm-sub {
-  color: var(--muted);
-  margin-top: 0.9rem;
-  font-size: 1.05rem;
-}
 
 /* Metric switcher */
 .hm-tabs {
@@ -3742,7 +3722,7 @@ button.thumb:focus-visible {
 
 /* Only the scene on show (and only on screen) keeps moving. */
 .hm-scene:not(.on) *,
-.hm-paused * {
+.hm-paused *:not(.hm-once) {
   animation-play-state: paused !important;
 }
 
@@ -4512,10 +4492,6 @@ button.thumb:focus-visible {
     padding: 1.6rem 0.85rem 1.2rem;
   }
 
-  .hm-sub {
-    font-size: 0.95rem;
-  }
-
   .hm-tabs {
     gap: 0.45rem;
     margin: 1.4rem 0 1rem;
@@ -4609,5 +4585,224 @@ button.thumb:focus-visible {
   .hm *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Product page: one heading style for every section, and jump links */
+.sec-head {
+  text-align: center;
+  max-width: 46rem;
+  margin: 0 auto clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.sec-head h2 {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 1.06;
+}
+
+.sec-head .grad {
+  background: linear-gradient(90deg, #5285f7, #5fd6d0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hm .sec-head .grad {
+  background-image: linear-gradient(90deg, #ff6b7a 0%, #c78bff 50%, #7fa8ff 100%);
+}
+
+.sec-intro {
+  color: var(--muted);
+  margin-top: 0.8rem;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.hm .sec-head {
+  margin-bottom: 0;
+}
+
+.pdp-page section[id] {
+  scroll-margin-top: calc(var(--header-h) + 12px);
+}
+
+.pdp-toc {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: clamp(2rem, 5vw, 3rem) auto 0;
+  padding: 0.4rem;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.pdp-toc::-webkit-scrollbar {
+  display: none;
+}
+
+.pdp-toc a {
+  flex: 0 0 auto;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c4cadb;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.pdp-toc a:hover,
+.pdp-toc a:focus-visible {
+  background: rgba(82, 133, 247, 0.16);
+  color: #fff;
+}
+
+@media (max-width: 560px) {
+  .sec-intro {
+    font-size: 0.95rem;
+  }
+
+  .pdp-toc {
+    justify-content: flex-start;
+    border-radius: 16px;
+  }
+
+  .pdp-toc a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Health + sport sections: a clean, product-launch type style (Inter,
+   sentence case, two-tone titles) instead of the condensed uppercase font. */
+.hm .sec-head h2,
+.sx .sec-head h2,
+.hm-info h3 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: -0.03em;
+}
+
+.hm .sec-head h2,
+.sx .sec-head h2 {
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  line-height: 1.05;
+}
+
+.hm .sec-head .grad,
+.sx .sec-head .grad {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #7d8597;
+}
+
+.hm .sec-head .eyebrow,
+.sx .sec-head .eyebrow,
+.hm-kicker {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.hm .sec-head .eyebrow {
+  color: #ff6b7a;
+}
+
+.hm-info h3 {
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  line-height: 1.12;
+}
+
+.hm-value,
+.hm-tab-val,
+.hm-hr-num,
+.hm-o2-num,
+.hm-tip b,
+.sx-num {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.hm-value small,
+.hm-tab-val small,
+.hm-o2-num small {
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.hm-tab-name,
+.hm-read-note,
+.hm-badge,
+.hm-hr-unit,
+.hm-o2-label,
+.hm-rest-top,
+.sx-word,
+.sx-now strong,
+.sx-name {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  text-indent: 0;
+}
+
+.hm-tab-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.hm-read-note,
+.hm-badge {
+  font-size: 0.75rem;
+}
+
+.hm-hr-unit,
+.hm-o2-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.hm-rest-top {
+  font-size: 0.85rem;
+}
+
+.sx-word {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.sx-now strong {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.sx-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hm-wt {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.hm-wt-small {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 560px) {
+  .hm-tab-name {
+    font-size: 0.7rem;
   }
 }

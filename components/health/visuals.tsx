@@ -126,7 +126,7 @@ export function RestingScene({ pick, onPick }: { pick: number; onPick: (i: numbe
         <svg viewBox="0 0 24 24" className="hm-rest-heart" aria-hidden="true" focusable="false">
           <path d="M12 20.5 C7 16.8 3 13.6 3 9.3 C3 6.6 5.1 4.6 7.6 4.6 C9.4 4.6 11.2 5.7 12 7.3 C12.8 5.7 14.6 4.6 16.4 4.6 C18.9 4.6 21 6.6 21 9.3 C21 13.6 17 16.8 12 20.5 Z" />
         </svg>
-        <span>Resting heart rate · 7-day sample</span>
+        <span>Resting heart rate, 7-day sample</span>
       </div>
       <div className="hm-chart">
         <svg viewBox={`0 0 ${CW} ${CH}`} aria-hidden="true" focusable="false">
@@ -151,15 +151,15 @@ export function RestingScene({ pick, onPick }: { pick: number; onPick: (i: numbe
               </g>
             );
           })}
-          <path d={AREA} fill="url(#hmRestArea)" className="hm-area" />
-          <path d={CURVE} className="hm-curve-glow" pathLength={1} />
-          <path d={CURVE} className="hm-curve" pathLength={1} />
+          <path d={AREA} fill="url(#hmRestArea)" className="hm-area hm-once" />
+          <path d={CURVE} className="hm-curve-glow hm-once" pathLength={1} />
+          <path d={CURVE} className="hm-curve hm-once" pathLength={1} />
           <line x1={px} x2={px} y1={py} y2={CH - PAD.b} className="hm-drop" />
           {RESTING.map((r, i) => {
             const [x, y] = chartPoint(i);
             return (
               <g key={r.day}>
-                <circle cx={x} cy={y} r={i === pick ? 7 : 4.5} className={i === pick ? "hm-dot on" : "hm-dot"} style={{ animationDelay: `${0.25 + i * 0.12}s` }} />
+                <circle cx={x} cy={y} r={i === pick ? 7 : 4.5} className={i === pick ? "hm-dot hm-once on" : "hm-dot hm-once"} style={{ animationDelay: `${0.25 + i * 0.12}s` }} />
                 <text x={x} y={CH - 16} className={i === pick ? "hm-day on" : "hm-day"}>
                   {r.day}
                 </text>
@@ -253,7 +253,7 @@ export function OxygenScene({ value }: { value: number }) {
           cx="120"
           cy="120"
           r="94"
-          className="hm-o2-arc"
+          className="hm-o2-arc hm-once"
           pathLength={100}
           strokeDasharray="98 100"
           transform="rotate(-90 120 120)"
@@ -314,7 +314,7 @@ export function MiniWatch({ metric, bpm }: { metric: number; bpm: number }) {
       <circle cx="100" cy="110" r="84" fill="url(#hmWSteel)" />
       <circle cx="100" cy="110" r="76" fill="#05060a" />
       <circle cx="100" cy="110" r="76" fill="none" stroke="rgba(255,255,255,0.08)" />
-      <g key={metric} className="hm-wscreen">
+      <g key={metric} className="hm-wscreen hm-once">
         {metric === 0 && (
           <>
             <path
@@ -337,7 +337,7 @@ export function MiniWatch({ metric, bpm }: { metric: number; bpm: number }) {
         {metric === 1 && (
           <>
             <text x="100" y="74" className="hm-wt hm-wt-small">
-              RESTING HR
+              Resting HR
             </text>
             <text x="100" y="118" className="hm-wt hm-wt-big">
               58

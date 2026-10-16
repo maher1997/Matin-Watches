@@ -30,7 +30,7 @@ export default function SpecSheet({ product, groups }: { product: Product; group
   // The straight-on front photo reads best next to the specs.
   const photo = product.images.find((src) => src.includes("front-view")) ?? product.images[1] ?? product.images[0];
   return (
-    <section className="section spec-sheet" aria-labelledby="specs-title">
+    <section className="section spec-sheet" id="specs" aria-labelledby="specs-title">
       <div className="spec-aside">
         <p className="spec-eyebrow">Tech specs</p>
         <h2 id="specs-title" className="spec-title">

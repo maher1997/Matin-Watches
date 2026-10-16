@@ -1,5 +1,6 @@
 "use client";
 
+import SectionHead from "@/components/SectionHead";
 import { useEffect, useRef, useState } from "react";
 import { Athlete } from "./sports/rig";
 import { sportLibrary } from "./sports/library";
@@ -71,7 +72,7 @@ function Bezel({ n }: { n: number }) {
   );
 }
 
-export default function SportsUniverse({ count, ids }: { count: string; ids: string[] }) {
+export default function SportsUniverse({ name, count, ids }: { name: string; count: string; ids: string[] }) {
   const sports = ids.map((id) => sportLibrary[id]).filter(Boolean);
   const n = sports.length;
   const [active, setActive] = useState(0);
@@ -254,7 +255,20 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
   if (!n) return null;
 
   return (
-    <section className="section sx" ref={ref} aria-labelledby="sx-title">
+    <section className="section sx" id="sports" ref={ref} aria-labelledby="sx-title">
+      <SectionHead
+        id="sx-title"
+        eyebrow="Sport modes"
+        title={
+          <>
+            One Watch. <span className="grad">Every Move.</span>
+          </>
+        }
+        intro={`The ${name} tracks ${count} sport modes: ${sports
+          .map((s) => s.name.toLowerCase())
+          .join(", ")
+          .replace(/, ([^,]*)$/, " and $1")}.`}
+      />
       <div className="sx-stage">
         <div className="sx-core">
           <div className="sx-dial" aria-hidden="true">
@@ -267,15 +281,14 @@ export default function SportsUniverse({ count, ids }: { count: string; ids: str
               </svg>
             </div>
           </div>
-          <h2 id="sx-title" className="sx-title">
+          <p className="sx-title" aria-hidden="true">
             <span className="sx-num">{count}</span>
             <span className="sx-word">Sport modes</span>
-          </h2>
+          </p>
           <p className="sx-now" aria-live="polite">
             <span className="sx-now-dot" aria-hidden="true" />
             <strong key={active}>{sports[active].name}</strong>
           </p>
-          <p className="sx-sub">One Watch. Every Move.</p>
         </div>
 
         {/* Desktop: the athletes float around the dial. */}

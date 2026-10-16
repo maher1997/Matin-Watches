@@ -391,7 +391,7 @@ export const products: Product[] = [
       { group: "Health", label: "Blood oxygen", value: "SpO2 measurement" },
       { group: "Health", label: "More", value: "Blood pressure, breathing training, women's health" },
       { group: "Health", label: "Sleep", value: "Sleep score and analysis" },
-      { group: "Sports", label: "Sport modes", value: "Walking, running, hiking, cycling, basketball, football, badminton, yoga, jump rope" },
+      { group: "Sports", label: "Sport modes", value: "Walking, running, hiking, cycling, basketball, soccer, badminton, yoga, jump rope" },
       { group: "Sports", label: "Activity", value: "Steps, standing time, calories, real-time pace and distance, automatic goals" },
       { group: "Sports", label: "Sensors", value: "3-axis accelerometer and 3-axis gyroscope" },
       { group: "Build", label: "Case", value: "Stainless steel with liquid silicone" },
@@ -419,6 +419,14 @@ export const products: Product[] = [
       {
         q: "Can I take calls on the MATIN Torvan?",
         a: "Yes. Pair it with your phone over Bluetooth and you can answer, reject and make calls from your wrist, with a dial pad, contacts and recent calls.",
+      },
+      {
+        q: "Does the MATIN Torvan track heart rate and blood oxygen?",
+        a: "Yes. It reads your heart rate from your wrist around the clock, once a minute, shows your daily resting heart rate and measures blood oxygen (SpO2). It is a wellness smartwatch, not a medical device.",
+      },
+      {
+        q: "Which sport modes does it have?",
+        a: "9 sport modes: running, walking, hiking, cycling, basketball, soccer, badminton, yoga and jump rope. It also counts steps, distance, calories and standing time.",
       },
       {
         q: "How long does the battery last?",
