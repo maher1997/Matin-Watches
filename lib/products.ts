@@ -726,6 +726,11 @@ export const products: Product[] = [
       "/products/matin-varkon-front-view.webp",
       "/products/matin-varkon-heart-rate-sensor-back.webp",
       "/products/matin-varkon-side-buttons.webp",
+      "/products/matin-varkon-orange-angle-view.webp",
+      "/products/matin-varkon-orange-rugged-smartwatch.webp",
+      "/products/matin-varkon-orange-front-view.webp",
+      "/products/matin-varkon-orange-heart-rate-sensor-back.webp",
+      "/products/matin-varkon-orange-side-buttons.webp",
     ],
     imageAlts: [
       "MATIN Varkon rugged smartwatch angled from the left with a red stainless steel side plate and armored screws",
@@ -733,10 +738,18 @@ export const products: Product[] = [
       "MATIN Varkon front view with round AMOLED watch face showing time, heart rate, steps, air pressure and date",
       "Back of the MATIN Varkon with heart rate and blood oxygen sensor and magnetic charging pins",
       "MATIN Varkon side view with a red side plate between three metal buttons and black silicone strap",
+      "MATIN Varkon in orange and silver angled from the left, with an orange side plate and orange silicone strap",
+      'MATIN Varkon rugged GPS smartwatch in orange with a silver steel bezel, orange crown and 1.43" AMOLED display',
+      "MATIN Varkon orange front view with compass, steps and date on the round AMOLED watch face",
+      "Back of the orange MATIN Varkon with heart rate and blood oxygen sensor and magnetic charging pins",
+      "MATIN Varkon orange side view with an orange side plate between metal buttons",
     ],
-    colors: [{ name: "Black / Red", hex: "#1c1f26" }],
+    colors: [
+      { name: "Black / Red", hex: "#1c1f26" },
+      { name: "Orange / Silver", hex: "#f08a1c", from: 5 },
+    ],
     description:
-      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes. The 500mAh battery lasts up to 30 days with typical use and up to 60 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
+      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red or orange details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes. The 500mAh battery lasts up to 30 days with typical use and up to 60 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
     highlights: [
       { value: "60d", label: "Battery life" },
       { value: "GPS", label: "6 satellite systems" },
