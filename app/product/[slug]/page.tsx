@@ -16,6 +16,7 @@ import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
+import BatteryVisualizer from "@/components/BatteryVisualizer";
 import SectionHead from "@/components/SectionHead";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -138,6 +139,7 @@ export default async function ProductPage({ params }: Props) {
   // Jump links to the main sections of this product page.
   const toc = [
     (product.featureGroups || product.features) && ["#features", "Features"],
+    product.batteryShowcase && ["#battery", "Battery"],
     product.healthMonitoring && ["#health", "Health"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
@@ -263,6 +265,10 @@ export default async function ProductPage({ params }: Props) {
             </ul>
           </section>
         )
+      )}
+
+      {product.batteryShowcase && (
+        <BatteryVisualizer name={product.name} mah={product.batteryShowcase.mah} days={product.batteryShowcase.days} />
       )}
 
       {product.healthMonitoring && <HealthMonitoring />}

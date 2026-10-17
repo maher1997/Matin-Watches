@@ -51,6 +51,8 @@ export type Product = {
   // Animated health monitoring section (heart rate, resting heart rate, SpO2).
   // Only for watches that really have all three.
   healthMonitoring?: boolean;
+  // Animated battery section: capacity in mAh and the battery life range in days.
+  batteryShowcase?: { mah: number; days: string };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
@@ -256,6 +258,7 @@ export const products: Product[] = [
         ],
       },
     ],
+    batteryShowcase: { mah: 1000, days: "11 – 30" },
     bigStats: [
       { value: 170, suffix: "+", label: "Sport modes" },
       { value: 30, label: "Days of battery" },
