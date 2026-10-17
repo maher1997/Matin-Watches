@@ -7,9 +7,10 @@ import Logo from "./Logo";
 
 const links = [
   { href: "/shop", label: "Shop all" },
-  { href: "/shop?c=tactical", label: "Tactical" },
-  { href: "/shop?c=outdoor", label: "Outdoor" },
-  { href: "/shop?c=dive", label: "Dive" },
+  { href: "/collections/tactical", label: "Tactical" },
+  { href: "/collections/outdoor", label: "Outdoor" },
+  { href: "/collections/gps", label: "GPS" },
+  { href: "/collections/long-battery", label: "Long battery" },
 ];
 
 export default function Header() {

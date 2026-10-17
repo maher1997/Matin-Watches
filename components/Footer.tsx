@@ -12,9 +12,11 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Shop</h4>
           <Link href="/shop">All watches</Link>
-          <Link href="/shop?c=tactical">Tactical</Link>
-          <Link href="/shop?c=outdoor">Outdoor</Link>
-          <Link href="/shop?c=dive">Dive</Link>
+          <Link href="/collections/tactical">Tactical</Link>
+          <Link href="/collections/outdoor">Outdoor</Link>
+          <Link href="/collections/gps">GPS</Link>
+          <Link href="/collections/calling">Bluetooth calling</Link>
+          <Link href="/collections/long-battery">Long battery</Link>
         </div>
         <div className="footer-col">
           <h4>Help</h4>

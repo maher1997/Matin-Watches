@@ -16,6 +16,9 @@ import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
+import BatteryVisualizer from "@/components/BatteryVisualizer";
+import BatteryModes from "@/components/BatteryModes";
+import BatteryLiquid from "@/components/BatteryLiquid";
 import SectionHead from "@/components/SectionHead";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -138,6 +141,7 @@ export default async function ProductPage({ params }: Props) {
   // Jump links to the main sections of this product page.
   const toc = [
     (product.featureGroups || product.features) && ["#features", "Features"],
+    (product.batteryShowcase || product.batteryModes || product.batteryLiquid) && ["#battery", "Battery"],
     product.healthMonitoring && ["#health", "Health"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
@@ -263,6 +267,33 @@ export default async function ProductPage({ params }: Props) {
             </ul>
           </section>
         )
+      )}
+
+      {product.batteryShowcase && (
+        <BatteryVisualizer name={product.name} mah={product.batteryShowcase.mah} days={product.batteryShowcase.days} />
+      )}
+
+      {product.batteryLiquid && (
+        <BatteryLiquid
+          name={product.name}
+          mah={product.batteryLiquid.mah}
+          image={product.batteryLiquid.image}
+          imageAlt={product.batteryLiquid.imageAlt}
+          screen={product.batteryLiquid.screen}
+          modes={product.batteryLiquid.modes}
+          facts={product.batteryLiquid.facts}
+        />
+      )}
+
+      {product.batteryModes && (
+        <BatteryModes
+          name={product.name}
+          mah={product.batteryModes.mah}
+          charge={product.batteryModes.charge}
+          image={product.batteryModes.image}
+          imageAlt={product.batteryModes.imageAlt}
+          modes={product.batteryModes.modes}
+        />
       )}
 
       {product.healthMonitoring && <HealthMonitoring />}
