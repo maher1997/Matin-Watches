@@ -573,6 +573,11 @@ export const products: Product[] = [
       "/products/matin-kaldor-green-angle-view.webp",
       "/products/matin-kaldor-green-side-flashlight.webp",
       "/products/matin-kaldor-green-heart-rate-sensor-back.webp",
+      "/products/matin-kaldor-blue-rugged-smartwatch.webp",
+      "/products/matin-kaldor-blue-front-view.webp",
+      "/products/matin-kaldor-blue-angle-view.webp",
+      "/products/matin-kaldor-blue-side-buttons.webp",
+      "/products/matin-kaldor-blue-heart-rate-sensor-back.webp",
     ],
     imageAlts: [
       'MATIN Kaldor tactical GPS smartwatch in black with a compass bezel, yellow LED flashlight and 1.43" AMOLED display',
@@ -585,10 +590,16 @@ export const products: Product[] = [
       "MATIN Kaldor army green rugged smartwatch angled view with textured grip keys and metal buckle",
       "MATIN Kaldor army green side view with the LED flashlight between textured side buttons",
       "Back of the army green MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
+      "MATIN Kaldor tactical GPS smartwatch in slate blue with a compass bezel, yellow LED flashlight and blue silicone strap",
+      "MATIN Kaldor slate blue front view with an orange tactical watch face on the round AMOLED screen",
+      "MATIN Kaldor slate blue rugged smartwatch angled view with armored screws and textured grip keys",
+      "MATIN Kaldor slate blue side view with three textured buttons and armored case",
+      "Back of the slate blue MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
     ],
     colors: [
       { name: "Stealth Black", hex: "#1c1f26" },
       { name: "Army Green", hex: "#5f6b3c", from: 5 },
+      { name: "Slate Blue", hex: "#4e6b85", from: 10 },
     ],
     description:
       'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with multiple sport modes. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts 11 to 30 days, and it is rated 3ATM against rain, sweat and splashes.',
