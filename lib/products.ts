@@ -512,7 +512,7 @@ export const products: Product[] = [
     ],
     featureGroups: [
       { title: "Outdoor & navigation", icon: "outdoor", items: ["Multi-system GPS", "LED flashlight, 3 modes", "Compass", "Altitude meter"] },
-      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Call and message reminders", "Push notifications", "App control"] },
+      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Call and message reminders", "Push notifications", "Phone app sync"] },
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "Multiple sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
