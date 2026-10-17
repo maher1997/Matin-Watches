@@ -468,7 +468,7 @@ export const products: Product[] = [
     tagline: "Tactical GPS smartwatch with flashlight, compass and Bluetooth calls",
     price: 130,
     shareImage: "/products/matin-kaldor-share.jpg",
-    category: "tactical",
+    category: "outdoor",
     badge: "New",
     images: [
       "/products/matin-kaldor-rugged-smartwatch.webp",
