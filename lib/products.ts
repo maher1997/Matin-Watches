@@ -27,6 +27,8 @@ export type Product = {
   price: number;
   compareAt?: number;
   category: Category;
+  // Collections this watch shows up in (see `collections` below).
+  collections?: CollectionId[];
   badge?: string;
   images: string[];
   // Text read by Google and screen readers for each photo (same order as images).
@@ -85,11 +87,98 @@ export type Product = {
   art: { case: string; strap: string; accent: string };
 };
 
+// A watch's main label (shown above its name).
 export const categories: { id: Category; name: string; blurb: string }[] = [
-  { id: "tactical", name: "Tactical", blurb: "Built to military standard" },
-  { id: "outdoor", name: "Outdoor", blurb: "GPS, maps and long battery" },
+  { id: "tactical", name: "Tactical", blurb: "Military-style and built tough" },
+  { id: "outdoor", name: "Outdoor", blurb: "For trails, camping and long days outside" },
   { id: "dive", name: "Dive", blurb: "Water rated to 100m" },
 ];
+
+// Collections a shopper can browse. One watch can be in several, so each
+// collection gets its own page (/collections/<id>) that Google can rank.
+export type CollectionId = "tactical" | "outdoor" | "gps" | "calling" | "long-battery";
+
+export const collections: {
+  id: CollectionId;
+  name: string;
+  blurb: string;
+  title: string;
+  heading: string;
+  intro: string;
+  seoTitle: string;
+  seoDescription: string;
+}[] = [
+  {
+    id: "tactical",
+    name: "Tactical",
+    blurb: "Military-style and built tough",
+    title: "Tactical",
+    heading: "Tactical smartwatches",
+    intro:
+      "Military-style smartwatches with armored metal cases, bright AMOLED screens and weeks of battery. Made for work sites, training and hard days outside.",
+    seoTitle: "Tactical Smartwatches for Men | Rugged & Military-Style",
+    seoDescription:
+      "Rugged tactical smartwatches for men: military-style metal cases, AMOLED screens, GPS or Bluetooth calling and up to 30 days battery. Free US shipping.",
+  },
+  {
+    id: "outdoor",
+    name: "Outdoor",
+    blurb: "For trails, camping and long days outside",
+    title: "Outdoor",
+    heading: "Outdoor smartwatches",
+    intro:
+      "Tough smartwatches for hiking, camping and long days outside, with screens you can read in the sun and batteries that last for weeks.",
+    seoTitle: "Rugged Outdoor Smartwatches for Hiking & Camping",
+    seoDescription:
+      "Rugged outdoor smartwatches for men: GPS, compass, flashlight, bright AMOLED screens and up to 30 days battery for hiking and camping. Free US shipping.",
+  },
+  {
+    id: "gps",
+    name: "GPS",
+    blurb: "Track your route, distance and pace",
+    title: "GPS",
+    heading: "GPS smartwatches",
+    intro:
+      "Rugged smartwatches with built-in GPS, so you can track your route, distance and pace without carrying your phone.",
+    seoTitle: "Rugged GPS Smartwatches for Men | Built-In GPS",
+    seoDescription:
+      "Rugged GPS smartwatches for men with built-in GPS route tracking, sport modes, AMOLED screens and up to 30 days battery. Free US shipping.",
+  },
+  {
+    id: "calling",
+    name: "Bluetooth calling",
+    blurb: "Answer and make calls from your wrist",
+    title: "Calling",
+    heading: "Bluetooth calling smartwatches",
+    intro:
+      "Rugged smartwatches with a built-in speaker and microphone, so you can answer and make calls from your wrist while your phone stays in your pocket.",
+    seoTitle: "Rugged Bluetooth Calling Smartwatches for Men",
+    seoDescription:
+      "Rugged smartwatches with Bluetooth calling: answer and make calls from your wrist, AMOLED screens, heart rate and up to 30 days battery. Free US shipping.",
+  },
+  {
+    id: "long-battery",
+    name: "Long battery",
+    blurb: "Up to 30 days on one charge",
+    title: "Long battery",
+    heading: "Rugged smartwatches with long battery life",
+    intro:
+      "Every watch here lasts up to 30 days on one charge with typical use, so you charge it a few times a month instead of every night.",
+    seoTitle: "Rugged Smartwatches with Long Battery Life (30 Days)",
+    seoDescription:
+      "Rugged smartwatches with long battery life: up to 30 days on one charge, tough metal cases, AMOLED screens and GPS or calling. Free US shipping.",
+  },
+];
+
+// Which collections a watch is in. Real watches list theirs; the
+// placeholders just use their main label.
+export function collectionsOf(p: Product): string[] {
+  return p.collections ?? [p.category];
+}
+
+export function productsIn(id: string) {
+  return products.filter((p) => collectionsOf(p).includes(id));
+}
 
 export const products: Product[] = [
   {
@@ -98,6 +187,7 @@ export const products: Product[] = [
     tagline: "Rugged GPS smartwatch with 170+ sport modes",
     price: 120,
     category: "tactical",
+    collections: ["tactical", "outdoor", "gps", "long-battery"],
     badge: "New",
     images: [
       "/products/matin-trekon-rugged-smartwatch.webp",
@@ -357,6 +447,7 @@ export const products: Product[] = [
     price: 140,
     shareImage: "/products/matin-torvan-share.jpg",
     category: "tactical",
+    collections: ["tactical", "outdoor", "calling", "long-battery"],
     badge: "New",
     images: [
       "/products/matin-torvan-rugged-smartwatch-angle.webp",
@@ -469,6 +560,7 @@ export const products: Product[] = [
     price: 130,
     shareImage: "/products/matin-kaldor-share.jpg",
     category: "outdoor",
+    collections: ["outdoor", "tactical", "gps", "calling", "long-battery"],
     badge: "New",
     images: [
       "/products/matin-kaldor-rugged-smartwatch.webp",
