@@ -5499,7 +5499,7 @@ button.thumb:focus-visible {
   color: inherit;
 }
 
-/* Varkon battery: usage modes as day-cell strips (components/BatteryModes.tsx) */
+/* Varkon battery: animated mode ring + day strips (components/BatteryModes.tsx) */
 .vb-stage {
   position: relative;
   border: 1px solid var(--border);
@@ -5507,7 +5507,7 @@ button.thumb:focus-visible {
   padding: clamp(1.25rem, 4vw, 3rem);
   overflow: hidden;
   background:
-    radial-gradient(60% 50% at 0% 0%, rgba(224, 38, 43, 0.12), transparent 70%),
+    radial-gradient(55% 45% at 25% 40%, rgba(224, 38, 43, 0.14), transparent 70%),
     linear-gradient(160deg, #15171d 0%, #0d0e12 100%);
 }
 
@@ -5537,93 +5537,237 @@ button.thumb:focus-visible {
 
 .vb-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: clamp(1.5rem, 4vw, 3.5rem);
   align-items: center;
 }
 
+/* Ring + photo */
+.vb-figure {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1;
+}
+
+.vb-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.vb-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 12;
+}
+
+.vb-arc {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 18px rgba(255, 70, 50, 0.65));
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vb-tick {
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke 0.25s ease;
+}
+
+.vb-tick.on {
+  stroke: #ff6a4d;
+}
+
+/* Glowing dot at the end of the arc; the box is centred on the ring. */
+.vb-head {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vb-head span {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 4px rgba(255, 90, 60, 0.45),
+    0 0 22px 6px rgba(255, 70, 50, 0.8);
+  animation: vb-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes vb-pulse {
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(255, 90, 60, 0.15),
+      0 0 30px 10px rgba(255, 70, 50, 0.55);
+  }
+}
+
+.vb-photo {
+  position: absolute;
+  inset: 0;
+  transform: translateY(1.43%);
+  animation: vb-float 6s ease-in-out infinite;
+}
+
+.vb-photo img {
+  object-fit: contain;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.6));
+}
+
+@keyframes vb-float {
+  50% {
+    transform: translateY(-0.6%);
+  }
+}
+
+/* Mode buttons */
+.vb-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vb-tabs button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.vb-tabs button.is-on {
+  background: linear-gradient(180deg, #ff6a4d, #d91f2a);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(224, 38, 43, 0.35);
+}
+
+/* Readout */
 .vb-big {
   font-family: var(--font-sans), sans-serif;
   font-weight: 700;
-  font-size: clamp(5.5rem, 13vw, 9rem);
   line-height: 0.9;
-  letter-spacing: -0.06em;
   margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.vb-num {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
+  font-size: clamp(5rem, 11vw, 8rem);
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
   background: linear-gradient(180deg, #ffffff 30%, #9aa0ad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.vb-big span {
-  font-size: 0.26em;
-  letter-spacing: -0.01em;
-  margin-left: 0.4rem;
+.vb-unit {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
   color: #ff5a4f;
-  -webkit-text-fill-color: #ff5a4f;
 }
 
 .vb-big-label {
-  margin: 0.9rem 0 0.35rem;
+  margin: 0.8rem 0 0.3rem;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 .vb-big-text {
   margin: 0;
   color: var(--muted);
   line-height: 1.55;
-  max-width: 22rem;
+  min-height: 3.1em;
 }
 
-.vb-modes ul {
+/* Day strips */
+.vb-modes {
   list-style: none;
-  margin: 0;
+  margin: 1.5rem 0 0;
   padding: 0;
   display: grid;
-  gap: 1.4rem;
+  gap: 1rem;
+}
+
+.vb-mode {
+  opacity: 0.45;
+  transition: opacity 0.4s ease;
+}
+
+.vb-mode.is-on {
+  opacity: 1;
 }
 
 .vb-mode-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.45rem;
 }
 
 .vb-mode h3 {
   margin: 0;
   font-family: var(--font-sans), sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   text-transform: none;
   letter-spacing: 0;
 }
 
 .vb-mode-head strong {
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
 .vb-mode-head strong span {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--muted);
 }
 
-.vb-mode p {
-  margin: 0.5rem 0 0;
-  font-size: 0.88rem;
-  color: var(--muted);
-}
-
 .vb-cells {
+  position: relative;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   gap: 2px;
-  height: 26px;
+  height: 18px;
+  overflow: hidden;
+  border-radius: 3px;
 }
 
 .vb-cells i {
@@ -5633,32 +5777,31 @@ button.thumb:focus-visible {
 
 .vb-cells i.on {
   background: linear-gradient(180deg, #ff6a4d, #d91f2a);
-  box-shadow: 0 0 8px rgba(255, 70, 60, 0.35);
-  animation: vb-on 0.35s ease-out both;
 }
 
-.vb-mode:nth-child(2) .vb-cells i.on {
-  background: linear-gradient(180deg, #ff8a5c, #e8452f);
+/* A light sweep runs along the active strip. */
+.vb-mode.is-on .vb-cells::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: vb-sweep 2.2s ease-in-out infinite;
 }
 
-.vb-mode:nth-child(1) .vb-cells i.on {
-  background: linear-gradient(180deg, #c9cdd6, #8a909c);
-  box-shadow: none;
-}
-
-@keyframes vb-on {
+@keyframes vb-sweep {
   from {
-    opacity: 0.15;
+    transform: translateX(-110%);
   }
   to {
-    opacity: 1;
+    transform: translateX(360%);
   }
 }
 
 .vb-scale {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.9rem;
+  margin-top: 0.8rem;
   padding-top: 0.5rem;
   border-top: 1px solid var(--border);
   font-size: 0.75rem;
@@ -5694,22 +5837,36 @@ button.thumb:focus-visible {
   color: var(--muted);
 }
 
+.vb-paused .vb-head span,
+.vb-paused .vb-photo,
+.vb-paused .vb-cells::after {
+  animation-play-state: paused;
+}
+
 @media (max-width: 860px) {
   .vb-grid {
     grid-template-columns: 1fr;
   }
 
-  .vb-hero {
+  .vb-figure {
+    max-width: 340px;
+  }
+
+  .vb-tabs button {
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .vb-readout {
     text-align: center;
   }
 
-  .vb-big-text {
-    margin: 0 auto;
+  .vb-big {
+    justify-content: center;
   }
 
   .vb-cells {
     gap: 1px;
-    height: 22px;
   }
 
   .vb-facts {
@@ -5724,7 +5881,15 @@ button.thumb:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vb-cells i.on {
+  .vb-arc,
+  .vb-head,
+  .vb-tick {
+    transition: none;
+  }
+
+  .vb-head span,
+  .vb-photo,
+  .vb-mode.is-on .vb-cells::after {
     animation: none;
   }
 }

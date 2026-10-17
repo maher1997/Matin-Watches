@@ -277,6 +277,8 @@ export default async function ProductPage({ params }: Props) {
           name={product.name}
           mah={product.batteryModes.mah}
           charge={product.batteryModes.charge}
+          image={product.batteryModes.image}
+          imageAlt={product.batteryModes.imageAlt}
           modes={product.batteryModes.modes}
         />
       )}
