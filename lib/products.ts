@@ -374,7 +374,7 @@ export const products: Product[] = [
     ],
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Torvan is a round, military-style rugged smartwatch with a stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) is sharp and bright, and you can take calls right from your wrist over Bluetooth. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM water resistant, it is a tough outdoor smartwatch that works with both iPhone and Android.',
+      'The MATIN Torvan is a round, military-style rugged smartwatch with a stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) is sharp and bright, and you can take calls right from your wrist over Bluetooth. A built-in LED flashlight lights the way at night. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM water resistant, it is a tough outdoor smartwatch that works with both iPhone and Android.',
     highlights: [
       { value: '1.43"', label: "AMOLED screen" },
       { value: "30d", label: "Battery life" },
@@ -397,6 +397,7 @@ export const products: Product[] = [
       { group: "Sports", label: "Sport modes", value: "Walking, running, hiking, cycling, basketball, soccer, badminton, yoga, jump rope" },
       { group: "Sports", label: "Activity", value: "Steps, standing time, calories, real-time pace and distance, automatic goals" },
       { group: "Sports", label: "Sensors", value: "3-axis accelerometer and 3-axis gyroscope" },
+      { group: "Build", label: "Flashlight", value: "Built-in LED flashlight" },
       { group: "Build", label: "Case", value: "Stainless steel with liquid silicone" },
       { group: "Build", label: "Water resistance", value: "5ATM" },
       { group: "Build", label: "Strap", value: "Liquid silicone sport strap with two keepers" },
@@ -411,7 +412,7 @@ export const products: Product[] = [
       { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "Message and app notifications", "Find my phone"] },
       { title: "Health", icon: "health", items: ["24/7 heart rate", "Blood oxygen (SpO2)", "Sleep score", "Breathing training"] },
       { title: "Sport & activity", icon: "outdoor", items: ["9 sport modes", "Steps and distance", "Calorie tracker", "Real-time pace"] },
-      { title: "Everyday tools", icon: "tools", items: ["Weather", "Music control", "Stopwatch and timer", "Alarm and calendar"] },
+      { title: "Everyday tools", icon: "tools", items: ["LED flashlight", "Weather", "Music control", "Stopwatch and timer"] },
     ],
     healthMonitoring: true,
     sportModes: {
@@ -434,6 +435,10 @@ export const products: Product[] = [
       {
         q: "How long does the battery last?",
         a: "Up to 30 days with typical use, up to 18 days with heavy use and up to 60 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
+      },
+      {
+        q: "Does the MATIN Torvan have a flashlight?",
+        a: "Yes. It has a built-in LED flashlight, handy at night, when camping or when you drop something in the dark.",
       },
       {
         q: "Is the MATIN Torvan waterproof?",
