@@ -693,15 +693,15 @@ export const products: Product[] = [
     collections: ["tactical", "outdoor", "gps", "calling", "long-battery"],
     badge: "New",
     images: [
-      "/products/matin-varkon-rugged-smartwatch.webp",
       "/products/matin-varkon-angle-view.webp",
+      "/products/matin-varkon-rugged-smartwatch.webp",
       "/products/matin-varkon-front-view.webp",
       "/products/matin-varkon-heart-rate-sensor-back.webp",
       "/products/matin-varkon-side-buttons.webp",
     ],
     imageAlts: [
-      'MATIN Varkon rugged GPS smartwatch in black with a red crown, red side plate and 1.43" AMOLED display',
       "MATIN Varkon rugged smartwatch angled from the left with a red stainless steel side plate and armored screws",
+      'MATIN Varkon rugged GPS smartwatch in black with a red crown, red side plate and 1.43" AMOLED display',
       "MATIN Varkon front view with round AMOLED watch face showing time, heart rate, steps, air pressure and date",
       "Back of the MATIN Varkon with heart rate and blood oxygen sensor and magnetic charging pins",
       "MATIN Varkon side view with a red side plate between three metal buttons and black silicone strap",
