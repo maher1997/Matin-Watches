@@ -57,6 +57,15 @@ export type Product = {
   batteryShowcase?: { mah: number; days: string };
   // Battery section comparing usage modes as day strips (used instead of
   // batteryShowcase). Put the longest mode last.
+  // Liquid battery drawn on the watch's own screen (photo + screen circle in %).
+  batteryLiquid?: {
+    mah: number;
+    image: string;
+    imageAlt: string;
+    screen: { cx: number; cy: number; r: number };
+    modes: { label: string; days: number; text: string }[];
+    facts: { value: string; label: string }[];
+  };
   batteryModes?: { mah: number; charge: string; image: string; imageAlt: string; modes: { label: string; days: number; text: string }[] };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
@@ -508,6 +517,22 @@ export const products: Product[] = [
       { title: "Sport & activity", icon: "outdoor", items: ["9 sport modes", "Steps and distance", "Calorie tracker", "Real-time pace"] },
       { title: "Everyday tools", icon: "tools", items: ["LED flashlight", "Weather", "Music control", "Stopwatch and timer"] },
     ],
+    batteryLiquid: {
+      mah: 550,
+      image: "/products/matin-torvan-front-view.webp",
+      imageAlt: "MATIN Torvan front view with its round AMOLED screen showing the battery level",
+      screen: { cx: 49.6, cy: 48.8, r: 24.8 },
+      modes: [
+        { label: "Heavy use", days: 18, text: "Lots of calls, workouts and notifications." },
+        { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
+        { label: "Power saving", days: 60, text: "Stretch the battery when you are away from a charger." },
+      ],
+      facts: [
+        { value: "550 mAh", label: "Battery" },
+        { value: "573 min", label: "Talk time" },
+        { value: "1.5 h", label: "Magnetic charge" },
+      ],
+    },
     healthMonitoring: true,
     sportModes: {
       count: "9",

@@ -5893,3 +5893,370 @@ button.thumb:focus-visible {
     animation: none;
   }
 }
+
+/* Torvan battery: liquid fill on the watch's own screen (components/BatteryLiquid.tsx) */
+.bl-stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  overflow: hidden;
+  background:
+    radial-gradient(50% 50% at 28% 55%, rgba(47, 98, 224, 0.22), transparent 70%),
+    linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
+}
+
+.bl .sec-head h2 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  line-height: 1.05;
+}
+
+.bl .sec-head .grad {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #7d8597;
+}
+
+.bl .sec-head .eyebrow {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #6b9bff;
+}
+
+.bl-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.bl-watch {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1;
+}
+
+.bl-watch img {
+  object-fit: contain;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.65));
+}
+
+/* The live face sits exactly over the photo's round screen. */
+.bl-screen {
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #0d1424 0%, #04060b 75%);
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.bl-liquid {
+  position: absolute;
+  inset: 0;
+  top: 0;
+  background: linear-gradient(180deg, #3f7dff 0%, #2453d6 45%, #102a7a 100%);
+  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bl-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 9cqw;
+  bottom: 100%;
+  margin-bottom: -1px;
+  background-repeat: repeat-x;
+  background-size: 50cqw 100%;
+}
+
+.bl-wave-front {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 Q50 2 100 20 T200 20 V40 H0Z' fill='%233f7dff'/%3E%3C/svg%3E");
+  animation: bl-wave 3.2s linear infinite;
+}
+
+.bl-wave-back {
+  bottom: calc(100% + 1.2cqw);
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 Q50 38 100 20 T200 20 V40 H0Z' fill='%235fd6d0'/%3E%3C/svg%3E");
+  animation: bl-wave 5.4s linear infinite reverse;
+}
+
+@keyframes bl-wave {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 50cqw;
+  }
+}
+
+.bl-bubbles i {
+  position: absolute;
+  bottom: -4cqw;
+  width: 2.2cqw;
+  height: 2.2cqw;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0.6cqw rgba(255, 255, 255, 0.6);
+  animation: bl-bubble 4.5s ease-in infinite;
+}
+
+.bl-bubbles i:nth-child(1) { left: 18%; animation-delay: 0s; }
+.bl-bubbles i:nth-child(2) { left: 30%; animation-delay: 1.6s; width: 1.4cqw; height: 1.4cqw; }
+.bl-bubbles i:nth-child(3) { left: 42%; animation-delay: 3.1s; }
+.bl-bubbles i:nth-child(4) { left: 55%; animation-delay: 0.8s; width: 1.2cqw; height: 1.2cqw; }
+.bl-bubbles i:nth-child(5) { left: 66%; animation-delay: 2.4s; }
+.bl-bubbles i:nth-child(6) { left: 76%; animation-delay: 3.8s; width: 1.6cqw; height: 1.6cqw; }
+.bl-bubbles i:nth-child(7) { left: 24%; animation-delay: 2.9s; width: 1cqw; height: 1cqw; }
+.bl-bubbles i:nth-child(8) { left: 61%; animation-delay: 1.2s; width: 1.8cqw; height: 1.8cqw; }
+.bl-bubbles i:nth-child(9) { left: 84%; animation-delay: 0.4s; width: 1.1cqw; height: 1.1cqw; }
+
+@keyframes bl-bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-95cqw);
+    opacity: 0;
+  }
+}
+
+.bl-ticks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bl-ticks line {
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease;
+}
+
+.bl-ticks line.on {
+  stroke: #ffffff;
+}
+
+.bl-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 0.5cqw 2cqw rgba(0, 10, 40, 0.55);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.bl-mah {
+  font-size: 5.5cqw;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+
+.bl-num {
+  font-size: 34cqw;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.bl-days {
+  font-size: 8cqw;
+  font-weight: 600;
+  margin-top: -1cqw;
+}
+
+.bl-mode {
+  margin-top: 2.5cqw;
+  font-size: 5cqw;
+  font-weight: 600;
+  padding: 0.8cqw 3cqw;
+  border-radius: 99px;
+  background: rgba(0, 10, 40, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Glass reflection over the whole screen. */
+.bl-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, transparent 38%);
+  box-shadow: inset 0 0 6cqw rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+/* Mode cards */
+.bl-modes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.bl-card {
+  appearance: none;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem 1.15rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s ease;
+}
+
+.bl-card.is-on {
+  border-color: rgba(107, 155, 255, 0.6);
+  background: linear-gradient(135deg, rgba(47, 98, 224, 0.22), rgba(47, 98, 224, 0.06));
+  box-shadow: 0 12px 30px -12px rgba(47, 98, 224, 0.6);
+  transform: translateX(4px);
+}
+
+.bl-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.bl-card-label {
+  font-weight: 600;
+}
+
+.bl-card-days {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.bl-card-days small {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.bl-pill {
+  display: block;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.bl-pill span {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #2453d6, #5fd6d0);
+}
+
+.bl-card.is-on .bl-pill span {
+  background: linear-gradient(90deg, #2453d6, #6b9bff, #5fd6d0, #6b9bff, #2453d6);
+  background-size: 200% 100%;
+  animation: bl-flow 2.4s linear infinite;
+}
+
+@keyframes bl-flow {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.bl-card-text {
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.bl-facts {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.bl-facts li {
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.bl-facts strong {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.bl-facts span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.bl-paused .bl-wave,
+.bl-paused .bl-bubbles i,
+.bl-paused .bl-pill span {
+  animation-play-state: paused;
+}
+
+@media (max-width: 860px) {
+  .bl-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bl-watch {
+    max-width: 380px;
+  }
+
+  .bl-card.is-on {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-liquid,
+  .bl-ticks line,
+  .bl-card {
+    transition: none;
+  }
+
+  .bl-wave,
+  .bl-bubbles i,
+  .bl-pill span {
+    animation: none;
+  }
+}
