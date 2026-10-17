@@ -59,6 +59,19 @@ const lineup: {
       build: "Zinc alloy case, flashlight",
     },
   },
+  {
+    slug: "matin-varkon",
+    bestFor: "GPS, calls and tough jobs",
+    rows: {
+      screen: '1.43" AMOLED, round, 1000 nits',
+      gps: "Yes, 6 systems",
+      calls: "Yes, from your wrist",
+      battery: "Up to 30 days (60 saving), 500mAh",
+      water: "5ATM, IP69K",
+      sports: "170+",
+      build: "316L steel case",
+    },
+  },
 ];
 
 const rowLabels: [keyof (typeof lineup)[number]["rows"], string][] = [
@@ -105,15 +118,15 @@ const collIcons: Record<CollectionId, React.ReactNode> = {
 const faq = [
   {
     q: "Which MATIN smartwatch has GPS?",
-    a: "The MATIN Trekon and the MATIN Kaldor both have built-in GPS to track your route, distance and pace. The MATIN Torvan does not have GPS.",
+    a: "The MATIN Trekon, Kaldor and Varkon have built-in GPS to track your route, distance and pace. The MATIN Torvan does not have GPS.",
   },
   {
     q: "Which MATIN watches can take calls?",
-    a: "The MATIN Torvan and the MATIN Kaldor let you answer and make calls from your wrist over Bluetooth. The MATIN Trekon shows call alerts from your phone.",
+    a: "The MATIN Torvan, Kaldor and Varkon let you answer and make calls from your wrist over Bluetooth. The MATIN Trekon shows call alerts from your phone.",
   },
   {
     q: "How long does the battery last?",
-    a: "Every MATIN watch lasts up to 30 days on one charge with typical use. Using GPS, calls or the flashlight a lot shortens it. All of them charge with a magnetic cable.",
+    a: "Every MATIN watch lasts up to 30 days on one charge with typical use, and the Torvan and Varkon up to 60 days in power-saving mode. Using GPS, calls or the flashlight a lot shortens it. All of them charge with a magnetic cable.",
   },
   {
     q: "Do MATIN watches work with iPhone and Android?",
@@ -121,7 +134,7 @@ const faq = [
   },
   {
     q: "Are MATIN watches waterproof?",
-    a: "They are water resistant: the Trekon and Kaldor are rated 3ATM and the Torvan 5ATM. Rain, sweat, splashes and washing your hands are fine. They are not made for diving.",
+    a: "They are water resistant: the Trekon and Kaldor are rated 3ATM, the Torvan 5ATM and the Varkon 5ATM and IP69K. Rain, sweat, splashes and washing your hands are fine. They are not made for diving.",
   },
   {
     q: "How much is shipping, and can I return my watch?",
@@ -194,7 +207,7 @@ export default function Home() {
           eyebrow="The lineup"
           title={
             <>
-              Three watches. <span className="grad">Find yours.</span>
+              Four watches. <span className="grad">Find yours.</span>
             </>
           }
           intro="Every MATIN watch is rugged and lasts up to 30 days. Here is how they differ."
