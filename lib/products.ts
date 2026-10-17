@@ -592,7 +592,7 @@ export const products: Product[] = [
       "Back of the army green MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
       "MATIN Kaldor tactical GPS smartwatch in slate blue with a compass bezel, yellow LED flashlight and blue silicone strap",
       "MATIN Kaldor slate blue front view with an orange tactical watch face on the round AMOLED screen",
-      "MATIN Kaldor slate blue rugged smartwatch angled view with armored screws and textured grip keys",
+      "MATIN Kaldor slate blue rugged smartwatch angled from the left with textured side buttons and metal buckle",
       "MATIN Kaldor slate blue side view with three textured buttons and armored case",
       "Back of the slate blue MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
     ],
