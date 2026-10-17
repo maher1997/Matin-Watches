@@ -55,6 +55,9 @@ export type Product = {
   healthMonitoring?: boolean;
   // Animated battery section: capacity in mAh and the battery life range in days.
   batteryShowcase?: { mah: number; days: string };
+  // Battery section comparing usage modes as day strips (used instead of
+  // batteryShowcase). Put the longest mode last.
+  batteryModes?: { mah: number; charge: string; modes: { label: string; days: number; text: string }[] };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
@@ -751,7 +754,15 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
-    batteryShowcase: { mah: 500, days: "18 – 60" },
+    batteryModes: {
+      mah: 500,
+      charge: "1.5 h",
+      modes: [
+        { label: "Heavy use", days: 18, text: "GPS workouts, calls and lots of notifications." },
+        { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
+        { label: "Power-saving mode", days: 60, text: "Stretch the battery on long trips away from a charger." },
+      ],
+    },
     faq: [
       {
         q: "How long does the MATIN Varkon battery last?",

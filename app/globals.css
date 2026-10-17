@@ -5498,3 +5498,233 @@ button.thumb:focus-visible {
   text-decoration: none;
   color: inherit;
 }
+
+/* Varkon battery: usage modes as day-cell strips (components/BatteryModes.tsx) */
+.vb-stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  overflow: hidden;
+  background:
+    radial-gradient(60% 50% at 0% 0%, rgba(224, 38, 43, 0.12), transparent 70%),
+    linear-gradient(160deg, #15171d 0%, #0d0e12 100%);
+}
+
+.vb .sec-head h2 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  line-height: 1.05;
+}
+
+.vb .sec-head .grad {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #7d8597;
+}
+
+.vb .sec-head .eyebrow {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #ff5a4f;
+}
+
+.vb-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.vb-big {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-size: clamp(5.5rem, 13vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  margin: 0;
+  background: linear-gradient(180deg, #ffffff 30%, #9aa0ad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vb-big span {
+  font-size: 0.26em;
+  letter-spacing: -0.01em;
+  margin-left: 0.4rem;
+  color: #ff5a4f;
+  -webkit-text-fill-color: #ff5a4f;
+}
+
+.vb-big-label {
+  margin: 0.9rem 0 0.35rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.vb-big-text {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 22rem;
+}
+
+.vb-modes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.4rem;
+}
+
+.vb-mode-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.55rem;
+}
+
+.vb-mode h3 {
+  margin: 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.vb-mode-head strong {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.vb-mode-head strong span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.vb-mode p {
+  margin: 0.5rem 0 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.vb-cells {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 2px;
+  height: 26px;
+}
+
+.vb-cells i {
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.vb-cells i.on {
+  background: linear-gradient(180deg, #ff6a4d, #d91f2a);
+  box-shadow: 0 0 8px rgba(255, 70, 60, 0.35);
+  animation: vb-on 0.35s ease-out both;
+}
+
+.vb-mode:nth-child(2) .vb-cells i.on {
+  background: linear-gradient(180deg, #ff8a5c, #e8452f);
+}
+
+.vb-mode:nth-child(1) .vb-cells i.on {
+  background: linear-gradient(180deg, #c9cdd6, #8a909c);
+  box-shadow: none;
+}
+
+@keyframes vb-on {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.vb-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.9rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.vb-facts {
+  list-style: none;
+  margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.vb-facts li {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.025);
+  display: grid;
+  gap: 0.2rem;
+}
+
+.vb-facts strong {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.vb-facts span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  .vb-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vb-hero {
+    text-align: center;
+  }
+
+  .vb-big-text {
+    margin: 0 auto;
+  }
+
+  .vb-cells {
+    gap: 1px;
+    height: 22px;
+  }
+
+  .vb-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .vb-facts li {
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-cells i.on {
+    animation: none;
+  }
+}
