@@ -356,7 +356,7 @@ export const products: Product[] = [
     tagline: "Round rugged smartwatch with sapphire glass and Bluetooth calls",
     price: 140,
     shareImage: "/products/matin-torvan-share.jpg",
-    category: "outdoor",
+    category: "tactical",
     badge: "New",
     images: [
       "/products/matin-torvan-rugged-smartwatch-angle.webp",
