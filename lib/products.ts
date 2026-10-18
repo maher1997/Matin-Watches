@@ -180,7 +180,7 @@ export const collections: {
     title: "Long battery",
     heading: "Rugged smartwatches with long battery life",
     intro:
-      "Every watch here lasts up to 30 days on one charge with typical use, so you charge it a few times a month instead of every night.",
+      "Every watch here lasts up to 30 days on one charge with light use or power saving, so you charge it a few times a month instead of every night.",
     seoTitle: "Rugged Smartwatches with Long Battery Life (30 Days)",
     seoDescription:
       "Rugged smartwatches with long battery life: up to 30 days on one charge, tough metal cases, AMOLED screens and GPS or calling. Free US shipping.",
@@ -526,10 +526,10 @@ export const products: Product[] = [
     ],
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Torvan is a round, military-style rugged smartwatch with a 316L stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays sharp and easy to read in the sun, and you can take calls right from your wrist over Bluetooth. A built-in LED flashlight lights the way at night. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM and IP69K and tested to MIL-STD-810H for heat, cold, salt spray, humidity and shock, it is a tough outdoor smartwatch that works with both iPhone and Android.',
+      'The MATIN Torvan is a round, military-style rugged smartwatch with a 316L stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays sharp and easy to read in the sun, and you can take calls right from your wrist over Bluetooth. A built-in LED flashlight lights the way at night. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts about 14 days with typical use and up to 30 days in power-saving mode. Rated 5ATM and IP69K and tested to MIL-STD-810H for heat, cold, salt spray, humidity and shock, it is a tough outdoor smartwatch that works with both iPhone and Android.',
     highlights: [
       { value: '1.43"', label: "AMOLED screen" },
-      { value: "30d", label: "Battery life" },
+      { value: "14d", label: "Typical battery" },
       { value: "IP69K", label: "& 5ATM" },
       { value: "Calls", label: "From your wrist" },
     ],
@@ -543,7 +543,7 @@ export const products: Product[] = [
       { group: "Display", label: "Glass", value: "Sapphire glass" },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "550mAh" },
-      { group: "Battery", label: "Battery life", value: "Up to 30 days typical, 18 days heavy use, 60 days power saving" },
+      { group: "Battery", label: "Battery life", value: "About 14 days typical, 6 days heavy use, up to 30 days power saving" },
       { group: "Battery", label: "Talk time", value: "Up to 573 minutes" },
       { group: "Battery", label: "Charging", value: "Magnetic charger, about 1.5 hours" },
       { group: "Health", label: "Heart rate", value: "Continuous, every minute, plus daily resting heart rate" },
@@ -579,9 +579,9 @@ export const products: Product[] = [
       imageAlt: "MATIN Torvan front view with its round AMOLED screen showing the battery level",
       screen: { cx: 49.6, cy: 48.8, r: 24.8 },
       modes: [
-        { label: "Heavy use", days: 18, text: "Lots of calls, workouts and notifications." },
-        { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
-        { label: "Power saving", days: 60, text: "Stretch the battery when you are away from a charger." },
+        { label: "Heavy use", days: 6, text: "Lots of calls, workouts and notifications." },
+        { label: "Typical use", days: 14, text: "Everyday wear with health tracking and notifications." },
+        { label: "Power saving", days: 30, text: "Stretch the battery when you are away from a charger." },
       ],
       facts: [
         { value: "550 mAh", label: "Battery" },
@@ -609,7 +609,7 @@ export const products: Product[] = [
       },
       {
         q: "How long does the battery last?",
-        a: "Up to 30 days with typical use, up to 18 days with heavy use and up to 60 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
+        a: "About 14 days with typical use, about 6 days with heavy use and up to 30 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
       },
       {
         q: "Does the MATIN Torvan have a flashlight?",
@@ -811,7 +811,7 @@ export const products: Product[] = [
   {
     slug: "matin-varkon",
     name: "MATIN Varkon",
-    tagline: "Rugged GPS smartwatch with Bluetooth calls and up to 60 days battery",
+    tagline: "Rugged GPS smartwatch with Bluetooth calls and up to 30 days battery",
     price: 180,
     shareImage: "/products/matin-varkon-share.jpg",
     category: "tactical",
@@ -846,9 +846,9 @@ export const products: Product[] = [
       { name: "Orange / Silver", hex: "#f08a1c", from: 5 },
     ],
     description:
-      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red or orange details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes, from triathlon to open water swimming. The 500mAh battery lasts up to 30 days with typical use and up to 60 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
+      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red or orange details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes, from triathlon to open water swimming. The 500mAh battery lasts about 12 days with typical use and up to 30 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
     highlights: [
-      { value: "60d", label: "Battery life" },
+      { value: "30d", label: "Power saving" },
       { value: "GPS", label: "6 satellite systems" },
       { value: "Calls", label: "From your wrist" },
       { value: "IP69K", label: "& 5ATM" },
@@ -860,7 +860,7 @@ export const products: Product[] = [
       { group: "Display", label: "Glass", value: "Corning Gorilla Glass" },
       { group: "Display", label: "Always-on", value: "Always-on display mode and raise to wake" },
       { group: "Battery", label: "Capacity", value: "500mAh Li-polymer" },
-      { group: "Battery", label: "Battery life", value: "Up to 30 days typical, 18 days heavy use, 60 days power saving" },
+      { group: "Battery", label: "Battery life", value: "About 12 days typical, 5 days heavy use, up to 30 days power saving" },
       { group: "Battery", label: "Charging", value: "Magnetic charger, about 1.5 hours" },
       { group: "GPS & outdoor", label: "GPS", value: "Built-in, 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS, NavIC)" },
       { group: "GPS & outdoor", label: "Routes", value: "Real-time track and track back to your start point" },
@@ -904,22 +904,22 @@ export const products: Product[] = [
       screen: { cx: 49.5, cy: 47.21, r: 26.07 },
       look: "rings",
       intro:
-        "The MATIN Varkon runs on a 500mAh battery: up to 30 days of everyday wear, and up to 60 days in power-saving mode.",
+        "The MATIN Varkon runs on a 500mAh battery: about 12 days of everyday wear, and up to 30 days in power-saving mode.",
       modes: [
-        { label: "Heavy use", days: 18, text: "GPS workouts, calls and lots of notifications." },
-        { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
-        { label: "Power saving", days: 60, text: "Stretch the battery on long trips away from a charger." },
+        { label: "Heavy use", days: 5, text: "GPS workouts, calls and lots of notifications." },
+        { label: "Typical use", days: 12, text: "Everyday wear with health tracking and notifications." },
+        { label: "Power saving", days: 30, text: "Stretch the battery on long trips away from a charger." },
       ],
       facts: [
         { value: "500 mAh", label: "Battery" },
         { value: "1.5 h", label: "Magnetic charge" },
-        { value: "60 days", label: "Power saving" },
+        { value: "30 days", label: "Power saving" },
       ],
     },
     faq: [
       {
         q: "How long does the MATIN Varkon battery last?",
-        a: "Up to 30 days with typical use, up to 18 days with heavy use and up to 60 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
+        a: "About 12 days with typical use, about 5 days with heavy GPS use and up to 30 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
       },
       {
         q: "Does the MATIN Varkon have GPS?",
@@ -958,9 +958,9 @@ export const products: Product[] = [
         a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
       },
     ],
-    seoTitle: "MATIN Varkon Rugged GPS Smartwatch | 60 Day Battery",
+    seoTitle: "MATIN Varkon Rugged GPS Smartwatch | 30 Day Battery",
     seoDescription:
-      'MATIN Varkon rugged GPS smartwatch for men: 60 day battery, Bluetooth calls, 1.43" AMOLED, compass, altimeter, heart rate, SpO2, 5ATM and IP69K.',
+      'MATIN Varkon rugged GPS smartwatch for men: 30 day battery, Bluetooth calls, 1.43" AMOLED, compass, altimeter, heart rate, SpO2, 5ATM and IP69K.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#e0262b" },
   },
 ];

@@ -27,7 +27,7 @@ const lineup: {
       screen: '1.95" AMOLED, square',
       gps: "Yes",
       calls: "Call alerts",
-      battery: "Up to 30 days, 1000mAh",
+      battery: "11 to 30 days, 1000mAh",
       water: "3ATM",
       sports: "170+",
       build: "Zinc alloy case",
@@ -40,7 +40,7 @@ const lineup: {
       screen: '1.43" AMOLED, round',
       gps: "No",
       calls: "Yes, from your wrist",
-      battery: "Up to 30 days, 550mAh",
+      battery: "About 14 days (30 saving), 550mAh",
       water: "5ATM",
       sports: "9",
       build: "Steel case, sapphire glass",
@@ -53,7 +53,7 @@ const lineup: {
       screen: '1.43" AMOLED, round',
       gps: "Yes, multi-system",
       calls: "Yes, from your wrist",
-      battery: "Up to 30 days, 530mAh",
+      battery: "7 to 15 days, 530mAh",
       water: "3ATM",
       sports: "Multiple",
       build: "Zinc alloy case, flashlight",
@@ -66,7 +66,7 @@ const lineup: {
       screen: '1.43" AMOLED, round, 1000 nits',
       gps: "Yes, 6 systems",
       calls: "Yes, from your wrist",
-      battery: "Up to 30 days (60 saving), 500mAh",
+      battery: "About 12 days (30 saving), 500mAh",
       water: "5ATM, IP69K",
       sports: "170+",
       build: "316L steel case",
@@ -92,7 +92,7 @@ const reasons = [
   },
   {
     title: "Weeks on one charge",
-    text: "Every MATIN watch lasts up to 30 days, so you charge it a few times a month, not every night.",
+    text: "MATIN watches last up to 30 days on one charge, so you charge them a few times a month, not every night.",
     icon: <path d="M4 8h14v8H4zM18 11h2v2h-2zM7 11h5" />,
   },
   {
@@ -126,7 +126,7 @@ const faq = [
   },
   {
     q: "How long does the battery last?",
-    a: "Every MATIN watch lasts up to 30 days on one charge with typical use, and the Torvan and Varkon up to 60 days in power-saving mode. Using GPS, calls or the flashlight a lot shortens it. All of them charge with a magnetic cable.",
+    a: "It depends on the watch: about 7 to 20 days with typical use, and up to 30 days with light use or power saving. Using GPS, calls or the flashlight a lot shortens it. All of them charge with a magnetic cable.",
   },
   {
     q: "Do MATIN watches work with iPhone and Android?",
@@ -210,7 +210,7 @@ export default function Home() {
               Four watches. <span className="grad">Find yours.</span>
             </>
           }
-          intro="Every MATIN watch is rugged and lasts up to 30 days. Here is how they differ."
+          intro="Every MATIN watch is rugged and goes for days between charges. Here is how they differ."
         />
         <div className="lp-compare">
           {real.map(({ product: p, bestFor, rows }) => (
