@@ -276,6 +276,7 @@ export const products: Product[] = [
       { group: "Smart features", label: "Tools", value: "Alarm, calendar, calculator, world time" },
       { group: "Smart features", label: "Camera", value: "None" },
       { group: "In the box", label: "Includes", value: "MATIN Trekon watch, magnetic charging cable" },
+      { group: "In the box", label: "Package", value: "4.3 x 4.3 x 2.8 in (11 x 11 x 7 cm), 0.44 lb (0.2 kg) shipping weight" },
     ],
     features: [
       "Built-in GPS",
