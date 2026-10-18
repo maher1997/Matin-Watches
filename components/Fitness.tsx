@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import SectionHead from "@/components/SectionHead";
 import useShowcase from "@/components/useShowcase";
-import Pool, { POOL_STILL } from "@/components/fitness/Pool";
+import Multi from "@/components/fitness/Multi";
 import Tri, { TRI_STILL } from "@/components/fitness/Tri";
 
-// Animated sport section that is not drawn on the watch: a top-down pool
-// with a live swim log (Kaldor) or a triathlon course drawing itself swim,
+// Animated sport section that is not drawn on the watch: every sport in its
+// own animated place with a live workout log (Kaldor), or a triathlon course drawing itself swim,
 // bike, run (Varkon). One clock drives the scene while it is on screen;
 // without JavaScript, or with reduced motion, a finished frame shows.
 export default function Fitness({
@@ -16,11 +16,11 @@ export default function Fitness({
   count,
 }: {
   name: string;
-  look: "pool" | "tri";
+  look: "multi" | "tri";
   count: string;
 }) {
   const { ref, live, reduced } = useShowcase(1);
-  const still = look === "pool" ? POOL_STILL : TRI_STILL;
+  const still = look === "multi" ? 1 : TRI_STILL;
   const [t, setT] = useState(still);
   const clock = useRef(still);
 
@@ -38,15 +38,15 @@ export default function Fitness({
   }, [live, reduced]);
 
   const head =
-    look === "pool"
+    look === "multi"
       ? {
-          eyebrow: "Sport & swim",
+          eyebrow: "Sport modes",
           title: (
             <>
-              Train hard. <span className="grad">Swim smart.</span>
+              Run, ride, climb. <span className="grad">Then swim.</span>
             </>
           ),
-          intro: `${count} sport modes on the ${name}, from running and cycling to rock climbing, plus swim tracking in the pool and open water.`,
+          intro: `${count} sport modes on the ${name}. Here are a few of them, each with its own live workout log.`,
         }
       : {
           eyebrow: "Sport & triathlon",
@@ -72,8 +72,8 @@ export default function Fitness({
           title={head.title}
           intro={head.intro}
         />
-        {look === "pool" ? (
-          <Pool t={t} count={count} />
+        {look === "multi" ? (
+          <Multi t={t} count={count} />
         ) : (
           <Tri t={t} count={count} />
         )}

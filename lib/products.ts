@@ -58,10 +58,10 @@ export type Product = {
   // with built-in GPS. screens: route map, satellite systems, compass,
   // altitude. systems lists the satellite systems the listing names.
   gps?: { screens: ("route" | "sats" | "compass" | "alt")[]; systems?: string[]; barometric?: boolean };
-  // Animated sport section that is not drawn on the watch: "pool" (swim
-  // tracking in a pool, Kaldor) or "tri" (triathlon swim, bike, run, Varkon).
+  // Animated sport section that is not drawn on the watch: "multi" (each
+  // sport in its own animated place, Kaldor) or "tri" (triathlon swim, bike, run, Varkon).
   // count is the number of sport modes the listing gives.
-  fitness?: { look: "pool" | "tri"; count: string };
+  fitness?: { look: "multi" | "tri"; count: string };
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
   // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "rings" green rings. Longest mode last.
@@ -750,7 +750,7 @@ export const products: Product[] = [
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
     gps: { screens: ["route", "sats", "compass"], systems: ["GPS", "GLONASS", "BeiDou", "Galileo", "QZSS"] },
-    fitness: { look: "pool", count: "30+" },
+    fitness: { look: "multi", count: "30+" },
     health: { metrics: ["hr", "sleep", "activity"] },
     batteryLiquid: {
       mah: 530,
