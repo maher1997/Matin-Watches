@@ -714,6 +714,7 @@ export const products: Product[] = [
     ],
     specs: [
       { group: "Display", label: "Screen", value: '1.43" AMOLED touchscreen' },
+      { group: "Display", label: "Resolution", value: "466 x 466 pixels" },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "530mAh" },
       { group: "Battery", label: "Battery life", value: "11 to 30 days, depending on use" },
@@ -727,12 +728,15 @@ export const products: Product[] = [
       { group: "Sports", label: "Sport modes", value: "Multiple modes, including running, walking, cycling, fitness, climbing and swimming" },
       { group: "Build", label: "Case", value: "Zinc alloy middle frame with armored screws" },
       { group: "Build", label: "Water resistance", value: "3ATM" },
-      { group: "Build", label: "Strap", value: "Silicone sport strap, fits 150 to 260 mm wrists" },
+      { group: "Build", label: "Size", value: "49 mm wide, 13.9 mm thick (1.93 x 0.55 in)" },
+      { group: "Build", label: "Strap", value: "Silicone sport strap, 91 mm + 136 mm, fits 150 to 260 mm (5.9 to 10.2 in) wrists" },
       { group: "Smart features", label: "Calls", value: "Bluetooth calls from your wrist" },
       { group: "Smart features", label: "Notifications", value: "Call and message reminders, push notifications" },
       { group: "Smart features", label: "Tools", value: "World time, calendar, calculator, alarm clock" },
       { group: "Smart features", label: "Camera", value: "No camera" },
-      { group: "Smart features", label: "Phone app", value: "Works with iPhone and Android" },
+      { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
+      { group: "Smart features", label: "Phone app", value: "Works with iPhone (iOS 11+) and Android (5.0+)" },
+      { group: "In the box", label: "Package", value: "4.3 x 4.3 x 2.8 in (11 x 11 x 7 cm), 0.44 lb (0.2 kg) shipping weight" },
     ],
     featureGroups: [
       { title: "Outdoor & navigation", icon: "outdoor", items: ["Multi-system GPS", "LED flashlight, 3 modes", "Compass", "Altitude meter"] },
@@ -783,7 +787,11 @@ export const products: Product[] = [
       },
       {
         q: "What is the screen like?",
-        a: "A round 1.43 inch AMOLED touchscreen that stays bright and easy to read outdoors.",
+        a: "A round 1.43 inch AMOLED touchscreen at 466 x 466 pixels that stays bright and easy to read outdoors.",
+      },
+      {
+        q: "Does it work with iPhone and Android?",
+        a: "Yes. It works with iPhone (iOS 11 or newer) and Android (5.0 or newer) over Bluetooth 5.3.",
       },
       {
         q: "Is the MATIN Kaldor certified for the USA?",
