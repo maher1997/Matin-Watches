@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
 import SectionHead from "@/components/SectionHead";
-import { HeartScene, MiniWatch, OxygenScene, RESTING, RestingScene } from "@/components/health/visuals";
+import HealthWatch from "@/components/health/faces";
+import { RESTING } from "@/components/health/visuals";
 
 // Animated health monitoring showcase: heart rate, daily resting heart rate
 // and blood oxygen. Everything is visible without JavaScript; JS only adds
@@ -200,21 +201,16 @@ export default function HealthMonitoring() {
             onTouchEnd={onTouchEnd}
           >
             <span className="hm-badge">Illustrative</span>
-            <div className={`hm-scene${active === 0 ? " on" : ""}`} aria-hidden={active !== 0} inert={active !== 0}>
-              <HeartScene bpm={BPMS[bpmStep]} />
-            </div>
-            <div className={`hm-scene${active === 1 ? " on" : ""}`} aria-hidden={active !== 1} inert={active !== 1}>
-              <RestingScene
-                pick={restPick}
-                onPick={(i) => {
-                  touch();
-                  setRestPick(i);
-                }}
-              />
-            </div>
-            <div className={`hm-scene${active === 2 ? " on" : ""}`} aria-hidden={active !== 2} inert={active !== 2}>
-              <OxygenScene value={o2} />
-            </div>
+            <HealthWatch
+              active={active}
+              bpm={BPMS[bpmStep]}
+              restPick={restPick}
+              onPick={(i) => {
+                touch();
+                setRestPick(i);
+              }}
+              o2={o2}
+            />
             <div className="hm-dots" aria-hidden="true">
               {METRICS.map((t, i) => (
                 <span key={t.id} className={i === active ? "on" : ""} />
@@ -240,7 +236,6 @@ export default function HealthMonitoring() {
               </div>
               <p className="hm-caption">{sub(m.caption)}</p>
             </div>
-            <MiniWatch metric={active} bpm={BPMS[bpmStep]} />
           </div>
         </div>
 
