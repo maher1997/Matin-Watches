@@ -6064,10 +6064,10 @@ button.thumb:focus-visible {
 
 .bl-cells {
   position: absolute;
-  inset: 5% 6%;
+  inset: 1.6%;
   display: flex;
   flex-direction: column-reverse;
-  gap: 2.6cqw;
+  gap: 1.3cqw;
   clip-path: var(--clip);
   -webkit-clip-path: var(--clip);
 }
@@ -6075,7 +6075,7 @@ button.thumb:focus-visible {
 .bl-cells i {
   position: relative;
   flex: 1;
-  border-radius: 2.6cqw;
+  border-radius: 1.2cqw;
   background: rgba(255, 255, 255, 0.045);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
   overflow: hidden;
@@ -6090,7 +6090,7 @@ button.thumb:focus-visible {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 38%, rgba(0, 0, 0, 0) 70%, rgba(0, 40, 0, 0.3) 100%),
     linear-gradient(90deg, #7ccf2b 0%, #c6ff4d 24%, #a3e83a 47%, #b4dc84 49.5%, #86c94a 52%, #5fa52c 76%, #3a7a1a 100%);
-  box-shadow: 0 0 3cqw rgba(150, 235, 60, 0.35);
+  box-shadow: 0 0 1.6cqw rgba(150, 235, 60, 0.3);
   opacity: 0;
   transform: scaleY(0.4);
   transition:
@@ -6128,7 +6128,7 @@ button.thumb:focus-visible {
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
   transform: translateX(0);
   animation: bl-cell-sweep 3s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.12s);
+  animation-delay: calc(var(--i) * 0.07s);
 }
 
 @keyframes bl-cell-sweep {

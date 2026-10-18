@@ -14,7 +14,7 @@ import SectionHead from "@/components/SectionHead";
 // mode; motion is an extra and pauses off screen.
 
 const STEP_MS = 4800;
-const CELLS = 6;
+const CELLS = 15;
 
 export default function BatteryLiquid({
   name,
@@ -174,7 +174,7 @@ export default function BatteryLiquid({
                             : undefined
                         }
                         style={{
-                          ["--d" as string]: `${(lit ? i : CELLS - 1 - i) * 120}ms`,
+                          ["--d" as string]: `${(lit ? i : CELLS - 1 - i) * 60}ms`,
                           ["--i" as string]: i,
                         }}
                       />
