@@ -652,7 +652,7 @@ export const products: Product[] = [
     price: 130,
     shareImage: "/products/matin-kaldor-share.jpg",
     category: "outdoor",
-    collections: ["outdoor", "tactical", "gps", "calling", "long-battery"],
+    collections: ["outdoor", "tactical", "gps", "calling"],
     badge: "New",
     images: [
       "/products/matin-kaldor-rugged-smartwatch.webp",
@@ -705,19 +705,19 @@ export const products: Product[] = [
       { name: "Graphite Grey", hex: "#6a6c6e", from: 15 },
     ],
     description:
-      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with 30+ sport modes, swimming included. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts 11 to 30 days, and it is rated 3ATM against rain, sweat and splashes.',
+      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with 30+ sport modes, swimming included. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts about 7 days with typical use and up to 15 days with light use, and it is rated 3ATM against rain, sweat and splashes.',
     highlights: [
       { value: "GPS", label: "Multi-system" },
       { value: "LED", label: "Flashlight" },
       { value: "Calls", label: "From your wrist" },
-      { value: "30d", label: "Battery life" },
+      { value: "15d", label: "Battery life" },
     ],
     specs: [
       { group: "Display", label: "Screen", value: '1.43" AMOLED touchscreen' },
       { group: "Display", label: "Resolution", value: "466 x 466 pixels" },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "530mAh" },
-      { group: "Battery", label: "Battery life", value: "11 to 30 days, depending on use" },
+      { group: "Battery", label: "Battery life", value: "About 7 days typical, up to 15 days light use or standby" },
       { group: "Battery", label: "Charging", value: "Magnetic charger" },
       { group: "GPS & outdoor", label: "GPS", value: "Built-in, high-precision single-frequency, multi-system (GPS, GLONASS, BeiDou, Galileo, QZSS)" },
       { group: "GPS & outdoor", label: "Flashlight", value: "LED flashlight with 3 light modes" },
@@ -754,14 +754,14 @@ export const products: Product[] = [
       screen: { cx: 49.5, cy: 48.64, r: 26.8 },
       look: "radar",
       intro:
-        "The MATIN Kaldor runs on a 530mAh battery: about 11 days with heavy GPS, calls and flashlight use, and up to 30 days with light use.",
+        "The MATIN Kaldor runs on a 530mAh battery: about 7 days of everyday wear with calls, GPS and the flashlight, and up to 15 days with light use.",
       modes: [
-        { label: "Heavy use", days: 11, text: "GPS routes, calls and the flashlight every day." },
-        { label: "Light use", days: 30, text: "Time, steps, heart rate and a few notifications a day." },
+        { label: "Typical use", days: 7, text: "Calls, GPS workouts, notifications and the flashlight." },
+        { label: "Light use", days: 15, text: "Time, steps, heart rate and a few notifications a day." },
       ],
       facts: [
         { value: "530 mAh", label: "Battery" },
-        { value: "11 to 30", label: "Days per charge" },
+        { value: "7 to 15", label: "Days per charge" },
         { value: "Magnetic", label: "Charger" },
       ],
     },
@@ -780,7 +780,7 @@ export const products: Product[] = [
       },
       {
         q: "How long does the battery last?",
-        a: "11 to 30 days on one charge, depending on how much you use GPS, calls and the flashlight. It charges with a magnetic cable.",
+        a: "About 7 days with typical use and up to 15 days with light use. Daily GPS workouts, long calls and the flashlight use it faster. It charges with a magnetic cable.",
       },
       {
         q: "Is the MATIN Kaldor waterproof?",
@@ -805,7 +805,7 @@ export const products: Product[] = [
     ],
     seoTitle: "MATIN Kaldor Tactical GPS Smartwatch with Flashlight",
     seoDescription:
-      'MATIN Kaldor tactical GPS smartwatch for men: LED flashlight, compass, Bluetooth calls, 1.43" AMOLED, heart rate, 30 day battery, 3ATM. Free US shipping.',
+      'MATIN Kaldor tactical GPS smartwatch for men: LED flashlight, compass, Bluetooth calls, 1.43" AMOLED, heart rate, 15 day battery, 3ATM. Free US shipping.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#e8e04a" },
   },
   {
