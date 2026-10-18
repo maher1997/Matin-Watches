@@ -5278,401 +5278,6 @@ button.thumb:focus-visible {
   color: inherit;
 }
 
-/* Varkon battery: animated mode ring + day strips (components/BatteryModes.tsx) */
-.vb-stage {
-  position: relative;
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: clamp(1.25rem, 4vw, 3rem);
-  overflow: hidden;
-  background:
-    radial-gradient(55% 45% at 25% 40%, rgba(224, 38, 43, 0.14), transparent 70%),
-    linear-gradient(160deg, #15171d 0%, #0d0e12 100%);
-}
-
-.vb .sec-head h2 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: -0.03em;
-  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
-  line-height: 1.05;
-}
-
-.vb .sec-head .grad {
-  background: none;
-  -webkit-background-clip: border-box;
-  background-clip: border-box;
-  color: #7d8597;
-}
-
-.vb .sec-head .eyebrow {
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  color: #ff5a4f;
-}
-
-.vb-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: center;
-}
-
-/* Ring + photo */
-.vb-figure {
-  position: relative;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 460px;
-  aspect-ratio: 1;
-}
-
-.vb-ring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.vb-track {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.06);
-  stroke-width: 12;
-}
-
-.vb-arc {
-  fill: none;
-  stroke-width: 12;
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 18px rgba(255, 70, 50, 0.65));
-  transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.vb-tick {
-  stroke: rgba(255, 255, 255, 0.14);
-  stroke-width: 7;
-  stroke-linecap: round;
-  transition: stroke 0.25s ease;
-}
-
-.vb-tick.on {
-  stroke: #ff6a4d;
-}
-
-/* Glowing dot at the end of the arc; the box is centred on the ring. */
-.vb-head {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.vb-head span {
-  position: absolute;
-  left: 50%;
-  top: 10%;
-  width: 18px;
-  height: 18px;
-  margin: -9px 0 0 -9px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow:
-    0 0 0 4px rgba(255, 90, 60, 0.45),
-    0 0 22px 6px rgba(255, 70, 50, 0.8);
-  animation: vb-pulse 1.6s ease-in-out infinite;
-}
-
-@keyframes vb-pulse {
-  50% {
-    box-shadow:
-      0 0 0 8px rgba(255, 90, 60, 0.15),
-      0 0 30px 10px rgba(255, 70, 50, 0.55);
-  }
-}
-
-.vb-photo {
-  position: absolute;
-  inset: 0;
-  transform: translateY(1.43%);
-  animation: vb-float 6s ease-in-out infinite;
-}
-
-.vb-photo img {
-  object-fit: contain;
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.6));
-}
-
-@keyframes vb-float {
-  50% {
-    transform: translateY(-0.6%);
-  }
-}
-
-/* Mode buttons */
-.vb-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-top: 1.25rem;
-  padding: 0.3rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.vb-tabs button {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.88rem;
-  font-weight: 600;
-  padding: 0.55rem 0.95rem;
-  border-radius: 999px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
-}
-
-.vb-tabs button.is-on {
-  background: linear-gradient(180deg, #ff6a4d, #d91f2a);
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(224, 38, 43, 0.35);
-}
-
-/* Readout */
-.vb-big {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  line-height: 0.9;
-  margin: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-}
-
-.vb-num {
-  display: inline-block;
-  min-width: 2ch;
-  text-align: right;
-  font-size: clamp(5rem, 11vw, 8rem);
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums;
-  background: linear-gradient(180deg, #ffffff 30%, #9aa0ad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.vb-unit {
-  font-size: clamp(1.4rem, 2.6vw, 2rem);
-  color: #ff5a4f;
-}
-
-.vb-big-label {
-  margin: 0.8rem 0 0.3rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.vb-big-text {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-  min-height: 3.1em;
-}
-
-/* Day strips */
-.vb-modes {
-  list-style: none;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 1rem;
-}
-
-.vb-mode {
-  opacity: 0.45;
-  transition: opacity 0.4s ease;
-}
-
-.vb-mode.is-on {
-  opacity: 1;
-}
-
-.vb-mode-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 0.45rem;
-}
-
-.vb-mode h3 {
-  margin: 0;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-.vb-mode-head strong {
-  font-size: 1.1rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.vb-mode-head strong span {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-.vb-cells {
-  position: relative;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  gap: 2px;
-  height: 18px;
-  overflow: hidden;
-  border-radius: 3px;
-}
-
-.vb-cells i {
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.vb-cells i.on {
-  background: linear-gradient(180deg, #ff6a4d, #d91f2a);
-}
-
-/* A light sweep runs along the active strip. */
-.vb-mode.is-on .vb-cells::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 30%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  animation: vb-sweep 2.2s ease-in-out infinite;
-}
-
-@keyframes vb-sweep {
-  from {
-    transform: translateX(-110%);
-  }
-  to {
-    transform: translateX(360%);
-  }
-}
-
-.vb-scale {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.8rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.75rem;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.vb-facts {
-  list-style: none;
-  margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.vb-facts li {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1rem 1.1rem;
-  background: rgba(255, 255, 255, 0.025);
-  display: grid;
-  gap: 0.2rem;
-}
-
-.vb-facts strong {
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.vb-facts span {
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-.vb-paused .vb-head span,
-.vb-paused .vb-photo,
-.vb-paused .vb-cells::after {
-  animation-play-state: paused;
-}
-
-@media (max-width: 860px) {
-  .vb-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .vb-figure {
-    max-width: 340px;
-  }
-
-  .vb-tabs button {
-    font-size: 0.82rem;
-    padding: 0.5rem 0.75rem;
-  }
-
-  .vb-readout {
-    text-align: center;
-  }
-
-  .vb-big {
-    justify-content: center;
-  }
-
-  .vb-cells {
-    gap: 1px;
-  }
-
-  .vb-facts {
-    grid-template-columns: 1fr;
-  }
-
-  .vb-facts li {
-    grid-template-columns: auto 1fr;
-    align-items: baseline;
-    gap: 0.75rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vb-arc,
-  .vb-head,
-  .vb-tick {
-    transition: none;
-  }
-
-  .vb-head span,
-  .vb-photo,
-  .vb-mode.is-on .vb-cells::after {
-    animation: none;
-  }
-}
-
 /* Torvan battery: liquid fill on the watch's own screen (components/BatteryLiquid.tsx) */
 .bl-stage {
   position: relative;
@@ -6320,5 +5925,106 @@ button.thumb:focus-visible {
 
   .bl-blip {
     opacity: 1;
+  }
+}
+
+/* Varkon battery: red honeycomb on its round screen (BatteryLiquid
+   look="hex"). Cells light from the bottom like a level; a glow ripples out
+   from the centre and the top row flickers. */
+.bl-hexlook .bl-stage {
+  background:
+    radial-gradient(50% 50% at 28% 55%, rgba(239, 52, 42, 0.16), transparent 70%),
+    linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
+}
+
+.bl-hexlook .sec-head .eyebrow {
+  color: #ff5a4a;
+}
+
+.bl-hexlook .bl-screen {
+  background: radial-gradient(circle at 50% 45%, #1c0907 0%, #070303 72%);
+}
+
+.bl-hex {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bl-hex polygon {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 90, 74, 0.12);
+  stroke-width: 0.5;
+  transition:
+    fill 0.4s ease,
+    stroke 0.4s ease;
+}
+
+.bl-hex polygon.on {
+  fill: #e8261c;
+  stroke: #ff8a5c;
+  animation: bl-hex-pulse 2.4s ease-in-out infinite;
+}
+
+.bl-hex polygon.rim {
+  fill: #ff6a3d;
+  stroke: #ffc0a0;
+  animation: bl-hex-flicker 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes bl-hex-pulse {
+  0%,
+  100% {
+    fill: #c81e16;
+  }
+  30% {
+    fill: #ff4a2e;
+  }
+}
+
+@keyframes bl-hex-flicker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+
+.bl-hexlook .bl-face {
+  text-shadow:
+    0 0.3cqw 0.8cqw rgba(0, 0, 0, 0.75),
+    0 0 4cqw rgba(0, 0, 0, 0.6);
+}
+
+.bl-hexlook .bl-mode {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: rgba(255, 138, 92, 0.5);
+}
+
+.bl-hexlook .bl-card.is-on {
+  border-color: rgba(255, 74, 46, 0.5);
+  background: linear-gradient(135deg, rgba(232, 38, 28, 0.18), rgba(232, 38, 28, 0.04));
+  box-shadow: 0 12px 30px -12px rgba(232, 38, 28, 0.5);
+}
+
+.bl-hexlook .bl-pill span {
+  background: linear-gradient(90deg, #8a140e, #ff4a2e);
+}
+
+.bl-hexlook .bl-card.is-on .bl-pill span {
+  background: linear-gradient(90deg, #8a140e, #ff4a2e, #ffb08a, #ff4a2e, #8a140e);
+  background-size: 200% 100%;
+}
+
+.bl-paused .bl-hex polygon {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-hex polygon {
+    transition: none;
+    animation: none;
   }
 }

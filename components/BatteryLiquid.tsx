@@ -11,7 +11,9 @@ import SectionHead from "@/components/SectionHead";
 // stacked inside a shaped screen, lighting up from the bottom with a light
 // sweep and the top cell breathing. "radar" (Kaldor): a green tactical
 // radar on a round screen, a ring of day segments filling clockwise from
-// north while a sweep beam turns and blips light up as it passes. Steps through the modes on its
+// north while a sweep beam turns and blips light up as it passes. "hex"
+// (Varkon): a red honeycomb filling the round screen from the bottom, with
+// pulses rippling out from the centre and the top row flickering. Steps through the modes on its
 // own (tap a card to pick one). Renders complete without JS on the longest
 // mode; motion is an extra and pauses off screen.
 
@@ -26,6 +28,28 @@ const BLIPS: [number, number][] = [
   [290, 58],
   [330, 22],
 ];
+
+// Honeycomb cells inside the round screen (viewBox 0 0 200 200), bottom
+// row first so lighting the first n cells fills it like a level.
+const HEXES = (() => {
+  const R = 8;
+  const w = Math.sqrt(3) * R;
+  const out: { x: number; y: number; d: number; pts: string }[] = [];
+  for (let row = -14; row <= 14; row++) {
+    const y = 100 + row * R * 1.5;
+    for (let col = -14; col <= 14; col++) {
+      const x = 100 + col * w + (row % 2 ? w / 2 : 0);
+      const d = Math.hypot(x - 100, y - 100);
+      if (d - R > 100) continue;
+      const pts = Array.from({ length: 6 }, (_, k) => {
+        const t = ((60 * k + 30) * Math.PI) / 180;
+        return `${(x + Math.cos(t) * R * 0.88).toFixed(2)},${(y + Math.sin(t) * R * 0.88).toFixed(2)}`;
+      }).join(" ");
+      out.push({ x, y, d, pts });
+    }
+  }
+  return out.sort((a, b) => b.y - a.y || a.x - b.x);
+})();
 
 // One ring segment between two angles (degrees clockwise from north).
 function arcSegment(a0: number, a1: number, r0: number, r1: number) {
@@ -61,7 +85,7 @@ export default function BatteryLiquid({
   modes: { label: string; days: number; text: string }[];
   facts: { value: string; label: string }[];
   intro?: string;
-  look?: "wave" | "cells" | "radar";
+  look?: "wave" | "cells" | "radar" | "hex";
 }) {
   const max = Math.max(...modes.map((m) => m.days));
   const [active, setActive] = useState(modes.length - 1);
@@ -75,6 +99,8 @@ export default function BatteryLiquid({
   const frac = mode.days / max;
   const cells = look === "cells";
   const radar = look === "radar";
+  const hex = look === "hex";
+  const litHexes = Math.round(frac * HEXES.length);
   // Cells light from the bottom, one per CELLS-th of the longest mode.
   const litCells = Math.max(1, Math.round(frac * CELLS));
   const box =
@@ -141,7 +167,7 @@ export default function BatteryLiquid({
     <section
       ref={ref}
       id="battery"
-      className={`section bl${cells ? " bl-cellslook" : ""}${radar ? " bl-radarlook" : ""}${live ? "" : " bl-paused"}`}
+      className={`section bl${cells ? " bl-cellslook" : ""}${radar ? " bl-radarlook" : ""}${hex ? " bl-hexlook" : ""}${live ? "" : " bl-paused"}`}
       aria-labelledby="bl-title"
     >
       <div className="bl-stage">
@@ -174,7 +200,31 @@ export default function BatteryLiquid({
               role="img"
               aria-label={`Watch screen showing ${mode.days} days of battery in ${mode.label.toLowerCase()}`}
             >
-              {radar ? (
+              {hex ? (
+                <svg
+                  className="bl-hex"
+                  viewBox="0 0 200 200"
+                  aria-hidden="true"
+                >
+                  {HEXES.map((h, i) => {
+                    const lit = i < litHexes;
+                    const rim = lit && i >= litHexes - 12;
+                    return (
+                      <polygon
+                        key={i}
+                        points={h.pts}
+                        className={lit ? (rim ? "on rim" : "on") : undefined}
+                        style={{
+                          transitionDelay: `${(lit ? i : HEXES.length - i) * 4}ms`,
+                          animationDelay: rim
+                            ? `${(i % 5) * 0.23}s`
+                            : `${(h.d / 100) * 1.6}s`,
+                        }}
+                      />
+                    );
+                  })}
+                </svg>
+              ) : radar ? (
                 <>
                   <span className="bl-sweep" aria-hidden="true" />
                   <svg

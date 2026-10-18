@@ -55,7 +55,7 @@ export type Product = {
   healthMonitoring?: boolean;
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
-  // outline). look "cells" is stacked green battery cells, "radar" a green radar ring. Longest mode last.
+  // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "hex" a red honeycomb. Longest mode last.
   batteryLiquid?: {
     mah: number;
     image: string;
@@ -63,13 +63,11 @@ export type Product = {
     screen:
       | { cx: number; cy: number; r: number }
       | { x: number; y: number; w: number; h: number; clip: string };
-    look?: "wave" | "cells" | "radar";
+    look?: "wave" | "cells" | "radar" | "hex";
     intro?: string;
     modes: { label: string; days: number; text: string }[];
     facts: { value: string; label: string }[];
   };
-  // Battery section comparing usage modes as day strips. Put the longest mode last.
-  batteryModes?: { mah: number; charge: string; image: string; imageAlt: string; modes: { label: string; days: number; text: string }[] };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
@@ -849,15 +847,23 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
-    batteryModes: {
+    batteryLiquid: {
       mah: 500,
-      charge: "1.5 h",
       image: "/products/matin-varkon-front-view.webp",
-      imageAlt: "MATIN Varkon front view, a 500mAh rugged GPS smartwatch that lasts up to 60 days",
+      imageAlt: "MATIN Varkon front view with its round AMOLED screen showing the battery level",
+      screen: { cx: 49.5, cy: 47.21, r: 26.07 },
+      look: "hex",
+      intro:
+        "The MATIN Varkon runs on a 500mAh battery: up to 30 days of everyday wear, and up to 60 days in power-saving mode.",
       modes: [
         { label: "Heavy use", days: 18, text: "GPS workouts, calls and lots of notifications." },
         { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
-        { label: "Power-saving mode", days: 60, text: "Stretch the battery on long trips away from a charger." },
+        { label: "Power saving", days: 60, text: "Stretch the battery on long trips away from a charger." },
+      ],
+      facts: [
+        { value: "500 mAh", label: "Battery" },
+        { value: "1.5 h", label: "Magnetic charge" },
+        { value: "60 days", label: "Power saving" },
       ],
     },
     faq: [

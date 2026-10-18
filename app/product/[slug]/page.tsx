@@ -16,7 +16,6 @@ import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
-import BatteryModes from "@/components/BatteryModes";
 import BatteryLiquid from "@/components/BatteryLiquid";
 import SectionHead from "@/components/SectionHead";
 
@@ -140,7 +139,7 @@ export default async function ProductPage({ params }: Props) {
   // Jump links to the main sections of this product page.
   const toc = [
     (product.featureGroups || product.features) && ["#features", "Features"],
-    (product.batteryModes || product.batteryLiquid) && ["#battery", "Battery"],
+    product.batteryLiquid && ["#battery", "Battery"],
     product.healthMonitoring && ["#health", "Health"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
@@ -279,17 +278,6 @@ export default async function ProductPage({ params }: Props) {
           facts={product.batteryLiquid.facts}
           intro={product.batteryLiquid.intro}
           look={product.batteryLiquid.look}
-        />
-      )}
-
-      {product.batteryModes && (
-        <BatteryModes
-          name={product.name}
-          mah={product.batteryModes.mah}
-          charge={product.batteryModes.charge}
-          image={product.batteryModes.image}
-          imageAlt={product.batteryModes.imageAlt}
-          modes={product.batteryModes.modes}
         />
       )}
 
