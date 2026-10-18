@@ -2965,162 +2965,107 @@ button.thumb:focus-visible {
   left: 50%;
   top: 50%;
   z-index: 1;
-  width: 300px;
+  width: 440px;
   transform: translate(-50%, -50%);
   text-align: center;
 }
 
-.sx-dial {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: var(--dial);
-  height: var(--dial);
-  border-radius: 50%;
-  transform: translateX(-50%);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 0 90px -10px rgba(82, 133, 247, 0.35),
-    0 40px 70px -30px rgba(0, 0, 0, 0.9);
+/* The real Torvan; its screen (same circle as the battery and health
+   sections) shows the sport being tracked. Sizes inside are in cqw. */
+.sx-watch {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 1;
 }
 
-.sx-bezel,
-.sx-hand,
-.sx-hand svg {
+.sx-watch img {
+  object-fit: contain;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.7));
+}
+
+.sx-screen {
+  position: absolute;
+  left: 24.8%;
+  top: 24%;
+  width: 49.6%;
+  height: 49.6%;
+  border-radius: 50%;
+  overflow: hidden;
+  container-type: inline-size;
+  background: radial-gradient(circle at 50% 40%, #13213f 0%, #080c18 65%, #05060a 100%);
+  box-shadow: inset 0 0 6cqw rgba(0, 0, 0, 0.6);
+}
+
+.sx-ring {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.sx-bez-edge,
-.sx-face-edge {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.12);
-  stroke-width: 1;
-}
-
-.sx-face-edge {
-  stroke: rgba(0, 0, 0, 0.6);
-  stroke-width: 2;
-}
-
-.sx-track-ring {
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.45);
-  stroke-width: 9;
-}
-
-.sx-tk {
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 1;
-  stroke-linecap: round;
-}
-
-.sx-tk-big {
-  stroke: rgba(255, 255, 255, 0.7);
-  stroke-width: 2;
-}
-
 .sx-mark {
-  fill: rgba(255, 255, 255, 0.35);
+  fill: rgba(255, 255, 255, 0.3);
+  transition: r 0.4s ease, fill 0.4s ease;
+}
+
+.sx-mark.on {
+  fill: #fff;
+  filter: drop-shadow(0 0 4px rgba(126, 164, 255, 1));
 }
 
 .sx-hand {
+  transform-origin: 120px 120px;
   transition: transform 0.8s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 
 .sx-hand-arc {
   fill: none;
-  stroke: url(#sxHand);
+  stroke: #5285f7;
   stroke-width: 4;
   stroke-linecap: round;
   filter: drop-shadow(0 0 4px rgba(82, 133, 247, 0.9));
 }
 
-.sx-hand-dot {
-  fill: #fff;
-  filter: drop-shadow(0 0 5px rgba(126, 164, 255, 1));
-}
-
-.sx-core {
-  --dial: 270px;
-}
-
-.sx-title {
-  position: relative;
-  height: var(--dial);
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 1.6rem;
-}
-
-.sx-num {
-  font-family: var(--font-display), sans-serif;
-  font-size: 6.6rem;
+.sx-count {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 17%;
+  font-size: 5.6cqw;
   font-weight: 600;
-  line-height: 0.9;
-  background: linear-gradient(180deg, #fff 30%, #8fb0ff 70%, #5285f7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 24px rgba(82, 133, 247, 0.45));
+  color: #8fb0ff;
 }
 
-.sx-word {
-  margin-top: 0.45rem;
-  font-family: var(--font-display), sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.32em;
-  text-indent: 0.32em;
-  text-transform: uppercase;
-  color: #b9c6e6;
+.sx-fig {
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  width: 50%;
+  height: 50%;
+  animation: sx-in 0.5s ease both;
 }
 
-/* Active sport, shown low inside the dial face */
+.sx-fig .ath {
+  width: 100%;
+  height: 100%;
+}
+
 .sx-now {
   position: absolute;
-  left: 50%;
-  top: calc(var(--dial) * 0.7);
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.28rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(82, 133, 247, 0.12);
-  border: 1px solid rgba(82, 133, 247, 0.35);
-  white-space: nowrap;
-}
-
-.sx-now-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #8fb0ff;
-  box-shadow: 0 0 8px #5285f7;
+  left: 0;
+  right: 0;
+  bottom: 15%;
+  margin: 0;
 }
 
 .sx-now strong {
   display: inline-block;
-  font-family: var(--font-display), sans-serif;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #dbe5ff;
-  animation: sx-in 0.5s ease both;
-}
-
-.sx-sub {
-  margin-top: 1.4rem;
-  font-size: 1.35rem;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 8cqw;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  color: #fff;
+  animation: sx-in 0.5s ease both;
 }
 
 .sx-orbit {
@@ -3370,7 +3315,8 @@ button.thumb:focus-visible {
     padding: 1.75rem 0 1rem;
   }
 
-  .sx-stage::before {
+  .sx-stage::before,
+  .sx-stage::after {
     display: none;
   }
 
@@ -3389,23 +3335,10 @@ button.thumb:focus-visible {
     transform: none;
   }
 
-  .sx-core {
-    --dial: 240px;
+  .sx-watch {
+    max-width: 340px;
   }
 
-  .sx-title {
-    width: var(--dial);
-    margin: 0 auto;
-  }
-
-  .sx-num {
-    font-size: 5.8rem;
-  }
-
-  .sx-sub {
-    margin-top: 1.1rem;
-    font-size: 1.2rem;
-  }
 
   .sx-orbit {
     display: none;
@@ -3490,13 +3423,15 @@ button.thumb:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .sx-orbit button,
-  .sx-now strong {
+  .sx-now strong,
+  .sx-fig {
     animation: none;
   }
 
   .sx-tile,
   .sx-name,
-  .sx-hand {
+  .sx-hand,
+  .sx-mark {
     transition: none;
   }
 }
@@ -4383,11 +4318,6 @@ button.thumb:focus-visible {
 .hm-value,
 .hm-tab-val,
 .hm-tip b,
-.sx-num {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-}
 
 .hm-value small,
 .hm-tab-val small {
@@ -4398,8 +4328,6 @@ button.thumb:focus-visible {
 .hm-tab-name,
 .hm-read-note,
 .hm-badge,
-.sx-word,
-.sx-now strong,
 .sx-name {
   font-family: var(--font-sans), sans-serif;
   text-transform: none;
@@ -4415,16 +4343,6 @@ button.thumb:focus-visible {
 .hm-read-note,
 .hm-badge {
   font-size: 0.75rem;
-}
-
-.sx-word {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.sx-now strong {
-  font-size: 0.82rem;
-  font-weight: 600;
 }
 
 .sx-name {
