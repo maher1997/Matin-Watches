@@ -548,7 +548,7 @@ export const products: Product[] = [
       { group: "Build", label: "Flashlight", value: "Built-in LED flashlight" },
       { group: "Build", label: "Case", value: "Stainless steel with liquid silicone" },
       { group: "Build", label: "Water resistance", value: "5ATM" },
-      { group: "Build", label: "Strap", value: "Liquid silicone sport strap with two keepers" },
+      { group: "Build", label: "Strap", value: "22 mm liquid silicone sport strap with folding buckle and two keepers" },
       { group: "Smart features", label: "Calls", value: "Bluetooth calls, dial pad, contacts, recent calls, voice assistant" },
       { group: "Smart features", label: "Notifications", value: "Calls, messages, email and app alerts" },
       { group: "Smart features", label: "Tools", value: "Weather, music and camera control, find my phone, calendar, calculator, alarm, stopwatch, timer" },
