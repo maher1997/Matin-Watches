@@ -488,6 +488,10 @@ export const products: Product[] = [
         a: 'A big 1.95 inch AMOLED touchscreen with bright, sharp colors that stays readable outdoors.',
       },
       {
+        q: "Is the MATIN Trekon certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
+      },
+      {
         q: "Does shipping cost anything?",
         a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
       },
@@ -626,6 +630,10 @@ export const products: Product[] = [
       {
         q: "What is the screen like?",
         a: "A round 1.43 inch AMOLED display at 466 x 466 pixels (391 PPI), up to 1000 nits bright and protected by sapphire glass. It has an always-on mode and 300+ watch faces, and you can use your own photo as a face.",
+      },
+      {
+        q: "Is the MATIN Torvan certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
       },
       {
         q: "Does shipping cost anything?",
@@ -778,6 +786,10 @@ export const products: Product[] = [
         a: "A round 1.43 inch AMOLED touchscreen that stays bright and easy to read outdoors.",
       },
       {
+        q: "Is the MATIN Kaldor certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
+      },
+      {
         q: "Does shipping cost anything?",
         a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
       },
@@ -921,6 +933,10 @@ export const products: Product[] = [
       {
         q: "Does it work with iPhone and Android?",
         a: "Yes. It works with iPhone (iOS 11 or newer) and Android (5.0 or newer) through the free phone app.",
+      },
+      {
+        q: "Is the MATIN Varkon certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
       },
       {
         q: "Does shipping cost anything?",
