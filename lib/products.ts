@@ -50,9 +50,10 @@ export type Product = {
   // Animated sport modes section: the headline count and the ids (from
   // components/sports/library.tsx) of the sports this watch really tracks.
   sportModes?: { count: string; ids: string[] };
-  // Animated health monitoring section (heart rate, resting heart rate, SpO2).
-  // Only for watches that really have all three.
-  healthMonitoring?: boolean;
+  // Animated health section drawn on the watch's own screen (the battery
+  // section's photo and screen). List only what the watch really measures;
+  // "continuous" claims 24/7 per-minute heart rate (Torvan only).
+  health?: { metrics: ("hr" | "rest" | "spo2" | "sleep" | "activity")[]; continuous?: boolean };
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
   // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "rings" green rings. Longest mode last.
@@ -360,6 +361,7 @@ export const products: Product[] = [
         ],
       },
     ],
+    health: { metrics: ["hr", "sleep", "activity"] },
     batteryLiquid: {
       mah: 1000,
       image: "/products/matin-trekon-black-front-view.webp",
@@ -570,7 +572,7 @@ export const products: Product[] = [
         { value: "1.5 h", label: "Magnetic charge" },
       ],
     },
-    healthMonitoring: true,
+    health: { metrics: ["hr", "rest", "spo2"], continuous: true },
     sportModes: {
       count: "9",
       ids: ["running", "walking", "hiking", "cycling", "basketball", "soccer", "badminton", "yoga", "jump-rope"],
@@ -713,6 +715,7 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "Multiple sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
+    health: { metrics: ["hr", "sleep", "activity"] },
     batteryLiquid: {
       mah: 530,
       image: "/products/matin-kaldor-front-view.webp",
@@ -847,6 +850,7 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
+    health: { metrics: ["hr", "spo2", "sleep"] },
     batteryLiquid: {
       mah: 500,
       image: "/products/matin-varkon-front-view.webp",

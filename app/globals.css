@@ -3948,6 +3948,205 @@ button.thumb:focus-visible {
   pointer-events: none;
 }
 
+
+/* Shaped screens (Trekon): the box follows the screen outline. */
+.hw-shaped,
+.hw-shaped .hw-glass {
+  border-radius: 0;
+}
+
+.hw-num-sm {
+  font-size: 21cqw;
+}
+
+/* Sleep: deep indigo night, moon, twinkling stars and the night's chart
+   drawing itself left to right. */
+.hw-sleep {
+  background: radial-gradient(circle at 50% 30%, #1d1a44 0%, #0d0b22 60%, #05060a 100%);
+}
+
+.hw-stars i {
+  position: absolute;
+  width: 1.2cqw;
+  height: 1.2cqw;
+  border-radius: 50%;
+  background: #d9d4ff;
+  box-shadow: 0 0 1.5cqw rgba(200, 190, 255, 0.9);
+  animation: hw-twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes hw-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.hw-moon {
+  width: 11cqw;
+  height: 11cqw;
+  fill: #b9adff;
+  filter: drop-shadow(0 0 2.5cqw rgba(160, 145, 255, 0.75));
+  margin-bottom: 1.5cqw;
+  animation: hw-glow 4s ease-in-out infinite;
+}
+
+@keyframes hw-glow {
+  50% {
+    filter: drop-shadow(0 0 4cqw rgba(170, 155, 255, 0.95));
+    transform: rotate(-8deg);
+  }
+}
+
+.hw-hypno {
+  width: 60cqw;
+  height: 16cqw;
+  margin-top: 4cqw;
+  overflow: visible;
+}
+
+.hw-hypno rect.s2 {
+  fill: #6c5cff;
+}
+
+.hw-hypno rect.s1 {
+  fill: #a99bff;
+  opacity: 0.85;
+}
+
+.hw-hypno rect.s0 {
+  fill: #ffb86b;
+}
+
+.hw-sleep.on .hw-hypno-in {
+  animation: hw-draw 1.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes hw-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.hw-legend {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  margin-top: 2.5cqw;
+  font-size: 3.6cqw;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.hw-legend i {
+  width: 2.4cqw;
+  height: 2.4cqw;
+  border-radius: 0.6cqw;
+  margin-left: 1.2cqw;
+}
+
+.hw-legend i:first-child {
+  margin-left: 0;
+}
+
+.hw-legend i.s2 {
+  background: #6c5cff;
+}
+
+.hw-legend i.s1 {
+  background: #a99bff;
+}
+
+.hw-legend i.s0 {
+  background: #ffb86b;
+}
+
+/* Activity: green ring filling to the day's steps, steps counting up. */
+.hw-act {
+  background: radial-gradient(circle at 50% 38%, #0c2c1c 0%, #07140d 62%, #05060a 100%);
+}
+
+.hw-ring {
+  fill: none;
+  stroke: #34d97f;
+  stroke-width: 6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgba(52, 217, 127, 0.7));
+}
+
+.hw-feet {
+  width: 11cqw;
+  height: 11cqw;
+  fill: #5ff0a0;
+  filter: drop-shadow(0 0 2cqw rgba(52, 217, 127, 0.7));
+  margin-bottom: 1.5cqw;
+  animation: hw-step 1.2s ease-in-out infinite;
+}
+
+@keyframes hw-step {
+  50% {
+    transform: translateY(-0.8cqw);
+  }
+}
+
+.hw-kcal {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  margin-top: 3cqw;
+  padding: 1cqw 3cqw;
+  border-radius: 99px;
+  background: rgba(255, 165, 61, 0.12);
+  font-size: 4.6cqw;
+  font-weight: 600;
+  color: #ffc27a;
+}
+
+.hw-kcal svg {
+  width: 4.6cqw;
+  height: 4.6cqw;
+  fill: #ffa53d;
+}
+
+.hw-act .hw-num,
+.hw-act .hw-unit,
+.hw-act .hw-feet,
+.hw-act .hw-kcal,
+.hw-sleep .hw-num,
+.hw-sleep .hw-unit {
+  position: relative;
+}
+
+.hm-tab-sleep {
+  --c: #9b8cff;
+}
+
+.hm-tab-activity {
+  --c: #34d97f;
+}
+
+.hm-visual-sleep ~ .hm-info .hm-kicker {
+  color: #b2a6ff;
+}
+
+.hm-visual-activity ~ .hm-info .hm-kicker {
+  color: #5ff0a0;
+}
+
+.hm-visual-sleep ~ .hm-info .hm-caption {
+  border-left-color: rgba(155, 140, 255, 0.6);
+}
+
+.hm-visual-activity ~ .hm-info .hm-caption {
+  border-left-color: rgba(52, 217, 127, 0.6);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hw-face {
     transition: none;

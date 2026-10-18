@@ -140,7 +140,7 @@ export default async function ProductPage({ params }: Props) {
   const toc = [
     (product.featureGroups || product.features) && ["#features", "Features"],
     product.batteryLiquid && ["#battery", "Battery"],
-    product.healthMonitoring && ["#health", "Health"],
+    product.health && product.batteryLiquid && ["#health", "Health"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
     product.faq && ["#faq", "FAQ"],
@@ -281,7 +281,16 @@ export default async function ProductPage({ params }: Props) {
         />
       )}
 
-      {product.healthMonitoring && <HealthMonitoring />}
+      {product.health && product.batteryLiquid && (
+        <HealthMonitoring
+          name={product.name}
+          metrics={product.health.metrics}
+          continuous={product.health.continuous}
+          image={product.batteryLiquid.image}
+          imageAlt={`${product.name} showing its health screens`}
+          screen={product.batteryLiquid.screen}
+        />
+      )}
 
       {product.sportModes && (
         <SportsUniverse name={product.name} count={product.sportModes.count} ids={product.sportModes.ids} />
