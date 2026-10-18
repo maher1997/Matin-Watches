@@ -56,6 +56,7 @@ export default function HealthWatch({
   onPick,
   o2,
   steps,
+  look = "wave",
 }: {
   image: string;
   imageAlt: string;
@@ -67,6 +68,9 @@ export default function HealthWatch({
   onPick: (i: number) => void;
   o2: number;
   steps: number;
+  // The watch's battery look, reused so each watch's screens get their own
+  // background: "wave" Torvan, "cells" Trekon, "radar" Kaldor, "rings" Varkon.
+  look?: string;
 }) {
   const round = "r" in screen;
   const box = round
@@ -92,7 +96,7 @@ export default function HealthWatch({
   return (
     <figure className="hw">
       <Image src={image} alt={imageAlt} fill sizes="(max-width: 860px) 90vw, 46vw" quality={75} />
-      <div className={round ? "hw-screen" : "hw-screen hw-shaped"} style={box}>
+      <div className={`hw-screen hw-look-${look}${round ? "" : " hw-shaped"}`} style={box}>
         {metrics.includes("hr") && (
           <div {...face("hr")}>
             <svg className="hw-dial" viewBox="0 0 200 200" aria-hidden="true">

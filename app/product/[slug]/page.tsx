@@ -289,6 +289,7 @@ export default async function ProductPage({ params }: Props) {
           image={product.batteryLiquid.image}
           imageAlt={`${product.name} showing its health screens`}
           screen={product.batteryLiquid.screen}
+          look={product.batteryLiquid.look}
         />
       )}
 

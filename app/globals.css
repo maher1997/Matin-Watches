@@ -3745,6 +3745,7 @@ button.thumb:focus-visible {
 
 /* Heart rate: red face, beating heart, scanning arc and a live trace. */
 .hw-hr {
+  --tint: #3a0d18;
   background: radial-gradient(circle at 50% 42%, #3a0d18 0%, #12070b 62%, #05060a 100%);
   padding-bottom: 14cqw;
 }
@@ -3828,6 +3829,7 @@ button.thumb:focus-visible {
 
 /* Resting heart rate: blue face with a 7-day bar chart. */
 .hw-rest {
+  --tint: #0c2036;
   background: radial-gradient(circle at 50% 35%, #0c2036 0%, #070c16 62%, #05060a 100%);
   padding-bottom: 6cqw;
 }
@@ -3896,6 +3898,7 @@ button.thumb:focus-visible {
 
 /* Blood oxygen: cyan ring fills to the reading over a gentle wave. */
 .hw-o2 {
+  --tint: #0b2a3a;
   background: radial-gradient(circle at 50% 35%, #0b2a3a 0%, #071219 62%, #05060a 100%);
 }
 
@@ -3949,6 +3952,58 @@ button.thumb:focus-visible {
 }
 
 
+/* Each watch gets its own screen backgrounds (look = its battery look);
+   the metric colour stays the same so a heart is always red. The texture
+   sits between the face colour and its content. */
+.hw-face {
+  isolation: isolate;
+}
+
+.hw-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Trekon: tactical, lit from the top with a fine carbon weave. */
+.hw-look-cells .hw-face {
+  background: linear-gradient(180deg, var(--tint) 0%, #15130b 62%, #0b0a06 100%);
+}
+
+.hw-look-cells .hw-face::before {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.07) 0 0.8cqw, transparent 0.8cqw 1.6cqw),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.35) 0 0.8cqw, transparent 0.8cqw 1.6cqw);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.5) 100%);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* Kaldor: compass and radar grid behind every reading. */
+.hw-look-radar .hw-face {
+  background: radial-gradient(circle at 50% 50%, var(--tint) 0%, #04140c 60%, #020a06 100%);
+}
+
+.hw-look-radar .hw-face::before {
+  background:
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 9cqw, rgba(120, 255, 170, 0.14) 9cqw 9.4cqw),
+    linear-gradient(90deg, transparent calc(50% - 0.2cqw), rgba(120, 255, 170, 0.14) calc(50% - 0.2cqw) calc(50% + 0.2cqw), transparent calc(50% + 0.2cqw)),
+    linear-gradient(0deg, transparent calc(50% - 0.2cqw), rgba(120, 255, 170, 0.14) calc(50% - 0.2cqw) calc(50% + 0.2cqw), transparent calc(50% + 0.2cqw));
+}
+
+/* Varkon: soft light around the edge over a fine dot grid. */
+.hw-look-rings .hw-face {
+  background:
+    conic-gradient(from 210deg at 50% 50%, var(--tint), #16171c 30%, #0e0f13 62%, var(--tint) 100%);
+}
+
+.hw-look-rings .hw-face::before {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0.45cqw, transparent 0.55cqw) 0 0 / 4.5cqw 4.5cqw;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 72%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 72%);
+}
+
 /* Shaped screens (Trekon): the box follows the screen outline. */
 .hw-shaped,
 .hw-shaped .hw-glass {
@@ -3962,6 +4017,7 @@ button.thumb:focus-visible {
 /* Sleep: deep indigo night, moon, twinkling stars and the night's chart
    drawing itself left to right. */
 .hw-sleep {
+  --tint: #1d1a44;
   background: radial-gradient(circle at 50% 30%, #1d1a44 0%, #0d0b22 60%, #05060a 100%);
 }
 
@@ -4069,6 +4125,7 @@ button.thumb:focus-visible {
 
 /* Activity: green ring filling to the day's steps, steps counting up. */
 .hw-act {
+  --tint: #0c2c1c;
   background: radial-gradient(circle at 50% 38%, #0c2c1c 0%, #07140d 62%, #05060a 100%);
 }
 

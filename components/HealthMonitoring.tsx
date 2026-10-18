@@ -94,6 +94,7 @@ export default function HealthMonitoring({
   image,
   imageAlt,
   screen,
+  look,
 }: {
   name: string;
   metrics: MetricId[];
@@ -101,6 +102,7 @@ export default function HealthMonitoring({
   image: string;
   imageAlt: string;
   screen: Screen;
+  look?: string;
 }) {
   const n = metrics.length;
   const ref = useRef<HTMLElement>(null);
@@ -295,6 +297,7 @@ export default function HealthMonitoring({
               }}
               o2={o2}
               steps={steps}
+              look={look}
             />
             <div className="hm-dots" aria-hidden="true">
               {metrics.map((t, i) => (
