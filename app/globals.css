@@ -4827,7 +4827,7 @@ button.thumb:focus-visible {
   color: inherit;
 }
 
-/* Torvan battery: liquid fill on the watch's own screen (components/BatteryLiquid.tsx) */
+/* Torvan battery (green): liquid fill on the watch's own screen (components/BatteryLiquid.tsx) */
 .bl-stage {
   position: relative;
   border: 1px solid var(--border);
@@ -4835,7 +4835,7 @@ button.thumb:focus-visible {
   padding: clamp(1.25rem, 4vw, 3rem);
   overflow: hidden;
   background:
-    radial-gradient(50% 50% at 28% 55%, rgba(47, 98, 224, 0.22), transparent 70%),
+    radial-gradient(50% 50% at 28% 55%, rgba(34, 197, 110, 0.18), transparent 70%),
     linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
 }
 
@@ -4860,7 +4860,7 @@ button.thumb:focus-visible {
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
-  color: #6b9bff;
+  color: #4fe08f;
 }
 
 .bl-grid {
@@ -4888,7 +4888,7 @@ button.thumb:focus-visible {
   position: absolute;
   border-radius: 50%;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 40%, #0d1424 0%, #04060b 75%);
+  background: radial-gradient(circle at 50% 40%, #0b1a12 0%, #030806 75%);
   container-type: inline-size;
   isolation: isolate;
 }
@@ -4897,7 +4897,7 @@ button.thumb:focus-visible {
   position: absolute;
   inset: 0;
   top: 0;
-  background: linear-gradient(180deg, #3f7dff 0%, #2453d6 45%, #102a7a 100%);
+  background: linear-gradient(180deg, #34d97f 0%, #17a35a 45%, #0a5a32 100%);
   transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -4913,14 +4913,14 @@ button.thumb:focus-visible {
 }
 
 .bl-wave-front {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 Q50 2 100 20 T200 20 V40 H0Z' fill='%233f7dff'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 Q50 2 100 20 T200 20 V40 H0Z' fill='%2334d97f'/%3E%3C/svg%3E");
   animation: bl-wave 3.2s linear infinite;
 }
 
 .bl-wave-back {
   bottom: calc(100% + 1.2cqw);
   opacity: 0.55;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 Q50 38 100 20 T200 20 V40 H0Z' fill='%235fd6d0'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 Q50 38 100 20 T200 20 V40 H0Z' fill='%2399f5c4'/%3E%3C/svg%3E");
   animation: bl-wave 5.4s linear infinite reverse;
 }
 
@@ -4997,7 +4997,7 @@ button.thumb:focus-visible {
   align-items: center;
   justify-content: center;
   color: #fff;
-  text-shadow: 0 0.5cqw 2cqw rgba(0, 10, 40, 0.55);
+  text-shadow: 0 0.5cqw 2cqw rgba(0, 30, 14, 0.55);
   font-family: var(--font-sans), sans-serif;
 }
 
@@ -5030,7 +5030,7 @@ button.thumb:focus-visible {
   font-weight: 600;
   padding: 0.8cqw 3cqw;
   border-radius: 99px;
-  background: rgba(0, 10, 40, 0.35);
+  background: rgba(0, 30, 14, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
@@ -5074,9 +5074,9 @@ button.thumb:focus-visible {
 }
 
 .bl-card.is-on {
-  border-color: rgba(107, 155, 255, 0.6);
-  background: linear-gradient(135deg, rgba(47, 98, 224, 0.22), rgba(47, 98, 224, 0.06));
-  box-shadow: 0 12px 30px -12px rgba(47, 98, 224, 0.6);
+  border-color: rgba(79, 224, 143, 0.55);
+  background: linear-gradient(135deg, rgba(34, 197, 110, 0.2), rgba(34, 197, 110, 0.05));
+  box-shadow: 0 12px 30px -12px rgba(34, 197, 110, 0.5);
   transform: translateX(4px);
 }
 
@@ -5114,11 +5114,11 @@ button.thumb:focus-visible {
   display: block;
   height: 100%;
   border-radius: 99px;
-  background: linear-gradient(90deg, #2453d6, #5fd6d0);
+  background: linear-gradient(90deg, #17a35a, #7cf0b0);
 }
 
 .bl-card.is-on .bl-pill span {
-  background: linear-gradient(90deg, #2453d6, #6b9bff, #5fd6d0, #6b9bff, #2453d6);
+  background: linear-gradient(90deg, #17a35a, #34d97f, #b8f7d4, #34d97f, #17a35a);
   background-size: 200% 100%;
   animation: bl-flow 2.4s linear infinite;
 }
