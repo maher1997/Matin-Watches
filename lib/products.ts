@@ -55,7 +55,7 @@ export type Product = {
   healthMonitoring?: boolean;
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
-  // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "hex" a red honeycomb. Longest mode last.
+  // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "rings" green rings. Longest mode last.
   batteryLiquid?: {
     mah: number;
     image: string;
@@ -63,7 +63,7 @@ export type Product = {
     screen:
       | { cx: number; cy: number; r: number }
       | { x: number; y: number; w: number; h: number; clip: string };
-    look?: "wave" | "cells" | "radar" | "hex";
+    look?: "wave" | "cells" | "radar" | "rings";
     intro?: string;
     modes: { label: string; days: number; text: string }[];
     facts: { value: string; label: string }[];
@@ -852,7 +852,7 @@ export const products: Product[] = [
       image: "/products/matin-varkon-front-view.webp",
       imageAlt: "MATIN Varkon front view with its round AMOLED screen showing the battery level",
       screen: { cx: 49.5, cy: 47.21, r: 26.07 },
-      look: "hex",
+      look: "rings",
       intro:
         "The MATIN Varkon runs on a 500mAh battery: up to 30 days of everyday wear, and up to 60 days in power-saving mode.",
       modes: [
