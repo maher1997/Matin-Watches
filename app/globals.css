@@ -6183,21 +6183,21 @@ button.thumb:focus-visible {
   }
 }
 
-/* Kaldor battery: amber tactical radar on its round screen (BatteryLiquid
+/* Kaldor battery: green tactical radar on its round screen (BatteryLiquid
    look="radar"). Day segments fill clockwise from north; a sweep beam turns
    and blips flash as it passes. */
 .bl-radarlook .bl-stage {
   background:
-    radial-gradient(50% 50% at 28% 55%, rgba(255, 176, 32, 0.14), transparent 70%),
+    radial-gradient(50% 50% at 28% 55%, rgba(46, 230, 120, 0.14), transparent 70%),
     linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
 }
 
 .bl-radarlook .sec-head .eyebrow {
-  color: #ffc23d;
+  color: #50f096;
 }
 
 .bl-radarlook .bl-screen {
-  background: radial-gradient(circle at 50% 50%, #1a1406 0%, #070604 70%);
+  background: radial-gradient(circle at 50% 50%, #06180d 0%, #030805 70%);
 }
 
 .bl-radar {
@@ -6209,7 +6209,7 @@ button.thumb:focus-visible {
 
 .bl-grid-line {
   fill: none;
-  stroke: rgba(255, 194, 61, 0.14);
+  stroke: rgba(80, 240, 150, 0.14);
   stroke-width: 0.6;
 }
 
@@ -6219,12 +6219,12 @@ button.thumb:focus-visible {
 }
 
 .bl-seg.on {
-  fill: #ffb020;
-  filter: drop-shadow(0 0 2px rgba(255, 176, 32, 0.9));
+  fill: #2ee678;
+  filter: drop-shadow(0 0 2px rgba(46, 230, 120, 0.9));
 }
 
 .bl-seg.head {
-  fill: #ffe08a;
+  fill: #beffd2;
   animation: bl-seg-blink 1s ease-in-out infinite alternate;
 }
 
@@ -6242,7 +6242,7 @@ button.thumb:focus-visible {
   position: absolute;
   inset: 10%;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(255, 176, 32, 0) 0deg, rgba(255, 176, 32, 0) 290deg, rgba(255, 176, 32, 0.32) 358deg, rgba(255, 224, 138, 0.9) 359.5deg, rgba(255, 176, 32, 0) 360deg);
+  background: conic-gradient(from 0deg, rgba(46, 230, 120, 0) 0deg, rgba(46, 230, 120, 0) 290deg, rgba(46, 230, 120, 0.32) 358deg, rgba(190, 255, 210, 0.9) 359.5deg, rgba(46, 230, 120, 0) 360deg);
   animation: bl-sweep 4s linear infinite;
 }
 
@@ -6253,10 +6253,10 @@ button.thumb:focus-visible {
 }
 
 .bl-blip {
-  fill: #ffe08a;
+  fill: #beffd2;
   opacity: 0;
   animation: bl-blip 4s linear infinite;
-  filter: drop-shadow(0 0 2px #ffb020);
+  filter: drop-shadow(0 0 2px #2ee678);
 }
 
 @keyframes bl-blip {
@@ -6277,27 +6277,27 @@ button.thumb:focus-visible {
 }
 
 .bl-radarlook .bl-num {
-  color: #fff3d6;
+  color: #eafff1;
 }
 
 .bl-radarlook .bl-mode {
   background: rgba(0, 0, 0, 0.5);
-  border-color: rgba(255, 194, 61, 0.45);
-  color: #ffc23d;
+  border-color: rgba(80, 240, 150, 0.45);
+  color: #50f096;
 }
 
 .bl-radarlook .bl-card.is-on {
-  border-color: rgba(255, 176, 32, 0.5);
-  background: linear-gradient(135deg, rgba(255, 176, 32, 0.16), rgba(255, 176, 32, 0.04));
-  box-shadow: 0 12px 30px -12px rgba(255, 176, 32, 0.45);
+  border-color: rgba(46, 230, 120, 0.5);
+  background: linear-gradient(135deg, rgba(46, 230, 120, 0.16), rgba(46, 230, 120, 0.04));
+  box-shadow: 0 12px 30px -12px rgba(46, 230, 120, 0.45);
 }
 
 .bl-radarlook .bl-pill span {
-  background: linear-gradient(90deg, #a86a00, #ffb020);
+  background: linear-gradient(90deg, #0f7a3c, #2ee678);
 }
 
 .bl-radarlook .bl-card.is-on .bl-pill span {
-  background: linear-gradient(90deg, #a86a00, #ffb020, #ffe08a, #ffb020, #a86a00);
+  background: linear-gradient(90deg, #0f7a3c, #2ee678, #beffd2, #2ee678, #0f7a3c);
   background-size: 200% 100%;
 }
 

@@ -9,7 +9,7 @@ import SectionHead from "@/components/SectionHead";
 // number counts. "wave" (Torvan): blue waves, bubbles and a ring of day ticks
 // on a round screen. "cells" (Trekon): glossy green battery cells
 // stacked inside a shaped screen, lighting up from the bottom with a light
-// sweep and the top cell breathing. "radar" (Kaldor): an amber tactical
+// sweep and the top cell breathing. "radar" (Kaldor): a green tactical
 // radar on a round screen, a ring of day segments filling clockwise from
 // north while a sweep beam turns and blips light up as it passes. Steps through the modes on its
 // own (tap a card to pick one). Renders complete without JS on the longest

@@ -55,7 +55,7 @@ export type Product = {
   healthMonitoring?: boolean;
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
-  // outline). look "cells" is stacked green battery cells, "radar" an amber radar ring. Longest mode last.
+  // outline). look "cells" is stacked green battery cells, "radar" a green radar ring. Longest mode last.
   batteryLiquid?: {
     mah: number;
     image: string;
