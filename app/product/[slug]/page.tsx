@@ -16,6 +16,7 @@ import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
+import GpsShowcase from "@/components/GpsShowcase";
 import BatteryLiquid from "@/components/BatteryLiquid";
 import SectionHead from "@/components/SectionHead";
 
@@ -141,6 +142,7 @@ export default async function ProductPage({ params }: Props) {
     (product.featureGroups || product.features) && ["#features", "Features"],
     product.batteryLiquid && ["#battery", "Battery"],
     product.health && product.batteryLiquid && ["#health", "Health"],
+    product.gps && product.batteryLiquid && ["#gps", "GPS"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
     product.faq && ["#faq", "FAQ"],
@@ -288,6 +290,19 @@ export default async function ProductPage({ params }: Props) {
           continuous={product.health.continuous}
           image={product.batteryLiquid.image}
           imageAlt={`${product.name} showing its health screens`}
+          screen={product.batteryLiquid.screen}
+          look={product.batteryLiquid.look}
+        />
+      )}
+
+      {product.gps && product.batteryLiquid && (
+        <GpsShowcase
+          name={product.name}
+          screens={product.gps.screens}
+          systems={product.gps.systems}
+          barometric={product.gps.barometric}
+          image={product.batteryLiquid.image}
+          imageAlt={`${product.name} showing GPS navigation screens`}
           screen={product.batteryLiquid.screen}
           look={product.batteryLiquid.look}
         />

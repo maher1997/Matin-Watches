@@ -54,6 +54,10 @@ export type Product = {
   // section's photo and screen). List only what the watch really measures;
   // "continuous" claims 24/7 per-minute heart rate (Torvan only).
   health?: { metrics: ("hr" | "rest" | "spo2" | "sleep" | "activity")[]; continuous?: boolean };
+  // Animated GPS section drawn on the watch's own screen, only for watches
+  // with built-in GPS. screens: route map, satellite systems, compass,
+  // altitude. systems lists the satellite systems the listing names.
+  gps?: { screens: ("route" | "sats" | "compass" | "alt")[]; systems?: string[]; barometric?: boolean };
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
   // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "rings" green rings. Longest mode last.
@@ -361,6 +365,7 @@ export const products: Product[] = [
         ],
       },
     ],
+    gps: { screens: ["route", "compass", "alt"] },
     health: { metrics: ["hr", "sleep", "activity"] },
     batteryLiquid: {
       mah: 1000,
@@ -715,6 +720,7 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "Multiple sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
+    gps: { screens: ["route", "sats", "compass"], systems: ["GPS", "GLONASS", "BeiDou", "Galileo", "QZSS"] },
     health: { metrics: ["hr", "sleep", "activity"] },
     batteryLiquid: {
       mah: 530,
@@ -850,6 +856,7 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
+    gps: { screens: ["route", "sats", "alt"], systems: ["GPS", "GLONASS", "Galileo", "BeiDou", "QZSS", "NavIC"], barometric: true },
     health: { metrics: ["hr", "spo2", "sleep"] },
     batteryLiquid: {
       mah: 500,
