@@ -6334,3 +6334,604 @@ button.thumb:focus-visible {
 .gw-map-grid .gw-altchip svg {
   fill: #5ff0a0;
 }
+
+/* Sport sections not drawn on the watch (components/Fitness.tsx):
+   Kaldor pool swim log, Varkon triathlon course. */
+.ft .hm-stage {
+  background:
+    radial-gradient(ellipse 45% 50% at 20% 70%, rgba(74, 222, 160, 0.1), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 90% 10%, rgba(94, 200, 242, 0.1), transparent 70%),
+    linear-gradient(180deg, #121619 0%, #0b0e11 100%);
+}
+.ft .sec-head .eyebrow {
+  color: #5ee0a8;
+}
+.ft-tri .sec-head .eyebrow {
+  color: #5ec8f2;
+}
+.ft-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+  align-items: stretch;
+}
+.ft-scene {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 2.4rem 0.9rem 0.9rem;
+  overflow: hidden;
+}
+.ft-scene .hm-badge {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.9rem;
+}
+.ft-scene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ft-k,
+.ft-grid dt {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+.ft-grid small,
+.ft-tri-stats small,
+.ft-leg-km small {
+  color: var(--muted);
+  font-size: 0.72em;
+  font-weight: 500;
+  margin-left: 0.2em;
+}
+
+/* Pool */
+.ft-deck {
+  fill: #1a1f24;
+}
+.ft-pool .ft-scene {
+  background: #1a1f24;
+}
+.ft-caustics path {
+  fill: none;
+  stroke: #9ff5dc;
+  stroke-width: 1.1;
+  opacity: 0.12;
+  animation: ft-drift 9s linear infinite;
+}
+.ft-caustics path:nth-child(even) {
+  animation-duration: 13s;
+  animation-direction: reverse;
+  opacity: 0.08;
+}
+@keyframes ft-drift {
+  to { transform: translateX(80px); }
+}
+.ft-floorline {
+  fill: none;
+  stroke: #04201e;
+  stroke-width: 3;
+  opacity: 0.75;
+}
+.ft-rope-a,
+.ft-rope-b {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 3 5;
+}
+.ft-rope-a {
+  stroke: #e6f2ee;
+  opacity: 0.55;
+}
+.ft-rope-b {
+  stroke: #4ade80;
+  stroke-dashoffset: 4;
+  opacity: 0.6;
+}
+.ft-wake path {
+  fill: none;
+  stroke: #d8fff1;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.28;
+  stroke-dasharray: 4 6;
+  animation: ft-wake 0.6s linear infinite;
+}
+@keyframes ft-wake {
+  to { stroke-dashoffset: 10; }
+}
+.ft-ripple {
+  fill: none;
+  stroke: #d8fff1;
+  stroke-width: 1.5;
+  animation: ft-ripple 0.9s ease-out forwards;
+}
+@keyframes ft-ripple {
+  from { r: 4px; opacity: 0.7; }
+  to { r: 26px; opacity: 0; }
+}
+.ft-splash {
+  fill: #d8fff1;
+  opacity: 0.08;
+}
+.ft-body-shape {
+  fill: #e9eef2;
+}
+.ft-cap {
+  fill: #4ade80;
+}
+.ft-leg {
+  fill: none;
+  stroke: #cfd8de;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+.ft-arm-under {
+  fill: none;
+  stroke: #cfe9e2;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+.ft-arm-over {
+  fill: none;
+  stroke: #f4f7f9;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.ft-hand {
+  fill: #f4f7f9;
+}
+.ft-label,
+.ft-lane-no {
+  fill: #7d8597;
+  font-size: 9px;
+  font-family: var(--font-sans), sans-serif;
+}
+.ft-lane-no {
+  fill: #b8f5d6;
+  font-weight: 700;
+}
+
+.ft-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.ft-hero-stat {
+  border: 1px solid rgba(94, 224, 168, 0.35);
+  border-radius: 20px;
+  padding: 1.1rem 1.2rem;
+  background: linear-gradient(160deg, rgba(74, 222, 160, 0.14), rgba(74, 222, 160, 0.02));
+}
+.ft-hero-stat strong {
+  display: block;
+  font-size: clamp(3rem, 7vw, 4.4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0.3rem 0 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+.ft-sub {
+  color: #9fe8c6;
+  font-size: 0.82rem;
+}
+.ft-pop {
+  animation: ft-pop 0.5s ease-out;
+}
+@keyframes ft-pop {
+  from { transform: scale(1.12); color: #5ee0a8; }
+  to { transform: none; }
+}
+.ft-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  flex: 1;
+}
+.ft-grid > div {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0.8rem 0.95rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+.ft-grid .ft-wide {
+  grid-column: 1 / -1;
+}
+.ft-grid dd {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-top: 0.2rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.ft-heart {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #ff5a6e;
+  margin-right: 0.4em;
+  vertical-align: 0.15em;
+  box-shadow: 0 0 0 0 rgba(255, 90, 110, 0.6);
+  animation: ft-beat 0.9s ease-out infinite;
+}
+@keyframes ft-beat {
+  0% { box-shadow: 0 0 0 0 rgba(255, 90, 110, 0.55); }
+  70% { box-shadow: 0 0 0 0.45em rgba(255, 90, 110, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 90, 110, 0); }
+}
+.ft-sports {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+.ft-sports-title {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.ft-sports-title strong {
+  color: var(--fg);
+  font-size: 1.1rem;
+}
+.ft-sports ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+}
+.ft-sports li {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+  color: #c9cdd8;
+  transition: border-color 0.4s, color 0.4s, background 0.4s;
+}
+.ft-sports li.on {
+  border-color: rgba(94, 224, 168, 0.55);
+  background: rgba(74, 222, 160, 0.1);
+  color: #fff;
+}
+
+/* Triathlon */
+.ft-tri .hm-stage {
+  background:
+    radial-gradient(ellipse 45% 50% at 15% 80%, rgba(94, 200, 242, 0.12), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 90% 10%, rgba(163, 230, 53, 0.08), transparent 70%),
+    linear-gradient(180deg, #121619 0%, #0b0e11 100%);
+}
+.ft-tri-body {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ft-legs {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.ft-leg {
+  --c: #5ec8f2;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.15rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0.8rem 0.95rem 0.95rem;
+  background: rgba(255, 255, 255, 0.025);
+  transition: border-color 0.4s, background 0.4s, opacity 0.4s;
+}
+.ft-leg-bike {
+  --c: #4fd1a5;
+}
+.ft-leg-run {
+  --c: #a3e635;
+}
+.ft-leg svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  grid-row: span 2;
+}
+.ft-leg svg path {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ft-leg-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.ft-leg-km {
+  font-size: 0.8rem;
+  color: #c9cdd8;
+  font-variant-numeric: tabular-nums;
+}
+.ft-leg-time {
+  grid-column: 1 / -1;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-top: 0.3rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.ft-leg-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--c);
+  transform-origin: left;
+}
+.ft-leg.is-next {
+  opacity: 0.55;
+}
+.ft-leg.is-on {
+  border-color: color-mix(in srgb, var(--c) 55%, transparent);
+  background: color-mix(in srgb, var(--c) 9%, transparent);
+}
+.ft-toast {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 13, 16, 0.75);
+  color: #e6edf3;
+  animation: ft-toast 0.5s ease-out;
+}
+@keyframes ft-toast {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.ft-ridge {
+  fill: #161c20;
+}
+.ft-pine {
+  fill: #1f3a2c;
+}
+.ft-waves path {
+  fill: none;
+  stroke: #7fd3f5;
+  stroke-width: 0.8;
+  opacity: 0.25;
+  animation: ft-drift-s 6s linear infinite;
+}
+.ft-waves path:nth-child(even) {
+  animation-direction: reverse;
+  opacity: 0.15;
+}
+@keyframes ft-drift-s {
+  to { transform: translateX(40px); }
+}
+.ft-buoy {
+  fill: #f4b25e;
+  opacity: 0.85;
+}
+.ft-road {
+  fill: none;
+  stroke: #1f2329;
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+.ft-road-line {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 0.7;
+  stroke-dasharray: 4 5;
+  opacity: 0.3;
+}
+.ft-route-ghost {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-dasharray: 2 4;
+  opacity: 0.18;
+  stroke-linecap: round;
+}
+.ft-route {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+}
+.ft-route-swim {
+  stroke: #5ec8f2;
+  filter: drop-shadow(0 0 4px rgba(94, 200, 242, 0.6));
+}
+.ft-route-bike {
+  stroke: #4fd1a5;
+  filter: drop-shadow(0 0 4px rgba(79, 209, 165, 0.6));
+}
+.ft-route-run {
+  stroke: #a3e635;
+  filter: drop-shadow(0 0 4px rgba(163, 230, 53, 0.55));
+}
+.ft-start {
+  fill: #0b0e11;
+  stroke: #5ec8f2;
+  stroke-width: 1.6;
+}
+.ft-flag path {
+  fill: none;
+  stroke: #e6edf3;
+  stroke-width: 1.3;
+}
+.ft-flag .ft-flag-cloth {
+  fill: #a3e635;
+  stroke: none;
+}
+.ft-glow {
+  opacity: 0.25;
+  animation: ft-glow 1.6s ease-in-out infinite;
+}
+.ft-glow-swim { fill: #5ec8f2; }
+.ft-glow-bike { fill: #4fd1a5; }
+.ft-glow-run { fill: #a3e635; }
+@keyframes ft-glow {
+  50% { opacity: 0.08; }
+}
+.ft-badge-dot {
+  fill: #f4f7f9;
+}
+.ft-badge-icon {
+  fill: none;
+  stroke: #0b0e11;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ft-tri-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+.ft-tri-stats {
+  display: grid;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.ft-tri-stats > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.ft-tri-stats > div {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0.8rem 0.95rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+.ft-tri-stats strong {
+  display: block;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-top: 0.2rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.ft-on {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ft-switch {
+  width: 2rem;
+  height: 1.15rem;
+  border-radius: 999px;
+  background: #34c77b;
+  position: relative;
+}
+.ft-switch::after {
+  content: "";
+  position: absolute;
+  top: 0.15rem;
+  right: 0.15rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.hm-paused .ft-caustics path,
+.hm-paused .ft-wake path,
+.hm-paused .ft-waves path,
+.hm-paused .ft-glow,
+.hm-paused .ft-heart {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ft-caustics path,
+  .ft-wake path,
+  .ft-waves path,
+  .ft-glow,
+  .ft-heart,
+  .ft-pop,
+  .ft-toast {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .ft-body {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 1.5rem;
+  }
+  .ft-scene {
+    padding: 2.2rem 0.5rem 0.6rem;
+  }
+  .ft-hero-stat {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 0.8rem;
+  }
+  .ft-hero-stat strong {
+    margin: 0;
+    font-size: 2.6rem;
+  }
+  .ft-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .ft-grid .ft-wide {
+    grid-column: span 2;
+  }
+  .ft-grid > div,
+  .ft-tri-stats > div {
+    padding: 0.65rem 0.7rem;
+    border-radius: 14px;
+  }
+  .ft-grid dd,
+  .ft-tri-stats strong {
+    font-size: 1.15rem;
+  }
+  .ft-legs {
+    gap: 0.45rem;
+  }
+  .ft-leg {
+    grid-template-columns: 1fr;
+    padding: 0.65rem 0.6rem 0.8rem;
+    border-radius: 14px;
+  }
+  .ft-leg svg {
+    grid-row: auto;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .ft-leg-km {
+    font-size: 0.68rem;
+  }
+  .ft-leg-time {
+    font-size: 1.05rem;
+    margin-top: 0.15rem;
+  }
+  .ft-tri-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ft-tri-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    gap: 0.5rem;
+  }
+  .ft-toast {
+    font-size: 0.68rem;
+  }
+}

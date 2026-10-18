@@ -15,6 +15,7 @@ import Showcase from "@/components/Showcase";
 import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
+import Fitness from "@/components/Fitness";
 import HealthMonitoring from "@/components/HealthMonitoring";
 import GpsShowcase from "@/components/GpsShowcase";
 import BatteryLiquid from "@/components/BatteryLiquid";
@@ -143,7 +144,7 @@ export default async function ProductPage({ params }: Props) {
     product.batteryLiquid && ["#battery", "Battery"],
     product.health && product.batteryLiquid && ["#health", "Health"],
     product.gps && product.batteryLiquid && ["#gps", "GPS"],
-    product.sportModes && ["#sports", "Sports"],
+    (product.sportModes || product.fitness) && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
     product.faq && ["#faq", "FAQ"],
   ].filter(Boolean) as [string, string][];
@@ -311,6 +312,8 @@ export default async function ProductPage({ params }: Props) {
       {product.sportModes && (
         <SportsUniverse name={product.name} count={product.sportModes.count} ids={product.sportModes.ids} />
       )}
+
+      {product.fitness && <Fitness name={product.name} look={product.fitness.look} count={product.fitness.count} />}
 
       {product.sports && (
         <section className="section sports">
