@@ -7,13 +7,14 @@ import SectionHead from "@/components/SectionHead";
 // Battery section drawn on the watch itself: the photo's screen is covered
 // with a live face where liquid fills to the chosen mode's days and the
 // number counts. "wave" (Torvan): blue waves, bubbles and a ring of day ticks
-// on a round screen. "dash" (Trekon): green liquid made of flowing dashed
-// lines with a dashed crest, rising sparks and day ticks up both sides, on a
-// shaped screen. Steps through the modes on its
+// on a round screen. "cells" (Trekon): glossy green battery cells
+// stacked inside a shaped screen, lighting up from the bottom with a light
+// sweep and the top cell breathing. Steps through the modes on its
 // own (tap a card to pick one). Renders complete without JS on the longest
 // mode; motion is an extra and pauses off screen.
 
 const STEP_MS = 4800;
+const CELLS = 6;
 
 export default function BatteryLiquid({
   name,
@@ -40,7 +41,7 @@ export default function BatteryLiquid({
   modes: { label: string; days: number; text: string }[];
   facts: { value: string; label: string }[];
   intro?: string;
-  look?: "wave" | "dash";
+  look?: "wave" | "cells";
 }) {
   const max = Math.max(...modes.map((m) => m.days));
   const [active, setActive] = useState(modes.length - 1);
@@ -52,7 +53,9 @@ export default function BatteryLiquid({
 
   const mode = modes[active];
   const frac = mode.days / max;
-  const dash = look === "dash";
+  const cells = look === "cells";
+  // Cells light from the bottom, one per CELLS-th of the longest mode.
+  const litCells = Math.max(1, Math.round(frac * CELLS));
   const box =
     "r" in screen
       ? {
@@ -117,7 +120,7 @@ export default function BatteryLiquid({
     <section
       ref={ref}
       id="battery"
-      className={`section bl${dash ? " bl-dash" : ""}${live ? "" : " bl-paused"}`}
+      className={`section bl${cells ? " bl-cellslook" : ""}${live ? "" : " bl-paused"}`}
       aria-labelledby="bl-title"
     >
       <div className="bl-stage">
@@ -150,95 +153,73 @@ export default function BatteryLiquid({
               role="img"
               aria-label={`Watch screen showing ${mode.days} days of battery in ${mode.label.toLowerCase()}`}
             >
-              <div
-                className="bl-liquid"
-                style={{ transform: `translateY(${(1 - frac) * 100}%)` }}
-              >
-                {dash ? (
-                  <>
-                    <span className="bl-dashes" />
-                    <span className="bl-crest" />
-                  </>
-                ) : (
-                  <>
-                    <span className="bl-wave bl-wave-back" />
-                    <span className="bl-wave bl-wave-front" />
-                  </>
-                )}
-                <span className="bl-bubbles" aria-hidden="true">
-                  {Array.from({ length: 9 }, (_, i) => (
-                    <i key={i} />
-                  ))}
-                </span>
-              </div>
-              {dash ? (
-                <svg
-                  className="bl-ticks"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
+              {cells ? (
+                <div
+                  className="bl-cells"
+                  style={{
+                    ["--clip" as string]:
+                      "clip" in screen ? screen.clip : "none",
+                  }}
                 >
-                  {Array.from({ length: max }, (_, i) => {
-                    // Day 1 at the bottom; the ticks follow the cut corners.
-                    const y = 93 - (i / (max - 1)) * 86;
-                    const inset =
-                      y < 18
-                        ? 12 * (1 - y / 18)
-                        : y > 81
-                          ? 12 * ((y - 81) / 19)
-                          : 0;
-                    const len = i % 5 === 4 ? 5 : 3;
-                    const delay = {
-                      transitionDelay: `${(i < mode.days ? i : max - i) * 18}ms`,
-                    };
-                    const on = i < mode.days ? "on" : undefined;
+                  {Array.from({ length: CELLS }, (_, i) => {
+                    const lit = i < litCells;
                     return (
-                      <g key={i}>
-                        <line
-                          x1={inset + 3}
-                          y1={y}
-                          x2={inset + 3 + len}
-                          y2={y}
-                          className={on}
-                          style={delay}
-                        />
-                        <line
-                          x1={97 - inset}
-                          y1={y}
-                          x2={97 - inset - len}
-                          y2={y}
-                          className={on}
-                          style={delay}
-                        />
-                      </g>
-                    );
-                  })}
-                </svg>
-              ) : (
-                <svg
-                  className="bl-ticks"
-                  viewBox="0 0 200 200"
-                  aria-hidden="true"
-                >
-                  {Array.from({ length: max }, (_, i) => {
-                    const a = (i / max) * 2 * Math.PI;
-                    const s = Math.sin(a);
-                    const c = -Math.cos(a);
-                    return (
-                      <line
+                      <i
                         key={i}
-                        x1={100 + s * 90}
-                        y1={100 + c * 90}
-                        x2={100 + s * (i % 5 === 0 ? 82 : 86)}
-                        y2={100 + c * (i % 5 === 0 ? 82 : 86)}
-                        className={i < mode.days ? "on" : undefined}
+                        className={
+                          lit
+                            ? i === litCells - 1
+                              ? "on top"
+                              : "on"
+                            : undefined
+                        }
                         style={{
-                          transitionDelay: `${(i < mode.days ? i : max - i) * 12}ms`,
+                          ["--d" as string]: `${(lit ? i : CELLS - 1 - i) * 120}ms`,
+                          ["--i" as string]: i,
                         }}
                       />
                     );
                   })}
-                </svg>
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="bl-liquid"
+                    style={{ transform: `translateY(${(1 - frac) * 100}%)` }}
+                  >
+                    <span className="bl-wave bl-wave-back" />
+                    <span className="bl-wave bl-wave-front" />
+                    <span className="bl-bubbles" aria-hidden="true">
+                      {Array.from({ length: 9 }, (_, i) => (
+                        <i key={i} />
+                      ))}
+                    </span>
+                  </div>
+                  <svg
+                    className="bl-ticks"
+                    viewBox="0 0 200 200"
+                    aria-hidden="true"
+                  >
+                    {Array.from({ length: max }, (_, i) => {
+                      const a = (i / max) * 2 * Math.PI;
+                      const s = Math.sin(a);
+                      const c = -Math.cos(a);
+                      return (
+                        <line
+                          key={i}
+                          x1={100 + s * 90}
+                          y1={100 + c * 90}
+                          x2={100 + s * (i % 5 === 0 ? 82 : 86)}
+                          y2={100 + c * (i % 5 === 0 ? 82 : 86)}
+                          className={i < mode.days ? "on" : undefined}
+                          style={{
+                            transitionDelay: `${(i < mode.days ? i : max - i) * 12}ms`,
+                          }}
+                        />
+                      );
+                    })}
+                  </svg>
+                </>
               )}
               <div className="bl-face">
                 <span className="bl-mah">{mah} mAh</span>

@@ -55,7 +55,7 @@ export type Product = {
   healthMonitoring?: boolean;
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
-  // outline). look "dash" is the green dashed-line liquid. Longest mode last.
+  // outline). look "cells" is stacked green battery cells. Longest mode last.
   batteryLiquid?: {
     mah: number;
     image: string;
@@ -63,7 +63,7 @@ export type Product = {
     screen:
       | { cx: number; cy: number; r: number }
       | { x: number; y: number; w: number; h: number; clip: string };
-    look?: "wave" | "dash";
+    look?: "wave" | "cells";
     intro?: string;
     modes: { label: string; days: number; text: string }[];
     facts: { value: string; label: string }[];
@@ -374,7 +374,7 @@ export const products: Product[] = [
         h: 50.8,
         clip: "polygon(12.1% 0, 86.8% 0, 100% 17.5%, 100% 80.5%, 86.5% 100%, 12.1% 100%, 0 80.7%, 0 17.7%)",
       },
-      look: "dash",
+      look: "cells",
       intro:
         "The MATIN Trekon packs a 1000mAh battery: up to 20 days of everyday wear, and up to 30 days with light use.",
       modes: [

@@ -6040,16 +6040,17 @@ button.thumb:focus-visible {
   }
 }
 
-/* Trekon battery: the same liquid section in green, drawn as flowing dashed
-   lines on the watch's shaped screen (BatteryLiquid look="dash"). */
-.bl-dash .bl-stage {
+/* Trekon battery: glossy green cells stacked inside the watch's shaped
+   screen (BatteryLiquid look="cells"). Cells light from the bottom one by one;
+   a gloss sweeps across them and the top lit cell breathes. */
+.bl-cellslook .bl-stage {
   background:
-    radial-gradient(50% 50% at 28% 55%, rgba(34, 197, 94, 0.18), transparent 70%),
+    radial-gradient(50% 50% at 28% 55%, rgba(132, 204, 22, 0.16), transparent 70%),
     linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
 }
 
-.bl-dash .sec-head .eyebrow {
-  color: #4fe08f;
+.bl-cellslook .sec-head .eyebrow {
+  color: #9be15d;
 }
 
 .bl-shaped,
@@ -6057,174 +6058,127 @@ button.thumb:focus-visible {
   border-radius: 0;
 }
 
-.bl-dash .bl-screen {
-  background: radial-gradient(120% 90% at 50% 35%, #0b1a12 0%, #030806 75%);
+.bl-cellslook .bl-screen {
+  background: linear-gradient(180deg, #121519 0%, #07090b 100%);
 }
 
-.bl-dash .bl-liquid {
-  background: none;
-}
-
-/* Rows of dashes slide in opposite directions; the top is a moving wave cut
-   out with a mask, so the dashes themselves form the surface. */
-.bl-dashes {
+.bl-cells {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: -6cqw;
+  inset: 5% 6%;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2.6cqw;
+  clip-path: var(--clip);
+  -webkit-clip-path: var(--clip);
+}
+
+.bl-cells i {
+  position: relative;
+  flex: 1;
+  border-radius: 2.6cqw;
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+/* The lit face: lime to deep green with the bright split highlight. */
+.bl-cells i::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 38%, rgba(0, 0, 0, 0) 70%, rgba(0, 40, 0, 0.3) 100%),
+    linear-gradient(90deg, #7ccf2b 0%, #c6ff4d 24%, #a3e83a 47%, #b4dc84 49.5%, #86c94a 52%, #5fa52c 76%, #3a7a1a 100%);
+  box-shadow: 0 0 3cqw rgba(150, 235, 60, 0.35);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+.bl-cells i.on::before {
+  opacity: 1;
+  transform: none;
+}
+
+.bl-cells i.top::before {
+  animation: bl-cell-breathe 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes bl-cell-breathe {
+  from {
+    filter: brightness(1);
+  }
+  to {
+    filter: brightness(1.28) saturate(1.1);
+  }
+}
+
+/* Light sweep across each lit cell, one after another from the bottom. */
+.bl-cells i.on::after {
+  content: "";
+  position: absolute;
+  top: 0;
   bottom: 0;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Crect x='2' y='2' width='22' height='3.4' rx='1.7' fill='%2367f5a2'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 14'%3E%3Crect x='4' y='9' width='13' height='3.4' rx='1.7' fill='%2334d67a'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, rgba(40, 210, 115, 0.42) 0%, rgba(14, 110, 58, 0.55) 45%, rgba(4, 48, 24, 0.85) 100%);
-  background-size:
-    12cqw 4.2cqw,
-    8.4cqw 4.2cqw,
-    100% 100%;
-  -webkit-mask-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15 Q50 3 100 15 T200 15 V30 H0Z'/%3E%3C/svg%3E"),
-    linear-gradient(#000, #000);
-  mask-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15 Q50 3 100 15 T200 15 V30 H0Z'/%3E%3C/svg%3E"),
-    linear-gradient(#000, #000);
-  -webkit-mask-size:
-    40cqw 6cqw,
-    100% calc(100% - 6cqw + 1px);
-  mask-size:
-    40cqw 6cqw,
-    100% calc(100% - 6cqw + 1px);
-  -webkit-mask-repeat: repeat-x, no-repeat;
-  mask-repeat: repeat-x, no-repeat;
-  -webkit-mask-position:
-    0 0,
-    0 calc(6cqw - 1px);
-  mask-position:
-    0 0,
-    0 calc(6cqw - 1px);
-  animation:
-    bl-dash-flow 2.6s linear infinite,
-    bl-dash-wave 3.4s linear infinite;
+  left: -40%;
+  width: 30%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(0);
+  animation: bl-cell-sweep 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.12s);
 }
 
-@keyframes bl-dash-flow {
-  from {
-    background-position:
-      0 0,
-      0 0,
-      0 0;
+@keyframes bl-cell-sweep {
+  0% {
+    transform: translateX(0);
   }
-  to {
-    background-position:
-      12cqw 0,
-      -16.8cqw 0,
-      0 0;
+  45%,
+  100% {
+    transform: translateX(560%);
   }
 }
 
-@keyframes bl-dash-wave {
-  from {
-    -webkit-mask-position:
-      0 0,
-      0 calc(6cqw - 1px);
-    mask-position:
-      0 0,
-      0 calc(6cqw - 1px);
-  }
-  to {
-    -webkit-mask-position:
-      40cqw 0,
-      0 calc(6cqw - 1px);
-    mask-position:
-      40cqw 0,
-      0 calc(6cqw - 1px);
-  }
+.bl-cellslook .bl-face {
+  text-shadow:
+    0 0.3cqw 0.8cqw rgba(0, 0, 0, 0.7),
+    0 0 4cqw rgba(0, 0, 0, 0.55);
 }
 
-/* Bright dashed line riding the wave crest, in step with the mask. */
-.bl-crest {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -6cqw;
-  height: 6cqw;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15 Q50 3 100 15 T200 15' fill='none' stroke='%23c8ffdf' stroke-width='3' stroke-dasharray='9 6' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-size: 40cqw 6cqw;
-  background-repeat: repeat-x;
-  filter: drop-shadow(0 0 1.2cqw rgba(62, 240, 138, 0.9));
-  animation: bl-crest 3.4s linear infinite;
+.bl-cellslook .bl-mode {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-@keyframes bl-crest {
-  from {
-    background-position-x: 0;
-  }
-  to {
-    background-position-x: 40cqw;
-  }
+.bl-cellslook .bl-card.is-on {
+  border-color: rgba(155, 225, 93, 0.5);
+  background: linear-gradient(135deg, rgba(132, 204, 22, 0.18), rgba(132, 204, 22, 0.04));
+  box-shadow: 0 12px 30px -12px rgba(132, 204, 22, 0.5);
 }
 
-/* Rising sparks instead of bubbles. */
-.bl-dash .bl-bubbles i,
-.bl-dash .bl-bubbles i:nth-child(n) {
-  width: 0.9cqw;
-  height: 3.2cqw;
-  border-radius: 1cqw;
-  background: #c8ffdf;
-  box-shadow: 0 0 1.5cqw rgba(62, 240, 138, 0.9);
+.bl-cellslook .bl-pill span {
+  background: linear-gradient(90deg, #3a7a1a, #7ccf2b);
 }
 
-.bl-dash .bl-ticks line {
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 2px;
-  vector-effect: non-scaling-stroke;
+.bl-cellslook .bl-card.is-on .bl-pill span {
+  background: linear-gradient(90deg, #3a7a1a, #7ccf2b, #c6ff4d, #7ccf2b, #3a7a1a);
+  background-size: 200% 100%;
 }
 
-.bl-dash .bl-ticks line.on {
-  stroke: #9dffc6;
-}
-
-.bl-dash .bl-face {
-  text-shadow: 0 0.5cqw 2cqw rgba(0, 30, 12, 0.6);
-}
-
-.bl-dash .bl-mode {
-  background: rgba(0, 30, 14, 0.45);
-  border-color: rgba(200, 255, 223, 0.3);
-}
-
-.bl-dash .bl-card.is-on {
-  border-color: rgba(62, 240, 138, 0.5);
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.05));
-  box-shadow: 0 12px 30px -12px rgba(34, 197, 94, 0.55);
-}
-
-.bl-dash .bl-pill span {
-  background: repeating-linear-gradient(90deg, #22c55e 0 10px, transparent 10px 14px);
-}
-
-.bl-dash .bl-card.is-on .bl-pill span {
-  background: repeating-linear-gradient(90deg, #67f5a2 0 10px, transparent 10px 14px);
-  background-size: 28px 100%;
-  animation: bl-dash-pill 0.9s linear infinite;
-}
-
-@keyframes bl-dash-pill {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 28px 0;
-  }
-}
-
-.bl-paused .bl-dashes,
-.bl-paused .bl-crest {
+.bl-paused .bl-cells i::before,
+.bl-paused .bl-cells i::after {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bl-dashes,
-  .bl-crest {
+  .bl-cells i::before {
+    transition: none;
+  }
+
+  .bl-cells i::before,
+  .bl-cells i::after {
     animation: none;
   }
 }
