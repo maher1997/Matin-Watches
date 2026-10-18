@@ -58,6 +58,17 @@ export type Product = {
   // with built-in GPS. screens: route map, satellite systems, compass,
   // altitude. systems lists the satellite systems the listing names.
   gps?: { screens: ("route" | "sats" | "compass" | "alt")[]; systems?: string[]; barometric?: boolean };
+  // Animated flashlight section: "beam" from a side LED at point (% of the
+  // photo), or "screen" where the display is the light (point = screen circle).
+  flashlight?: {
+    variant: "beam" | "screen";
+    scene: "forest" | "camp" | "rocks";
+    tone?: "white" | "warm";
+    image: string;
+    point: { x: number; y: number; r?: number };
+    intro: string;
+    modes: { label: string; text: string; level: "high" | "low" | "flash" | "on" | "off" }[];
+  };
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
   // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "rings" green rings. Longest mode last.
@@ -577,6 +588,18 @@ export const products: Product[] = [
         { value: "1.5 h", label: "Magnetic charge" },
       ],
     },
+    flashlight: {
+      variant: "screen",
+      scene: "camp",
+      tone: "warm",
+      image: "/products/matin-torvan-front-view.webp",
+      point: { x: 49.6, y: 48.8, r: 24.8 },
+      intro: "The MATIN Torvan has a built-in flashlight, handy at camp, in the car or when you drop something in the dark.",
+      modes: [
+        { label: "Light on", text: "A soft, warm light right from your wrist", level: "on" },
+        { label: "Off", text: "Back to your watch face", level: "off" },
+      ],
+    },
     health: { metrics: ["hr", "rest", "spo2"], continuous: true },
     sportModes: {
       count: "9",
@@ -721,6 +744,18 @@ export const products: Product[] = [
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
     gps: { screens: ["route", "sats", "compass"], systems: ["GPS", "GLONASS", "BeiDou", "Galileo", "QZSS"] },
+    flashlight: {
+      variant: "beam",
+      scene: "forest",
+      image: "/products/matin-kaldor-front-view.webp",
+      point: { x: 85.5, y: 49.8 },
+      intro: "A real LED on the side of the MATIN Kaldor, with 3 light modes for night shifts, trails and power cuts.",
+      modes: [
+        { label: "High", text: "Full beam for the trail ahead", level: "high" },
+        { label: "Low", text: "Softer light for close work", level: "low" },
+        { label: "Flash", text: "Blinking light to be seen", level: "flash" },
+      ],
+    },
     health: { metrics: ["hr", "sleep", "activity"] },
     batteryLiquid: {
       mah: 530,
@@ -857,6 +892,17 @@ export const products: Product[] = [
       { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
     gps: { screens: ["route", "sats", "alt"], systems: ["GPS", "GLONASS", "Galileo", "BeiDou", "QZSS", "NavIC"], barometric: true },
+    flashlight: {
+      variant: "screen",
+      scene: "rocks",
+      image: "/products/matin-varkon-front-view.webp",
+      point: { x: 49.5, y: 47.21, r: 26.07 },
+      intro: "The MATIN Varkon's flashlight turns on in a tap, so you always have light on rocky trails, in the tent or under the car.",
+      modes: [
+        { label: "Light on", text: "Bright white light from your wrist", level: "on" },
+        { label: "Off", text: "Back to your watch face", level: "off" },
+      ],
+    },
     health: { metrics: ["hr", "spo2", "sleep"] },
     batteryLiquid: {
       mah: 500,

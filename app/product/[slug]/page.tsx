@@ -17,6 +17,7 @@ import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
 import GpsShowcase from "@/components/GpsShowcase";
+import Flashlight from "@/components/Flashlight";
 import BatteryLiquid from "@/components/BatteryLiquid";
 import SectionHead from "@/components/SectionHead";
 
@@ -143,6 +144,7 @@ export default async function ProductPage({ params }: Props) {
     product.batteryLiquid && ["#battery", "Battery"],
     product.health && product.batteryLiquid && ["#health", "Health"],
     product.gps && product.batteryLiquid && ["#gps", "GPS"],
+    product.flashlight && ["#flashlight", "Light"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
     product.faq && ["#faq", "FAQ"],
@@ -305,6 +307,20 @@ export default async function ProductPage({ params }: Props) {
           imageAlt={`${product.name} showing GPS navigation screens`}
           screen={product.batteryLiquid.screen}
           look={product.batteryLiquid.look}
+        />
+      )}
+
+      {product.flashlight && (
+        <Flashlight
+          name={product.name}
+          variant={product.flashlight.variant}
+          scene={product.flashlight.scene}
+          tone={product.flashlight.tone}
+          image={product.flashlight.image}
+          imageAlt={`${product.name} flashlight on at night`}
+          point={product.flashlight.point}
+          intro={product.flashlight.intro}
+          modes={product.flashlight.modes}
         />
       )}
 
