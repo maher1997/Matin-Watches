@@ -522,16 +522,20 @@ export const products: Product[] = [
     ],
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Torvan is a round, military-style rugged smartwatch with a stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) is sharp and bright, and you can take calls right from your wrist over Bluetooth. A built-in LED flashlight lights the way at night. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM water resistant, it is a tough outdoor smartwatch that works with both iPhone and Android.',
+      'The MATIN Torvan is a round, military-style rugged smartwatch with a 316L stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays sharp and easy to read in the sun, and you can take calls right from your wrist over Bluetooth. A built-in LED flashlight lights the way at night. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM and IP69K and tested to MIL-STD-810H for heat, cold, salt spray, humidity and shock, it is a tough outdoor smartwatch that works with both iPhone and Android.',
     highlights: [
       { value: '1.43"', label: "AMOLED screen" },
       { value: "30d", label: "Battery life" },
-      { value: "5ATM", label: "Water rating" },
+      { value: "IP69K", label: "& 5ATM" },
       { value: "Calls", label: "From your wrist" },
     ],
     specs: [
       { group: "Display", label: "Screen", value: '1.43" AMOLED, ultra HD' },
-      { group: "Display", label: "Resolution", value: "466 x 466 pixels" },
+      { group: "Display", label: "Resolution", value: "466 x 466 pixels, 391 PPI" },
+      { group: "Display", label: "Brightness", value: "Up to 1000 nits" },
+      { group: "Display", label: "Screen-to-body", value: "76%" },
+      { group: "Display", label: "Always-on", value: "Always-on display mode" },
+      { group: "Display", label: "Watch faces", value: "300+ watch faces to download, or use your own photo" },
       { group: "Display", label: "Glass", value: "Sapphire glass" },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "550mAh" },
@@ -546,8 +550,9 @@ export const products: Product[] = [
       { group: "Sports", label: "Activity", value: "Steps, standing time, calories, real-time pace and distance, automatic goals" },
       { group: "Sports", label: "Sensors", value: "3-axis accelerometer and 3-axis gyroscope" },
       { group: "Build", label: "Flashlight", value: "Built-in LED flashlight" },
-      { group: "Build", label: "Case", value: "Stainless steel with liquid silicone" },
-      { group: "Build", label: "Water resistance", value: "5ATM" },
+      { group: "Build", label: "Case", value: "316L stainless steel unibody" },
+      { group: "Build", label: "Water and dust", value: "5ATM and IP69K" },
+      { group: "Build", label: "Toughness", value: "Tested to MIL-STD-810H: heat to 70°C (158°F), cold to -40°C (-40°F), 96 h salt spray, ice and freezing rain, 240 h humidity, shock" },
       { group: "Build", label: "Size", value: "49.2 x 49.2 x 13.6 mm (1.94 x 1.94 x 0.54 in)" },
       { group: "Build", label: "Strap", value: "22 mm liquid silicone sport strap with folding buckle and two keepers, fits 130 to 235 mm (5.1 to 9.25 in) wrists" },
       { group: "Smart features", label: "Calls", value: "Bluetooth calls, dial pad, contacts, recent calls, voice assistant" },
@@ -556,6 +561,7 @@ export const products: Product[] = [
       { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
       { group: "Smart features", label: "Phone app", value: "Works with iPhone (iOS 10+) and Android (5.0+)" },
       { group: "Smart features", label: "Languages", value: "19, including English, Arabic, French, German and Spanish" },
+      { group: "In the box", label: "Includes", value: "MATIN Torvan watch with strap, magnetic charging cable, instruction manual" },
     ],
     featureGroups: [
       { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "Message and app notifications", "Find my phone"] },
@@ -607,7 +613,11 @@ export const products: Product[] = [
       },
       {
         q: "Is the MATIN Torvan waterproof?",
-        a: "It is rated 5ATM, so rain, sweat, splashes and washing your hands are fine.",
+        a: "It is rated 5ATM and IP69K, so rain, sweat, splashes, dust, mud and high-pressure water are fine. Do not use it for diving or in hot showers.",
+      },
+      {
+        q: "How tough is the MATIN Torvan?",
+        a: "It has a 316L stainless steel case and sapphire glass, and it is tested to MIL-STD-810H for heat up to 70°C (158°F), cold down to -40°C (-40°F), 96 hours of salt spray, ice and freezing rain, 240 hours of humidity and shock.",
       },
       {
         q: "Does it work with iPhone and Android?",
@@ -615,7 +625,7 @@ export const products: Product[] = [
       },
       {
         q: "What is the screen like?",
-        a: "A round 1.43 inch AMOLED display at 466 x 466 pixels, protected by sapphire glass.",
+        a: "A round 1.43 inch AMOLED display at 466 x 466 pixels (391 PPI), up to 1000 nits bright and protected by sapphire glass. It has an always-on mode and 300+ watch faces, and you can use your own photo as a face.",
       },
       {
         q: "Does shipping cost anything?",
@@ -624,7 +634,7 @@ export const products: Product[] = [
     ],
     seoTitle: "MATIN Torvan Military Smartwatch | Bluetooth Calling, AMOLED",
     seoDescription:
-      'MATIN Torvan rugged military-style smartwatch for men: Bluetooth calling, 1.43" AMOLED, sapphire glass, heart rate, SpO2, 30 day battery, 5ATM waterproof.',
+      'MATIN Torvan rugged military-style smartwatch for men: Bluetooth calling, 1.43" AMOLED, sapphire glass, SpO2, 30 day battery, 5ATM, IP69K, MIL-STD-810H.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#2f62e0" },
   },
   {
