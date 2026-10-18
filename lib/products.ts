@@ -705,7 +705,7 @@ export const products: Product[] = [
       { name: "Graphite Grey", hex: "#6a6c6e", from: 15 },
     ],
     description:
-      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with multiple sport modes. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts 11 to 30 days, and it is rated 3ATM against rain, sweat and splashes.',
+      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with 30+ sport modes, swimming included. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts 11 to 30 days, and it is rated 3ATM against rain, sweat and splashes.',
     highlights: [
       { value: "GPS", label: "Multi-system" },
       { value: "LED", label: "Flashlight" },
@@ -719,13 +719,14 @@ export const products: Product[] = [
       { group: "Battery", label: "Capacity", value: "530mAh" },
       { group: "Battery", label: "Battery life", value: "11 to 30 days, depending on use" },
       { group: "Battery", label: "Charging", value: "Magnetic charger" },
-      { group: "GPS & outdoor", label: "GPS", value: "Built-in, multi-system (GPS, GLONASS, BeiDou, Galileo, QZSS)" },
+      { group: "GPS & outdoor", label: "GPS", value: "Built-in, high-precision single-frequency, multi-system (GPS, GLONASS, BeiDou, Galileo, QZSS)" },
       { group: "GPS & outdoor", label: "Flashlight", value: "LED flashlight with 3 light modes" },
       { group: "GPS & outdoor", label: "Navigation", value: "Compass and altitude meter" },
       { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
       { group: "Health", label: "Sleep", value: "Sleep tracking" },
       { group: "Health", label: "Activity", value: "Steps, calories and sedentary reminder" },
-      { group: "Sports", label: "Sport modes", value: "Multiple modes, including running, walking, cycling, fitness, climbing and swimming" },
+      { group: "Sports", label: "Sport modes", value: "30+ modes, including running, walking, cycling, fitness, rock climbing and swimming" },
+      { group: "Sports", label: "Swim tracking", value: "Pool and open water: laps, strokes, stroke rate, SWOLF, pace and heart rate" },
       { group: "Build", label: "Case", value: "Zinc alloy middle frame with armored screws" },
       { group: "Build", label: "Water resistance", value: "3ATM" },
       { group: "Build", label: "Size", value: "49 mm wide, 13.9 mm thick (1.93 x 0.55 in)" },
@@ -741,7 +742,7 @@ export const products: Product[] = [
     featureGroups: [
       { title: "Outdoor & navigation", icon: "outdoor", items: ["Multi-system GPS", "LED flashlight, 3 modes", "Compass", "Altitude meter"] },
       { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Call and message reminders", "Push notifications", "Phone app sync"] },
-      { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "Multiple sport modes"] },
+      { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "30+ sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
     gps: { screens: ["route", "sats", "compass"], systems: ["GPS", "GLONASS", "BeiDou", "Galileo", "QZSS"] },
@@ -783,7 +784,7 @@ export const products: Product[] = [
       },
       {
         q: "Is the MATIN Kaldor waterproof?",
-        a: "It is rated 3ATM, so rain, sweat, splashes and washing your hands are fine. Do not use it for diving or in hot showers.",
+        a: "It is rated 3ATM, so rain, sweat, splashes and pool swimming are fine, and it tracks your swims. Do not use it for diving, in hot showers or in the sauna.",
       },
       {
         q: "What is the screen like?",
