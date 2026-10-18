@@ -4807,227 +4807,6 @@ button.thumb:focus-visible {
   }
 }
 
-/* Battery showcase (components/BatteryVisualizer.tsx): an emerald watch face
-   on the steel stage. Ambient motion only (no entrance or scroll reveal),
-   paused off screen and for reduced motion. */
-.bv-stage {
-  position: relative;
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: clamp(1.25rem, 4vw, 3rem);
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 45% 50% at 28% 62%, rgba(0, 255, 102, 0.09), transparent 70%),
-    radial-gradient(ellipse 50% 50% at 90% 10%, rgba(82, 133, 247, 0.12), transparent 70%),
-    linear-gradient(180deg, #13161e 0%, #0c0e13 100%);
-}
-
-.bv .sec-head h2 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: -0.03em;
-  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
-  line-height: 1.05;
-}
-
-.bv .sec-head .grad {
-  background: none;
-  -webkit-background-clip: border-box;
-  background-clip: border-box;
-  color: #7d8597;
-}
-
-.bv .sec-head .eyebrow {
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  color: #00e65c;
-}
-
-.bv-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(1.5rem, 5vw, 4rem);
-  max-width: 980px;
-  margin: 0 auto;
-}
-
-/* Watch: steel bezel around a round AMOLED screen */
-.bv-watch {
-  margin: 0;
-  width: min(100%, 440px);
-  aspect-ratio: 1 / 1;
-  justify-self: center;
-  border-radius: 50%;
-  padding: 3.2%;
-  background: conic-gradient(from 210deg, #2b3038, #5a616b, #23272e, #4b525c, #1c1f25, #555c66, #2b3038);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 30px 60px -20px rgba(0, 0, 0, 0.9),
-    0 0 80px -10px rgba(0, 255, 102, 0.2);
-}
-
-.bv-screen {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #0b0e14;
-  box-shadow: inset 0 0 0 2px #000, inset 0 0 30px rgba(0, 0, 0, 0.8);
-}
-
-.bv-screen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, transparent 38%);
-  pointer-events: none;
-}
-
-.bv-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* Watch face text */
-.bv-svg text { font-family: var(--font-sans), system-ui, sans-serif; }
-.bv-t-label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.22em; fill: #6f8a7c; }
-.bv-t-badge { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; fill: #00ff66; }
-.bv-t-pct { font-size: 56px; font-weight: 600; letter-spacing: -0.02em; fill: #eafbf1; }
-.bv-t-pct tspan { font-size: 24px; font-weight: 500; fill: #00ff66; }
-.bv-t-days { font-size: 18px; font-weight: 600; fill: #eafbf1; }
-.bv-t-days tspan { fill: #00ff66; }
-.bv-t-pill { font-size: 11px; font-weight: 600; letter-spacing: 0.03em; fill: #00ff66; }
-.bv-glow-pulse { opacity: 0.4; }
-.bv-msg-b { opacity: 0; }
-
-/* Points next to the watch */
-.bv-points {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.85rem;
-}
-
-.bv-points li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1rem;
-  align-items: start;
-  padding: 1.1rem 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  background:
-    radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.05), transparent 60%),
-    rgba(255, 255, 255, 0.025);
-}
-
-.bv-icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, #1a1d24, #111318);
-}
-
-.bv-icon svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: #00e65c;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.bv-points strong {
-  display: block;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 1.45rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  color: #fff;
-}
-
-.bv-points h3 {
-  margin: 0.15rem 0 0.3rem;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  color: #00e65c;
-}
-
-.bv-points p {
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-@media (max-width: 760px) {
-  .bv-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .bv-watch {
-    width: min(100%, 360px);
-  }
-}
-
-/* Ambient animations. transform-box: view-box makes 200px 200px the face centre. */
-.bv-spin { transform-box: view-box; transform-origin: 200px 200px; }
-.bv-comet { animation: bv-orbit 4.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
-.bv-orbit-a { animation: bv-orbit 9s linear infinite; }
-.bv-orbit-b { animation: bv-orbit 14s linear infinite; }
-.bv-orbit-c { animation: bv-orbit 22s linear infinite reverse; }
-.bv-ticks { animation: bv-orbit 120s linear infinite reverse; }
-.bv-float { transform-box: fill-box; animation: bv-float 4s ease-in-out infinite; }
-.bv-wave { animation: bv-wave 3s linear infinite; }
-.bv-wave-back { animation-duration: 5s; animation-direction: reverse; }
-.bv-bubble { animation: bv-bubble 2.8s ease-in infinite; animation-delay: var(--d, 0s); }
-.bv-sheen { animation: bv-sheen 4.5s ease-in-out infinite; }
-.bv-breathe { animation: bv-breathe 5s ease-in-out infinite; }
-.bv-glow-pulse { animation: bv-glow 3.2s ease-in-out infinite; animation-delay: var(--d, 0s); }
-.bv-msg-a { animation: bv-msg-a 7s ease-in-out 2s infinite; }
-.bv-msg-b { animation: bv-msg-b 7s ease-in-out 2s infinite; }
-.bv-dot { animation: bv-dot 1.6s ease-in-out infinite; }
-
-.bv-paused .bv-svg * { animation-play-state: paused; }
-
-@keyframes bv-orbit { to { transform: rotate(360deg); } }
-@keyframes bv-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-@keyframes bv-wave { from { transform: translateX(0); } to { transform: translateX(-60px); } }
-@keyframes bv-bubble {
-  0% { transform: translateY(0); opacity: 0; }
-  20% { opacity: 0.9; }
-  100% { transform: translateY(-40px); opacity: 0; }
-}
-@keyframes bv-sheen {
-  0%, 55% { transform: translateX(-90px) skewX(-20deg); }
-  100% { transform: translateX(150px) skewX(-20deg); }
-}
-@keyframes bv-breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.85; } }
-@keyframes bv-glow { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
-@keyframes bv-msg-a { 0%, 42% { opacity: 1; } 50%, 92% { opacity: 0; } 100% { opacity: 1; } }
-@keyframes bv-msg-b { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes bv-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
-
-@media (prefers-reduced-motion: reduce) {
-  .bv-svg * { animation: none !important; }
-}
-
 /* Home page (app/page.tsx): clean sentence-case titles, a three-watch hero,
    the lineup comparison, reasons, collections and FAQ. Everything renders
    visible straight away; no scroll reveal. */
@@ -6257,6 +6036,195 @@ button.thumb:focus-visible {
   .bl-wave,
   .bl-bubbles i,
   .bl-pill span {
+    animation: none;
+  }
+}
+
+/* Trekon battery: the same liquid section in green, drawn as flowing dashed
+   lines on the watch's shaped screen (BatteryLiquid look="dash"). */
+.bl-dash .bl-stage {
+  background:
+    radial-gradient(50% 50% at 28% 55%, rgba(34, 197, 94, 0.18), transparent 70%),
+    linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
+}
+
+.bl-dash .sec-head .eyebrow {
+  color: #4fe08f;
+}
+
+.bl-shaped,
+.bl-shaped .bl-glass {
+  border-radius: 0;
+}
+
+.bl-dash .bl-screen {
+  background: radial-gradient(120% 90% at 50% 35%, #0b1a12 0%, #030806 75%);
+}
+
+.bl-dash .bl-liquid {
+  background: none;
+}
+
+/* Rows of dashes slide in opposite directions; the top is a moving wave cut
+   out with a mask, so the dashes themselves form the surface. */
+.bl-dashes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -6cqw;
+  bottom: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Crect x='2' y='2' width='22' height='3.4' rx='1.7' fill='%2367f5a2'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 14'%3E%3Crect x='4' y='9' width='13' height='3.4' rx='1.7' fill='%2334d67a'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(40, 210, 115, 0.42) 0%, rgba(14, 110, 58, 0.55) 45%, rgba(4, 48, 24, 0.85) 100%);
+  background-size:
+    12cqw 4.2cqw,
+    8.4cqw 4.2cqw,
+    100% 100%;
+  -webkit-mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15 Q50 3 100 15 T200 15 V30 H0Z'/%3E%3C/svg%3E"),
+    linear-gradient(#000, #000);
+  mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15 Q50 3 100 15 T200 15 V30 H0Z'/%3E%3C/svg%3E"),
+    linear-gradient(#000, #000);
+  -webkit-mask-size:
+    40cqw 6cqw,
+    100% calc(100% - 6cqw + 1px);
+  mask-size:
+    40cqw 6cqw,
+    100% calc(100% - 6cqw + 1px);
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-repeat: repeat-x, no-repeat;
+  -webkit-mask-position:
+    0 0,
+    0 calc(6cqw - 1px);
+  mask-position:
+    0 0,
+    0 calc(6cqw - 1px);
+  animation:
+    bl-dash-flow 2.6s linear infinite,
+    bl-dash-wave 3.4s linear infinite;
+}
+
+@keyframes bl-dash-flow {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      12cqw 0,
+      -16.8cqw 0,
+      0 0;
+  }
+}
+
+@keyframes bl-dash-wave {
+  from {
+    -webkit-mask-position:
+      0 0,
+      0 calc(6cqw - 1px);
+    mask-position:
+      0 0,
+      0 calc(6cqw - 1px);
+  }
+  to {
+    -webkit-mask-position:
+      40cqw 0,
+      0 calc(6cqw - 1px);
+    mask-position:
+      40cqw 0,
+      0 calc(6cqw - 1px);
+  }
+}
+
+/* Bright dashed line riding the wave crest, in step with the mask. */
+.bl-crest {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -6cqw;
+  height: 6cqw;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15 Q50 3 100 15 T200 15' fill='none' stroke='%23c8ffdf' stroke-width='3' stroke-dasharray='9 6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 40cqw 6cqw;
+  background-repeat: repeat-x;
+  filter: drop-shadow(0 0 1.2cqw rgba(62, 240, 138, 0.9));
+  animation: bl-crest 3.4s linear infinite;
+}
+
+@keyframes bl-crest {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 40cqw;
+  }
+}
+
+/* Rising sparks instead of bubbles. */
+.bl-dash .bl-bubbles i,
+.bl-dash .bl-bubbles i:nth-child(n) {
+  width: 0.9cqw;
+  height: 3.2cqw;
+  border-radius: 1cqw;
+  background: #c8ffdf;
+  box-shadow: 0 0 1.5cqw rgba(62, 240, 138, 0.9);
+}
+
+.bl-dash .bl-ticks line {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+}
+
+.bl-dash .bl-ticks line.on {
+  stroke: #9dffc6;
+}
+
+.bl-dash .bl-face {
+  text-shadow: 0 0.5cqw 2cqw rgba(0, 30, 12, 0.6);
+}
+
+.bl-dash .bl-mode {
+  background: rgba(0, 30, 14, 0.45);
+  border-color: rgba(200, 255, 223, 0.3);
+}
+
+.bl-dash .bl-card.is-on {
+  border-color: rgba(62, 240, 138, 0.5);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.05));
+  box-shadow: 0 12px 30px -12px rgba(34, 197, 94, 0.55);
+}
+
+.bl-dash .bl-pill span {
+  background: repeating-linear-gradient(90deg, #22c55e 0 10px, transparent 10px 14px);
+}
+
+.bl-dash .bl-card.is-on .bl-pill span {
+  background: repeating-linear-gradient(90deg, #67f5a2 0 10px, transparent 10px 14px);
+  background-size: 28px 100%;
+  animation: bl-dash-pill 0.9s linear infinite;
+}
+
+@keyframes bl-dash-pill {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 28px 0;
+  }
+}
+
+.bl-paused .bl-dashes,
+.bl-paused .bl-crest {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-dashes,
+  .bl-crest {
     animation: none;
   }
 }

@@ -53,22 +53,35 @@ export type Product = {
   // Animated health monitoring section (heart rate, resting heart rate, SpO2).
   // Only for watches that really have all three.
   healthMonitoring?: boolean;
-  // Animated battery section: capacity in mAh and the battery life range in days.
-  batteryShowcase?: { mah: number; days: string };
-  // Battery section comparing usage modes as day strips (used instead of
-  // batteryShowcase). Put the longest mode last.
-  // Liquid battery drawn on the watch's own screen (photo + screen circle in %).
+  // Liquid battery drawn on the watch's own screen: a round screen (circle in
+  // % of the photo) or a shaped one (box in % plus a CSS polygon for its
+  // outline). look "dash" is the green dashed-line liquid. Longest mode last.
   batteryLiquid?: {
     mah: number;
     image: string;
     imageAlt: string;
-    screen: { cx: number; cy: number; r: number };
+    screen:
+      | { cx: number; cy: number; r: number }
+      | { x: number; y: number; w: number; h: number; clip: string };
+    look?: "wave" | "dash";
+    intro?: string;
     modes: { label: string; days: number; text: string }[];
     facts: { value: string; label: string }[];
   };
-  batteryModes?: { mah: number; charge: string; image: string; imageAlt: string; modes: { label: string; days: number; text: string }[] };
+  // Battery section comparing usage modes as day strips. Put the longest mode last.
+  batteryModes?: {
+    mah: number;
+    charge: string;
+    image: string;
+    imageAlt: string;
+    modes: { label: string; days: number; text: string }[];
+  };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
-  featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
+  featureGroups?: {
+    title: string;
+    icon: "outdoor" | "health" | "smart" | "tools";
+    items: string[];
+  }[];
   // "Turn it around" scroll section: each step shows one photo (index into
   // `images`) with a short headline. Order them like a turn: front, angle, side, back.
   // Big lifestyle panels: a photo with the headline and icon points written
@@ -87,7 +100,13 @@ export type Product = {
   // Big counting numbers band (e.g. 170 + "+" / "Sport modes").
   bigStats?: { value: number; suffix?: string; label: string }[];
   // Apple-style feature chapters: short headline, one paragraph, optional picture.
-  chapters?: { eyebrow: string; title: string; text: string; image?: string; imageAlt?: string }[];
+  chapters?: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    image?: string;
+    imageAlt?: string;
+  }[];
   // Marketing pictures shown lower on the product page.
   posters?: { src: string; alt: string; width: number; height: number }[];
   // Questions and answers shown on the page and given to Google.
@@ -102,12 +121,21 @@ export type Product = {
 // A watch's main label (shown above its name).
 export const categories: { id: Category; name: string; blurb: string }[] = [
   { id: "tactical", name: "Tactical", blurb: "Military-style and built tough" },
-  { id: "outdoor", name: "Outdoor", blurb: "For trails, camping and long days outside" },
+  {
+    id: "outdoor",
+    name: "Outdoor",
+    blurb: "For trails, camping and long days outside",
+  },
 ];
 
 // Collections a shopper can browse. One watch can be in several, so each
 // collection gets its own page (/collections/<id>) that Google can rank.
-export type CollectionId = "tactical" | "outdoor" | "gps" | "calling" | "long-battery";
+export type CollectionId =
+  | "tactical"
+  | "outdoor"
+  | "gps"
+  | "calling"
+  | "long-battery";
 
 export const collections: {
   id: CollectionId;
@@ -251,25 +279,73 @@ export const products: Product[] = [
     specs: [
       { group: "Display", label: "Screen", value: '1.95" AMOLED touchscreen' },
       { group: "Display", label: "Shape", value: "Rectangular" },
-      { group: "Display", label: "Watch faces", value: "Multiple faces, changeable in the app" },
+      {
+        group: "Display",
+        label: "Watch faces",
+        value: "Multiple faces, changeable in the app",
+      },
       { group: "Battery", label: "Capacity", value: "1000mAh" },
-      { group: "Battery", label: "Battery life", value: "11 to 30 days, depending on use" },
+      {
+        group: "Battery",
+        label: "Battery life",
+        value: "11 to 30 days, depending on use",
+      },
       { group: "Battery", label: "Charging", value: "Magnetic charger" },
-      { group: "GPS & sports", label: "GPS", value: "Built-in GPS route tracking" },
-      { group: "GPS & sports", label: "Sport modes", value: "170+ (running, cycling, hiking, climbing and more)" },
-      { group: "GPS & sports", label: "Outdoor tools", value: "Altitude meter, compass" },
+      {
+        group: "GPS & sports",
+        label: "GPS",
+        value: "Built-in GPS route tracking",
+      },
+      {
+        group: "GPS & sports",
+        label: "Sport modes",
+        value: "170+ (running, cycling, hiking, climbing and more)",
+      },
+      {
+        group: "GPS & sports",
+        label: "Outdoor tools",
+        value: "Altitude meter, compass",
+      },
       { group: "Health", label: "Heart rate", value: "Heart rate monitoring" },
-      { group: "Health", label: "Tracking", value: "Steps, distance, calories, sleep" },
+      {
+        group: "Health",
+        label: "Tracking",
+        value: "Steps, distance, calories, sleep",
+      },
       { group: "Health", label: "Reminders", value: "Sedentary reminder" },
       { group: "Build", label: "Case", value: "Zinc alloy middle frame" },
       { group: "Build", label: "Strap", value: "Silicone sport strap" },
-      { group: "Build", label: "Water resistance", value: "3ATM (rain, sweat and splashes)" },
-      { group: "Build", label: "Buttons", value: "SEL, BACK, SPORT and GPS keys" },
-      { group: "Smart features", label: "Phone app", value: "Works with iPhone and Android" },
-      { group: "Smart features", label: "Notifications", value: "Calls, messages and app alerts" },
-      { group: "Smart features", label: "Tools", value: "Alarm, calendar, calculator, world time" },
+      {
+        group: "Build",
+        label: "Water resistance",
+        value: "3ATM (rain, sweat and splashes)",
+      },
+      {
+        group: "Build",
+        label: "Buttons",
+        value: "SEL, BACK, SPORT and GPS keys",
+      },
+      {
+        group: "Smart features",
+        label: "Phone app",
+        value: "Works with iPhone and Android",
+      },
+      {
+        group: "Smart features",
+        label: "Notifications",
+        value: "Calls, messages and app alerts",
+      },
+      {
+        group: "Smart features",
+        label: "Tools",
+        value: "Alarm, calendar, calculator, world time",
+      },
       { group: "Smart features", label: "Camera", value: "None" },
-      { group: "In the box", label: "Includes", value: "MATIN Trekon watch, magnetic charging cable" },
+      {
+        group: "In the box",
+        label: "Includes",
+        value: "MATIN Trekon watch, magnetic charging cable",
+      },
     ],
     features: [
       "Built-in GPS",
@@ -289,10 +365,40 @@ export const products: Product[] = [
       "World time",
     ],
     featureGroups: [
-      { title: "Outdoor & GPS", icon: "outdoor", items: ["Built-in GPS", "170+ sport modes", "Altitude meter", "Compass"] },
-      { title: "Health", icon: "health", items: ["Heart rate monitor", "Step and distance tracker", "Calorie tracker", "Sleep tracker"] },
-      { title: "Stay connected", icon: "smart", items: ["Call reminders", "Message and app notifications", "Sedentary reminder"] },
-      { title: "Everyday tools", icon: "tools", items: ["Alarm clock", "Calendar", "Calculator", "World time"] },
+      {
+        title: "Outdoor & GPS",
+        icon: "outdoor",
+        items: [
+          "Built-in GPS",
+          "170+ sport modes",
+          "Altitude meter",
+          "Compass",
+        ],
+      },
+      {
+        title: "Health",
+        icon: "health",
+        items: [
+          "Heart rate monitor",
+          "Step and distance tracker",
+          "Calorie tracker",
+          "Sleep tracker",
+        ],
+      },
+      {
+        title: "Stay connected",
+        icon: "smart",
+        items: [
+          "Call reminders",
+          "Message and app notifications",
+          "Sedentary reminder",
+        ],
+      },
+      {
+        title: "Everyday tools",
+        icon: "tools",
+        items: ["Alarm clock", "Calendar", "Calculator", "World time"],
+      },
     ],
     stories: [
       {
@@ -303,9 +409,21 @@ export const products: Product[] = [
         text: "For work. For mission. For more.",
         tags: ["For work", "For mission", "For more"],
         points: [
-          { icon: "shield", title: "Shock resistant", text: "Handles rough use in tough conditions" },
-          { icon: "drop", title: "Water resistant", text: "Ready for rain, dust and more" },
-          { icon: "mountain", title: "Built for extremes", text: "Reliable performance in any environment" },
+          {
+            icon: "shield",
+            title: "Shock resistant",
+            text: "Handles rough use in tough conditions",
+          },
+          {
+            icon: "drop",
+            title: "Water resistant",
+            text: "Ready for rain, dust and more",
+          },
+          {
+            icon: "mountain",
+            title: "Built for extremes",
+            text: "Reliable performance in any environment",
+          },
           { icon: "thermo", title: "Wide temp range", text: "-4°F to 140°F" },
         ],
       },
@@ -316,10 +434,26 @@ export const products: Product[] = [
         title: ["Built", "tough"],
         text: "Designed for real adventures, ready for any environment.",
         points: [
-          { icon: "shield", title: "Shock resistant", text: "Built to handle rough conditions" },
-          { icon: "drop", title: "Water resistant", text: "Withstands rain, splash and more" },
-          { icon: "dust", title: "Dust resistant", text: "Keeps performing in tough environments" },
-          { icon: "thermo", title: "Wide temperature range", text: "Works from -4°F to 140°F" },
+          {
+            icon: "shield",
+            title: "Shock resistant",
+            text: "Built to handle rough conditions",
+          },
+          {
+            icon: "drop",
+            title: "Water resistant",
+            text: "Withstands rain, splash and more",
+          },
+          {
+            icon: "dust",
+            title: "Dust resistant",
+            text: "Keeps performing in tough environments",
+          },
+          {
+            icon: "thermo",
+            title: "Wide temperature range",
+            text: "Works from -4°F to 140°F",
+          },
         ],
       },
       {
@@ -329,9 +463,21 @@ export const products: Product[] = [
         title: ["Heart rate", "monitoring"],
         text: "Track your heart rate in real time and stay in control of your health every day.",
         points: [
-          { icon: "heart", title: "Real-time heart rate", text: "24/7 continuous monitoring" },
-          { icon: "chart", title: "Heart rate trends", text: "View your daily, weekly and monthly data" },
-          { icon: "run", title: "Stay active and healthy", text: "Get insights to improve your fitness" },
+          {
+            icon: "heart",
+            title: "Real-time heart rate",
+            text: "24/7 continuous monitoring",
+          },
+          {
+            icon: "chart",
+            title: "Heart rate trends",
+            text: "View your daily, weekly and monthly data",
+          },
+          {
+            icon: "run",
+            title: "Stay active and healthy",
+            text: "Get insights to improve your fitness",
+          },
         ],
       },
       {
@@ -341,9 +487,21 @@ export const products: Product[] = [
         title: ["Built-in", "GPS"],
         text: "Track your route, distance and pace with high-precision GPS.",
         points: [
-          { icon: "pin", title: "Accurate GPS tracking", text: "Find your way anywhere" },
-          { icon: "route", title: "Real-time route map", text: "Track distance, time and pace" },
-          { icon: "mountain", title: "Made for the outdoors", text: "Hiking, running, cycling and more" },
+          {
+            icon: "pin",
+            title: "Accurate GPS tracking",
+            text: "Find your way anywhere",
+          },
+          {
+            icon: "route",
+            title: "Real-time route map",
+            text: "Track distance, time and pace",
+          },
+          {
+            icon: "mountain",
+            title: "Made for the outdoors",
+            text: "Hiking, running, cycling and more",
+          },
         ],
       },
       {
@@ -353,13 +511,62 @@ export const products: Product[] = [
         title: ["1000mAh", "large battery"],
         text: "Go further with long-lasting power for all your adventures.",
         points: [
-          { icon: "battery", title: "20 days in use", text: "Up to 20 days with typical use" },
-          { icon: "bolt", title: "50 days standby", text: "Up to 50 days on standby" },
-          { icon: "magnet", title: "Magnetic charging", text: "The charger snaps on in a second" },
+          {
+            icon: "battery",
+            title: "20 days in use",
+            text: "Up to 20 days with typical use",
+          },
+          {
+            icon: "bolt",
+            title: "50 days standby",
+            text: "Up to 50 days on standby",
+          },
+          {
+            icon: "magnet",
+            title: "Magnetic charging",
+            text: "The charger snaps on in a second",
+          },
         ],
       },
     ],
-    batteryShowcase: { mah: 1000, days: "11 – 30" },
+    batteryLiquid: {
+      mah: 1000,
+      image: "/products/matin-trekon-black-front-view.webp",
+      imageAlt:
+        "MATIN Trekon front view with its AMOLED screen showing the battery level",
+      screen: {
+        x: 27.65,
+        y: 23.7,
+        w: 44.2,
+        h: 50.8,
+        clip: "polygon(12.1% 0, 86.8% 0, 100% 17.5%, 100% 80.5%, 86.5% 100%, 12.1% 100%, 0 80.7%, 0 17.7%)",
+      },
+      look: "dash",
+      intro:
+        "The MATIN Trekon packs a 1000mAh battery: up to 20 days of everyday wear, and up to 30 days with light use.",
+      modes: [
+        {
+          label: "Heavy use",
+          days: 11,
+          text: "GPS workouts, lots of notifications and the screen always bright.",
+        },
+        {
+          label: "Typical use",
+          days: 20,
+          text: "Everyday wear with heart rate tracking and notifications.",
+        },
+        {
+          label: "Light use",
+          days: 30,
+          text: "Time, steps and a few notifications a day.",
+        },
+      ],
+      facts: [
+        { value: "1000 mAh", label: "Battery" },
+        { value: "50 days", label: "Standby" },
+        { value: "Magnetic", label: "Charger" },
+      ],
+    },
     bigStats: [
       { value: 170, suffix: "+", label: "Sport modes" },
       { value: 30, label: "Days of battery" },
@@ -439,7 +646,7 @@ export const products: Product[] = [
       },
       {
         q: "What is the screen like?",
-        a: 'A big 1.95 inch AMOLED touchscreen with bright, sharp colors that stays readable outdoors.',
+        a: "A big 1.95 inch AMOLED touchscreen with bright, sharp colors that stays readable outdoors.",
       },
       {
         q: "Does shipping cost anything?",
@@ -489,42 +696,151 @@ export const products: Product[] = [
       { group: "Display", label: "Glass", value: "Sapphire glass" },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "550mAh" },
-      { group: "Battery", label: "Battery life", value: "Up to 30 days typical, 18 days heavy use, 60 days power saving" },
+      {
+        group: "Battery",
+        label: "Battery life",
+        value: "Up to 30 days typical, 18 days heavy use, 60 days power saving",
+      },
       { group: "Battery", label: "Talk time", value: "Up to 573 minutes" },
-      { group: "Battery", label: "Charging", value: "Magnetic charger, about 1.5 hours" },
-      { group: "Health", label: "Heart rate", value: "Continuous, every minute, plus daily resting heart rate" },
+      {
+        group: "Battery",
+        label: "Charging",
+        value: "Magnetic charger, about 1.5 hours",
+      },
+      {
+        group: "Health",
+        label: "Heart rate",
+        value: "Continuous, every minute, plus daily resting heart rate",
+      },
       { group: "Health", label: "Blood oxygen", value: "SpO2 measurement" },
-      { group: "Health", label: "More", value: "Blood pressure, breathing training, women's health" },
+      {
+        group: "Health",
+        label: "More",
+        value: "Blood pressure, breathing training, women's health",
+      },
       { group: "Health", label: "Sleep", value: "Sleep score and analysis" },
-      { group: "Sports", label: "Sport modes", value: "Walking, running, hiking, cycling, basketball, soccer, badminton, yoga, jump rope" },
-      { group: "Sports", label: "Activity", value: "Steps, standing time, calories, real-time pace and distance, automatic goals" },
-      { group: "Sports", label: "Sensors", value: "3-axis accelerometer and 3-axis gyroscope" },
+      {
+        group: "Sports",
+        label: "Sport modes",
+        value:
+          "Walking, running, hiking, cycling, basketball, soccer, badminton, yoga, jump rope",
+      },
+      {
+        group: "Sports",
+        label: "Activity",
+        value:
+          "Steps, standing time, calories, real-time pace and distance, automatic goals",
+      },
+      {
+        group: "Sports",
+        label: "Sensors",
+        value: "3-axis accelerometer and 3-axis gyroscope",
+      },
       { group: "Build", label: "Flashlight", value: "Built-in LED flashlight" },
-      { group: "Build", label: "Case", value: "Stainless steel with liquid silicone" },
+      {
+        group: "Build",
+        label: "Case",
+        value: "Stainless steel with liquid silicone",
+      },
       { group: "Build", label: "Water resistance", value: "5ATM" },
-      { group: "Build", label: "Strap", value: "Liquid silicone sport strap with two keepers" },
-      { group: "Smart features", label: "Calls", value: "Bluetooth calls, dial pad, contacts, recent calls, voice assistant" },
-      { group: "Smart features", label: "Notifications", value: "Calls, messages, email and app alerts" },
-      { group: "Smart features", label: "Tools", value: "Weather, music and camera control, find my phone, calendar, calculator, alarm, stopwatch, timer" },
+      {
+        group: "Build",
+        label: "Strap",
+        value: "Liquid silicone sport strap with two keepers",
+      },
+      {
+        group: "Smart features",
+        label: "Calls",
+        value:
+          "Bluetooth calls, dial pad, contacts, recent calls, voice assistant",
+      },
+      {
+        group: "Smart features",
+        label: "Notifications",
+        value: "Calls, messages, email and app alerts",
+      },
+      {
+        group: "Smart features",
+        label: "Tools",
+        value:
+          "Weather, music and camera control, find my phone, calendar, calculator, alarm, stopwatch, timer",
+      },
       { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
-      { group: "Smart features", label: "Phone app", value: "Works with iPhone (iOS 10+) and Android (5.0+)" },
-      { group: "Smart features", label: "Languages", value: "19, including English, Arabic, French, German and Spanish" },
+      {
+        group: "Smart features",
+        label: "Phone app",
+        value: "Works with iPhone (iOS 10+) and Android (5.0+)",
+      },
+      {
+        group: "Smart features",
+        label: "Languages",
+        value: "19, including English, Arabic, French, German and Spanish",
+      },
     ],
     featureGroups: [
-      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "Message and app notifications", "Find my phone"] },
-      { title: "Health", icon: "health", items: ["24/7 heart rate", "Blood oxygen (SpO2)", "Sleep score", "Breathing training"] },
-      { title: "Sport & activity", icon: "outdoor", items: ["9 sport modes", "Steps and distance", "Calorie tracker", "Real-time pace"] },
-      { title: "Everyday tools", icon: "tools", items: ["LED flashlight", "Weather", "Music control", "Stopwatch and timer"] },
+      {
+        title: "Calls & connect",
+        icon: "smart",
+        items: [
+          "Bluetooth calls",
+          "Voice assistant",
+          "Message and app notifications",
+          "Find my phone",
+        ],
+      },
+      {
+        title: "Health",
+        icon: "health",
+        items: [
+          "24/7 heart rate",
+          "Blood oxygen (SpO2)",
+          "Sleep score",
+          "Breathing training",
+        ],
+      },
+      {
+        title: "Sport & activity",
+        icon: "outdoor",
+        items: [
+          "9 sport modes",
+          "Steps and distance",
+          "Calorie tracker",
+          "Real-time pace",
+        ],
+      },
+      {
+        title: "Everyday tools",
+        icon: "tools",
+        items: [
+          "LED flashlight",
+          "Weather",
+          "Music control",
+          "Stopwatch and timer",
+        ],
+      },
     ],
     batteryLiquid: {
       mah: 550,
       image: "/products/matin-torvan-front-view.webp",
-      imageAlt: "MATIN Torvan front view with its round AMOLED screen showing the battery level",
+      imageAlt:
+        "MATIN Torvan front view with its round AMOLED screen showing the battery level",
       screen: { cx: 49.6, cy: 48.8, r: 24.8 },
       modes: [
-        { label: "Heavy use", days: 18, text: "Lots of calls, workouts and notifications." },
-        { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
-        { label: "Power saving", days: 60, text: "Stretch the battery when you are away from a charger." },
+        {
+          label: "Heavy use",
+          days: 18,
+          text: "Lots of calls, workouts and notifications.",
+        },
+        {
+          label: "Typical use",
+          days: 30,
+          text: "Everyday wear with health tracking and notifications.",
+        },
+        {
+          label: "Power saving",
+          days: 60,
+          text: "Stretch the battery when you are away from a charger.",
+        },
       ],
       facts: [
         { value: "550 mAh", label: "Battery" },
@@ -535,7 +851,17 @@ export const products: Product[] = [
     healthMonitoring: true,
     sportModes: {
       count: "9",
-      ids: ["running", "walking", "hiking", "cycling", "basketball", "soccer", "badminton", "yoga", "jump-rope"],
+      ids: [
+        "running",
+        "walking",
+        "hiking",
+        "cycling",
+        "basketball",
+        "soccer",
+        "badminton",
+        "yoga",
+        "jump-rope",
+      ],
     },
     faq: [
       {
@@ -583,7 +909,8 @@ export const products: Product[] = [
   {
     slug: "matin-kaldor",
     name: "MATIN Kaldor",
-    tagline: "Tactical GPS smartwatch with flashlight, compass and Bluetooth calls",
+    tagline:
+      "Tactical GPS smartwatch with flashlight, compass and Bluetooth calls",
     price: 130,
     shareImage: "/products/matin-kaldor-share.jpg",
     category: "outdoor",
@@ -651,29 +978,113 @@ export const products: Product[] = [
       { group: "Display", label: "Screen", value: '1.43" AMOLED touchscreen' },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "530mAh" },
-      { group: "Battery", label: "Battery life", value: "11 to 30 days, depending on use" },
+      {
+        group: "Battery",
+        label: "Battery life",
+        value: "11 to 30 days, depending on use",
+      },
       { group: "Battery", label: "Charging", value: "Magnetic charger" },
-      { group: "GPS & outdoor", label: "GPS", value: "Built-in, multi-system (GPS, GLONASS, BeiDou, Galileo, QZSS)" },
-      { group: "GPS & outdoor", label: "Flashlight", value: "LED flashlight with 3 light modes" },
-      { group: "GPS & outdoor", label: "Navigation", value: "Compass and altitude meter" },
-      { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
+      {
+        group: "GPS & outdoor",
+        label: "GPS",
+        value: "Built-in, multi-system (GPS, GLONASS, BeiDou, Galileo, QZSS)",
+      },
+      {
+        group: "GPS & outdoor",
+        label: "Flashlight",
+        value: "LED flashlight with 3 light modes",
+      },
+      {
+        group: "GPS & outdoor",
+        label: "Navigation",
+        value: "Compass and altitude meter",
+      },
+      {
+        group: "Health",
+        label: "Heart rate",
+        value: "Heart rate monitoring from the wrist",
+      },
       { group: "Health", label: "Sleep", value: "Sleep tracking" },
-      { group: "Health", label: "Activity", value: "Steps, calories and sedentary reminder" },
-      { group: "Sports", label: "Sport modes", value: "Multiple modes, including running, walking, cycling, fitness, climbing and swimming" },
-      { group: "Build", label: "Case", value: "Zinc alloy middle frame with armored screws" },
+      {
+        group: "Health",
+        label: "Activity",
+        value: "Steps, calories and sedentary reminder",
+      },
+      {
+        group: "Sports",
+        label: "Sport modes",
+        value:
+          "Multiple modes, including running, walking, cycling, fitness, climbing and swimming",
+      },
+      {
+        group: "Build",
+        label: "Case",
+        value: "Zinc alloy middle frame with armored screws",
+      },
       { group: "Build", label: "Water resistance", value: "3ATM" },
-      { group: "Build", label: "Strap", value: "Silicone sport strap, fits 150 to 260 mm wrists" },
-      { group: "Smart features", label: "Calls", value: "Bluetooth calls from your wrist" },
-      { group: "Smart features", label: "Notifications", value: "Call and message reminders, push notifications" },
-      { group: "Smart features", label: "Tools", value: "World time, calendar, calculator, alarm clock" },
+      {
+        group: "Build",
+        label: "Strap",
+        value: "Silicone sport strap, fits 150 to 260 mm wrists",
+      },
+      {
+        group: "Smart features",
+        label: "Calls",
+        value: "Bluetooth calls from your wrist",
+      },
+      {
+        group: "Smart features",
+        label: "Notifications",
+        value: "Call and message reminders, push notifications",
+      },
+      {
+        group: "Smart features",
+        label: "Tools",
+        value: "World time, calendar, calculator, alarm clock",
+      },
       { group: "Smart features", label: "Camera", value: "No camera" },
-      { group: "Smart features", label: "Phone app", value: "Works with iPhone and Android" },
+      {
+        group: "Smart features",
+        label: "Phone app",
+        value: "Works with iPhone and Android",
+      },
     ],
     featureGroups: [
-      { title: "Outdoor & navigation", icon: "outdoor", items: ["Multi-system GPS", "LED flashlight, 3 modes", "Compass", "Altitude meter"] },
-      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Call and message reminders", "Push notifications", "Phone app sync"] },
-      { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "Multiple sport modes"] },
-      { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
+      {
+        title: "Outdoor & navigation",
+        icon: "outdoor",
+        items: [
+          "Multi-system GPS",
+          "LED flashlight, 3 modes",
+          "Compass",
+          "Altitude meter",
+        ],
+      },
+      {
+        title: "Calls & connect",
+        icon: "smart",
+        items: [
+          "Bluetooth calls",
+          "Call and message reminders",
+          "Push notifications",
+          "Phone app sync",
+        ],
+      },
+      {
+        title: "Health & sport",
+        icon: "health",
+        items: [
+          "Heart rate",
+          "Sleep tracking",
+          "Calorie tracker",
+          "Multiple sport modes",
+        ],
+      },
+      {
+        title: "Everyday tools",
+        icon: "tools",
+        items: ["World time", "Calendar", "Calculator", "Alarm clock"],
+      },
     ],
     faq: [
       {
@@ -713,7 +1124,8 @@ export const products: Product[] = [
   {
     slug: "matin-varkon",
     name: "MATIN Varkon",
-    tagline: "Rugged GPS smartwatch with Bluetooth calls and up to 60 days battery",
+    tagline:
+      "Rugged GPS smartwatch with Bluetooth calls and up to 60 days battery",
     price: 180,
     shareImage: "/products/matin-varkon-share.jpg",
     category: "tactical",
@@ -756,50 +1168,177 @@ export const products: Product[] = [
       { value: "IP69K", label: "& 5ATM" },
     ],
     specs: [
-      { group: "Display", label: "Screen", value: '1.43" AMOLED, 466 x 466 pixels, 391 PPI' },
+      {
+        group: "Display",
+        label: "Screen",
+        value: '1.43" AMOLED, 466 x 466 pixels, 391 PPI',
+      },
       { group: "Display", label: "Brightness", value: "Up to 1000 nits" },
       { group: "Display", label: "Glass", value: "Corning Gorilla Glass" },
-      { group: "Display", label: "Always-on", value: "Always-on display mode and raise to wake" },
+      {
+        group: "Display",
+        label: "Always-on",
+        value: "Always-on display mode and raise to wake",
+      },
       { group: "Battery", label: "Capacity", value: "500mAh Li-polymer" },
-      { group: "Battery", label: "Battery life", value: "Up to 30 days typical, 18 days heavy use, 60 days power saving" },
-      { group: "Battery", label: "Charging", value: "Magnetic charger, about 1.5 hours" },
-      { group: "GPS & outdoor", label: "GPS", value: "Built-in, 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS, NavIC)" },
-      { group: "GPS & outdoor", label: "Sensors", value: "Compass, barometric altimeter, gyroscope, geomagnetic sensor, accelerometer" },
-      { group: "GPS & outdoor", label: "Flashlight", value: "Built-in flashlight function" },
-      { group: "GPS & outdoor", label: "Time", value: "GPS time sync, automatic daylight saving time, world clock" },
-      { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
+      {
+        group: "Battery",
+        label: "Battery life",
+        value: "Up to 30 days typical, 18 days heavy use, 60 days power saving",
+      },
+      {
+        group: "Battery",
+        label: "Charging",
+        value: "Magnetic charger, about 1.5 hours",
+      },
+      {
+        group: "GPS & outdoor",
+        label: "GPS",
+        value:
+          "Built-in, 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS, NavIC)",
+      },
+      {
+        group: "GPS & outdoor",
+        label: "Sensors",
+        value:
+          "Compass, barometric altimeter, gyroscope, geomagnetic sensor, accelerometer",
+      },
+      {
+        group: "GPS & outdoor",
+        label: "Flashlight",
+        value: "Built-in flashlight function",
+      },
+      {
+        group: "GPS & outdoor",
+        label: "Time",
+        value: "GPS time sync, automatic daylight saving time, world clock",
+      },
+      {
+        group: "Health",
+        label: "Heart rate",
+        value: "Heart rate monitoring from the wrist",
+      },
       { group: "Health", label: "Blood oxygen", value: "SpO2 measurement" },
       { group: "Health", label: "Sleep", value: "Sleep quality monitoring" },
-      { group: "Health", label: "More", value: "Breathing exercise, menstrual cycle tracking, activity tracking" },
+      {
+        group: "Health",
+        label: "More",
+        value:
+          "Breathing exercise, menstrual cycle tracking, activity tracking",
+      },
       { group: "Sports", label: "Sport modes", value: "170+ sport modes" },
-      { group: "Build", label: "Case", value: "316L stainless steel with a carbon-coated metal bezel" },
+      {
+        group: "Build",
+        label: "Case",
+        value: "316L stainless steel with a carbon-coated metal bezel",
+      },
       { group: "Build", label: "Water and dust", value: "5ATM and IP69K" },
       { group: "Build", label: "Size", value: "49 x 49 x 14 mm" },
       { group: "Build", label: "Weight", value: "63 g with strap" },
-      { group: "Build", label: "Strap", value: "Silicone, 22 mm wide, fits 130 to 235 mm wrists" },
-      { group: "Smart features", label: "Calls", value: "Bluetooth calls from your wrist, voice assistant" },
-      { group: "Smart features", label: "Notifications", value: "Calls, SMS and app notifications" },
-      { group: "Smart features", label: "Tools", value: "Music and camera control, find my phone, weather, stopwatch, timer, alarm, calculator" },
-      { group: "Smart features", label: "Modes", value: "Power saving, do not disturb, silent, screen lock, password lock" },
+      {
+        group: "Build",
+        label: "Strap",
+        value: "Silicone, 22 mm wide, fits 130 to 235 mm wrists",
+      },
+      {
+        group: "Smart features",
+        label: "Calls",
+        value: "Bluetooth calls from your wrist, voice assistant",
+      },
+      {
+        group: "Smart features",
+        label: "Notifications",
+        value: "Calls, SMS and app notifications",
+      },
+      {
+        group: "Smart features",
+        label: "Tools",
+        value:
+          "Music and camera control, find my phone, weather, stopwatch, timer, alarm, calculator",
+      },
+      {
+        group: "Smart features",
+        label: "Modes",
+        value:
+          "Power saving, do not disturb, silent, screen lock, password lock",
+      },
       { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
-      { group: "Smart features", label: "Phone app", value: "Free app for iPhone (iOS 11+) and Android (5.0+)" },
-      { group: "Smart features", label: "Languages", value: "30, including English, Spanish, French, German, Portuguese and Arabic" },
+      {
+        group: "Smart features",
+        label: "Phone app",
+        value: "Free app for iPhone (iOS 11+) and Android (5.0+)",
+      },
+      {
+        group: "Smart features",
+        label: "Languages",
+        value:
+          "30, including English, Spanish, French, German, Portuguese and Arabic",
+      },
     ],
     featureGroups: [
-      { title: "GPS & outdoor", icon: "outdoor", items: ["6-system GPS", "Compass", "Barometric altimeter", "GPS time sync"] },
-      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "SMS and app notifications", "Find my phone"] },
-      { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
-      { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
+      {
+        title: "GPS & outdoor",
+        icon: "outdoor",
+        items: [
+          "6-system GPS",
+          "Compass",
+          "Barometric altimeter",
+          "GPS time sync",
+        ],
+      },
+      {
+        title: "Calls & connect",
+        icon: "smart",
+        items: [
+          "Bluetooth calls",
+          "Voice assistant",
+          "SMS and app notifications",
+          "Find my phone",
+        ],
+      },
+      {
+        title: "Health & sport",
+        icon: "health",
+        items: [
+          "Heart rate",
+          "Blood oxygen (SpO2)",
+          "Sleep quality",
+          "170+ sport modes",
+        ],
+      },
+      {
+        title: "Everyday tools",
+        icon: "tools",
+        items: [
+          "Flashlight",
+          "Weather",
+          "Music and camera control",
+          "Stopwatch and timer",
+        ],
+      },
     ],
     batteryModes: {
       mah: 500,
       charge: "1.5 h",
       image: "/products/matin-varkon-front-view.webp",
-      imageAlt: "MATIN Varkon front view, a 500mAh rugged GPS smartwatch that lasts up to 60 days",
+      imageAlt:
+        "MATIN Varkon front view, a 500mAh rugged GPS smartwatch that lasts up to 60 days",
       modes: [
-        { label: "Heavy use", days: 18, text: "GPS workouts, calls and lots of notifications." },
-        { label: "Typical use", days: 30, text: "Everyday wear with health tracking and notifications." },
-        { label: "Power-saving mode", days: 60, text: "Stretch the battery on long trips away from a charger." },
+        {
+          label: "Heavy use",
+          days: 18,
+          text: "GPS workouts, calls and lots of notifications.",
+        },
+        {
+          label: "Typical use",
+          days: 30,
+          text: "Everyday wear with health tracking and notifications.",
+        },
+        {
+          label: "Power-saving mode",
+          days: 60,
+          text: "Stretch the battery on long trips away from a charger.",
+        },
       ],
     },
     faq: [
@@ -862,7 +1401,9 @@ export function colorRange(p: Product, color: number): [number, number] {
     const firstOther = p.colors.find((x) => x.from !== undefined)?.from;
     return [0, firstOther ?? p.images.length];
   }
-  const next = p.colors.slice(color + 1).find((x) => x.from !== undefined)?.from;
+  const next = p.colors
+    .slice(color + 1)
+    .find((x) => x.from !== undefined)?.from;
   return [c.from, next ?? p.images.length];
 }
 

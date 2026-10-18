@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { categories, formatPrice, getProduct, products, type Product } from "@/lib/products";
+import {
+  categories,
+  formatPrice,
+  getProduct,
+  products,
+  type Product,
+} from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
@@ -16,7 +22,6 @@ import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
 import HealthMonitoring from "@/components/HealthMonitoring";
-import BatteryVisualizer from "@/components/BatteryVisualizer";
 import BatteryModes from "@/components/BatteryModes";
 import BatteryLiquid from "@/components/BatteryLiquid";
 import SectionHead from "@/components/SectionHead";
@@ -32,31 +37,69 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!p) return { title: "Watch not found", robots: { index: false } };
   const url = `/product/${p.slug}`;
   const title = p.seoTitle ?? `${p.name} Rugged Smartwatch | MATIN`;
-  const description = p.seoDescription ?? `${p.name}: ${p.tagline}. ${p.description}`.slice(0, 160);
+  const description =
+    p.seoDescription ??
+    `${p.name}: ${p.tagline}. ${p.description}`.slice(0, 160);
   // Link previews (WhatsApp, Facebook, X) use the share picture when there is one.
   const images = p.shareImage
-    ? [{ url: p.shareImage, width: 1200, height: 630, alt: p.imageAlts?.[0] ?? p.name }]
+    ? [
+        {
+          url: p.shareImage,
+          width: 1200,
+          height: 630,
+          alt: p.imageAlts?.[0] ?? p.name,
+        },
+      ]
     : [{ url: "/og.jpg", width: 1200, height: 630, alt: p.name }];
   return {
     title: { absolute: title },
     description,
     alternates: { canonical: url },
-    openGraph: { type: "website", siteName: site.name, url, title, description, images },
-    twitter: { card: "summary_large_image", title, description, images: images.map((i) => i.url) },
+    openGraph: {
+      type: "website",
+      siteName: site.name,
+      url,
+      title,
+      description,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: images.map((i) => i.url),
+    },
   };
 }
 
 const svg = (d: string) => (
-  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    viewBox="0 0 24 24"
+    width="22"
+    height="22"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d={d} />
   </svg>
 );
 
 const groupIcons = {
-  outdoor: svg("M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"),
-  health: svg("M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8zM3 12h4l2-3 3 6 2-3h7"),
-  smart: svg("M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"),
-  tools: svg("M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 9v4l2.5 2.5M5 3 2 6M19 3l3 3"),
+  outdoor: svg(
+    "M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z",
+  ),
+  health: svg(
+    "M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8zM3 12h4l2-3 3 6 2-3h7",
+  ),
+  smart: svg(
+    "M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0",
+  ),
+  tools: svg(
+    "M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 9v4l2.5 2.5M5 3 2 6M19 3l3 3",
+  ),
 };
 
 export default async function ProductPage({ params }: Props) {
@@ -85,7 +128,10 @@ export default async function ProductPage({ params }: Props) {
         description: product.description,
         sku: product.slug,
         url,
-        image: [...product.images, ...(product.posters ?? []).map((p) => p.src)].map((src) => absoluteUrl(src)),
+        image: [
+          ...product.images,
+          ...(product.posters ?? []).map((p) => p.src),
+        ].map((src) => absoluteUrl(src)),
         brand: { "@type": "Brand", name: site.name },
         category: "Smartwatches",
         color: product.colors.map((c) => c.name).join(", "),
@@ -104,12 +150,20 @@ export default async function ProductPage({ params }: Props) {
           seller: { "@id": `${siteUrl}/#org` },
           shippingDetails: {
             "@type": "OfferShippingDetails",
-            shippingRate: { "@type": "MonetaryAmount", value: "0", currency: site.currency },
-            shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
+            shippingRate: {
+              "@type": "MonetaryAmount",
+              value: "0",
+              currency: site.currency,
+            },
+            shippingDestination: {
+              "@type": "DefinedRegion",
+              addressCountry: "US",
+            },
           },
           hasMerchantReturnPolicy: {
             "@type": "MerchantReturnPolicy",
-            returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+            returnPolicyCategory:
+              "https://schema.org/MerchantReturnFiniteReturnWindow",
             merchantReturnDays: 30,
             applicableCountry: "US",
           },
@@ -130,8 +184,18 @@ export default async function ProductPage({ params }: Props) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
-          { "@type": "ListItem", position: 2, name: "Shop", item: absoluteUrl("/shop") },
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: absoluteUrl("/"),
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Shop",
+            item: absoluteUrl("/shop"),
+          },
           { "@type": "ListItem", position: 3, name: product.name, item: url },
         ],
       },
@@ -141,7 +205,7 @@ export default async function ProductPage({ params }: Props) {
   // Jump links to the main sections of this product page.
   const toc = [
     (product.featureGroups || product.features) && ["#features", "Features"],
-    (product.batteryShowcase || product.batteryModes || product.batteryLiquid) && ["#battery", "Battery"],
+    (product.batteryModes || product.batteryLiquid) && ["#battery", "Battery"],
     product.healthMonitoring && ["#health", "Health"],
     product.sportModes && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
@@ -152,14 +216,17 @@ export default async function ProductPage({ params }: Props) {
     <div className="container page-pad pdp-page">
       <JsonLd data={productData} />
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / <span>{product.name}</span>
+        <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> /{" "}
+        <span>{product.name}</span>
       </nav>
 
       <div className="pdp">
         <PdpGallery product={product} />
 
         <div className="pdp-info">
-          <p className="eyebrow">{category?.name ?? product.category} smartwatch</p>
+          <p className="eyebrow">
+            {category?.name ?? product.category} smartwatch
+          </p>
           <h1>{product.name}</h1>
           <p className="pdp-tag">{product.tagline}</p>
           <p className="pdp-price">
@@ -199,7 +266,10 @@ export default async function ProductPage({ params }: Props) {
       <Stories product={product} />
 
       {product.bigStats && (
-        <section className="section big-stats" aria-label={`${product.name} in numbers`}>
+        <section
+          className="section big-stats"
+          aria-label={`${product.name} in numbers`}
+        >
           {product.bigStats.map((b, i) => (
             <Reveal key={b.label} className="big-stat" delay={i * 90}>
               <strong>
@@ -222,13 +292,18 @@ export default async function ProductPage({ params }: Props) {
       )}
 
       {product.featureGroups ? (
-        <section className="section" id="features" aria-labelledby="features-title">
+        <section
+          className="section"
+          id="features"
+          aria-labelledby="features-title"
+        >
           <SectionHead
             id="features-title"
             eyebrow="Features"
             title={
               <>
-                Everything the <span className="grad">{product.name}</span> can do
+                Everything the <span className="grad">{product.name}</span> can
+                do
               </>
             }
           />
@@ -250,13 +325,18 @@ export default async function ProductPage({ params }: Props) {
         </section>
       ) : (
         product.features && (
-          <section className="section" id="features" aria-labelledby="features-title">
+          <section
+            className="section"
+            id="features"
+            aria-labelledby="features-title"
+          >
             <SectionHead
               id="features-title"
               eyebrow="Features"
               title={
                 <>
-                  Everything the <span className="grad">{product.name}</span> can do
+                  Everything the <span className="grad">{product.name}</span>{" "}
+                  can do
                 </>
               }
             />
@@ -269,10 +349,6 @@ export default async function ProductPage({ params }: Props) {
         )
       )}
 
-      {product.batteryShowcase && (
-        <BatteryVisualizer name={product.name} mah={product.batteryShowcase.mah} days={product.batteryShowcase.days} />
-      )}
-
       {product.batteryLiquid && (
         <BatteryLiquid
           name={product.name}
@@ -282,6 +358,8 @@ export default async function ProductPage({ params }: Props) {
           screen={product.batteryLiquid.screen}
           modes={product.batteryLiquid.modes}
           facts={product.batteryLiquid.facts}
+          intro={product.batteryLiquid.intro}
+          look={product.batteryLiquid.look}
         />
       )}
 
@@ -299,7 +377,11 @@ export default async function ProductPage({ params }: Props) {
       {product.healthMonitoring && <HealthMonitoring />}
 
       {product.sportModes && (
-        <SportsUniverse name={product.name} count={product.sportModes.count} ids={product.sportModes.ids} />
+        <SportsUniverse
+          name={product.name}
+          count={product.sportModes.count}
+          ids={product.sportModes.ids}
+        />
       )}
 
       {product.sports && (
@@ -310,14 +392,19 @@ export default async function ProductPage({ params }: Props) {
             </strong>
             <div>
               <h2 className="spec-title">Sport modes</h2>
-              <p>From your morning run to a weekend climb, the Trekon tracks it.</p>
+              <p>
+                From your morning run to a weekend climb, the Trekon tracks it.
+              </p>
             </div>
           </Reveal>
           <div className="marquee" aria-label="Some of the sport modes">
             {[0, 1].map((row) => {
               const half = product.sports!.filter((_, i) => i % 2 === row);
               return (
-                <div key={row} className={`marquee-row${row ? " marquee-rev" : ""}`}>
+                <div
+                  key={row}
+                  className={`marquee-row${row ? " marquee-rev" : ""}`}
+                >
                   {/* The list is drawn twice so the loop has no gap; the copy is hidden from screen readers. */}
                   {[0, 1].map((copy) => (
                     <ul key={copy} aria-hidden={copy === 1 || undefined}>
@@ -333,7 +420,9 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      {product.specs.length > 0 && <SpecSheet product={product} groups={specGroups} />}
+      {product.specs.length > 0 && (
+        <SpecSheet product={product} groups={specGroups} />
+      )}
 
       {product.faq && (
         <section className="section" id="faq" aria-labelledby="faq-title">
@@ -342,7 +431,8 @@ export default async function ProductPage({ params }: Props) {
             eyebrow="FAQ"
             title={
               <>
-                {product.name} <span className="grad">questions &amp; answers</span>
+                {product.name}{" "}
+                <span className="grad">questions &amp; answers</span>
               </>
             }
           />
@@ -350,7 +440,9 @@ export default async function ProductPage({ params }: Props) {
             {product.faq.map((f, i) => (
               <details key={f.q} name="faq">
                 <summary>
-                  <span className="faq-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="faq-num">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <span className="faq-q">{f.q}</span>
                   <span className="faq-icon" aria-hidden="true" />
                 </summary>
@@ -362,7 +454,11 @@ export default async function ProductPage({ params }: Props) {
       )}
 
       <section className="section" aria-labelledby="more-title">
-        <SectionHead id="more-title" eyebrow="More MATIN watches" title="You may also like" />
+        <SectionHead
+          id="more-title"
+          eyebrow="More MATIN watches"
+          title="You may also like"
+        />
         <div className="grid">
           {related.map((p) => (
             <ProductCard key={p.slug} product={p} />
