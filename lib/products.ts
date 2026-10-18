@@ -55,7 +55,7 @@ export type Product = {
   healthMonitoring?: boolean;
   // Liquid battery drawn on the watch's own screen: a round screen (circle in
   // % of the photo) or a shaped one (box in % plus a CSS polygon for its
-  // outline). look "cells" is stacked green battery cells. Longest mode last.
+  // outline). look "cells" is stacked green battery cells, "radar" an amber radar ring. Longest mode last.
   batteryLiquid?: {
     mah: number;
     image: string;
@@ -63,7 +63,7 @@ export type Product = {
     screen:
       | { cx: number; cy: number; r: number }
       | { x: number; y: number; w: number; h: number; clip: string };
-    look?: "wave" | "cells";
+    look?: "wave" | "cells" | "radar";
     intro?: string;
     modes: { label: string; days: number; text: string }[];
     facts: { value: string; label: string }[];
@@ -715,6 +715,24 @@ export const products: Product[] = [
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "Multiple sport modes"] },
       { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
     ],
+    batteryLiquid: {
+      mah: 530,
+      image: "/products/matin-kaldor-front-view.webp",
+      imageAlt: "MATIN Kaldor front view with its round AMOLED screen showing the battery level",
+      screen: { cx: 49.5, cy: 48.64, r: 26.8 },
+      look: "radar",
+      intro:
+        "The MATIN Kaldor runs on a 530mAh battery: about 11 days with heavy GPS, calls and flashlight use, and up to 30 days with light use.",
+      modes: [
+        { label: "Heavy use", days: 11, text: "GPS routes, calls and the flashlight every day." },
+        { label: "Light use", days: 30, text: "Time, steps, heart rate and a few notifications a day." },
+      ],
+      facts: [
+        { value: "530 mAh", label: "Battery" },
+        { value: "11 to 30", label: "Days per charge" },
+        { value: "Magnetic", label: "Charger" },
+      ],
+    },
     faq: [
       {
         q: "Does the MATIN Kaldor have a flashlight?",

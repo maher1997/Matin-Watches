@@ -9,12 +9,32 @@ import SectionHead from "@/components/SectionHead";
 // number counts. "wave" (Torvan): blue waves, bubbles and a ring of day ticks
 // on a round screen. "cells" (Trekon): glossy green battery cells
 // stacked inside a shaped screen, lighting up from the bottom with a light
-// sweep and the top cell breathing. Steps through the modes on its
+// sweep and the top cell breathing. "radar" (Kaldor): an amber tactical
+// radar on a round screen, a ring of day segments filling clockwise from
+// north while a sweep beam turns and blips light up as it passes. Steps through the modes on its
 // own (tap a card to pick one). Renders complete without JS on the longest
 // mode; motion is an extra and pauses off screen.
 
 const STEP_MS = 4800;
 const CELLS = 15;
+const SWEEP_S = 4;
+// Radar blips as [degrees from north, distance from centre].
+const BLIPS: [number, number][] = [
+  [38, 46],
+  [112, 62],
+  [205, 34],
+  [290, 58],
+  [330, 22],
+];
+
+// One ring segment between two angles (degrees clockwise from north).
+function arcSegment(a0: number, a1: number, r0: number, r1: number) {
+  const p = (a: number, r: number) => {
+    const t = (a * Math.PI) / 180;
+    return `${(100 + Math.sin(t) * r).toFixed(2)} ${(100 - Math.cos(t) * r).toFixed(2)}`;
+  };
+  return `M${p(a0, r1)} A${r1} ${r1} 0 0 1 ${p(a1, r1)} L${p(a1, r0)} A${r0} ${r0} 0 0 0 ${p(a0, r0)}Z`;
+}
 
 export default function BatteryLiquid({
   name,
@@ -41,7 +61,7 @@ export default function BatteryLiquid({
   modes: { label: string; days: number; text: string }[];
   facts: { value: string; label: string }[];
   intro?: string;
-  look?: "wave" | "cells";
+  look?: "wave" | "cells" | "radar";
 }) {
   const max = Math.max(...modes.map((m) => m.days));
   const [active, setActive] = useState(modes.length - 1);
@@ -54,6 +74,7 @@ export default function BatteryLiquid({
   const mode = modes[active];
   const frac = mode.days / max;
   const cells = look === "cells";
+  const radar = look === "radar";
   // Cells light from the bottom, one per CELLS-th of the longest mode.
   const litCells = Math.max(1, Math.round(frac * CELLS));
   const box =
@@ -120,7 +141,7 @@ export default function BatteryLiquid({
     <section
       ref={ref}
       id="battery"
-      className={`section bl${cells ? " bl-cellslook" : ""}${live ? "" : " bl-paused"}`}
+      className={`section bl${cells ? " bl-cellslook" : ""}${radar ? " bl-radarlook" : ""}${live ? "" : " bl-paused"}`}
       aria-labelledby="bl-title"
     >
       <div className="bl-stage">
@@ -153,7 +174,72 @@ export default function BatteryLiquid({
               role="img"
               aria-label={`Watch screen showing ${mode.days} days of battery in ${mode.label.toLowerCase()}`}
             >
-              {cells ? (
+              {radar ? (
+                <>
+                  <span className="bl-sweep" aria-hidden="true" />
+                  <svg
+                    className="bl-radar"
+                    viewBox="0 0 200 200"
+                    aria-hidden="true"
+                  >
+                    <circle cx="100" cy="100" r="28" className="bl-grid-line" />
+                    <circle cx="100" cy="100" r="52" className="bl-grid-line" />
+                    <circle cx="100" cy="100" r="74" className="bl-grid-line" />
+                    <line
+                      x1="100"
+                      y1="24"
+                      x2="100"
+                      y2="176"
+                      className="bl-grid-line"
+                    />
+                    <line
+                      x1="24"
+                      y1="100"
+                      x2="176"
+                      y2="100"
+                      className="bl-grid-line"
+                    />
+                    {BLIPS.map(([a, d], i) => {
+                      const rad = (a * Math.PI) / 180;
+                      return (
+                        <circle
+                          key={i}
+                          cx={100 + Math.sin(rad) * d}
+                          cy={100 - Math.cos(rad) * d}
+                          r="2.2"
+                          className="bl-blip"
+                          style={{ animationDelay: `${(a / 360) * SWEEP_S}s` }}
+                        />
+                      );
+                    })}
+                    {Array.from({ length: max }, (_, i) => {
+                      const step = 360 / max;
+                      const lit = i < mode.days;
+                      return (
+                        <path
+                          key={i}
+                          d={arcSegment(
+                            i * step + 1.2,
+                            (i + 1) * step - 1.2,
+                            80,
+                            95,
+                          )}
+                          className={
+                            lit
+                              ? i === mode.days - 1
+                                ? "bl-seg on head"
+                                : "bl-seg on"
+                              : "bl-seg"
+                          }
+                          style={{
+                            transitionDelay: `${(lit ? i : max - i) * 25}ms`,
+                          }}
+                        />
+                      );
+                    })}
+                  </svg>
+                </>
+              ) : cells ? (
                 <div
                   className="bl-cells"
                   style={{

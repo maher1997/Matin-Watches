@@ -6182,3 +6182,143 @@ button.thumb:focus-visible {
     animation: none;
   }
 }
+
+/* Kaldor battery: amber tactical radar on its round screen (BatteryLiquid
+   look="radar"). Day segments fill clockwise from north; a sweep beam turns
+   and blips flash as it passes. */
+.bl-radarlook .bl-stage {
+  background:
+    radial-gradient(50% 50% at 28% 55%, rgba(255, 176, 32, 0.14), transparent 70%),
+    linear-gradient(160deg, #13161e 0%, #0b0d12 100%);
+}
+
+.bl-radarlook .sec-head .eyebrow {
+  color: #ffc23d;
+}
+
+.bl-radarlook .bl-screen {
+  background: radial-gradient(circle at 50% 50%, #1a1406 0%, #070604 70%);
+}
+
+.bl-radar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bl-grid-line {
+  fill: none;
+  stroke: rgba(255, 194, 61, 0.14);
+  stroke-width: 0.6;
+}
+
+.bl-seg {
+  fill: rgba(255, 255, 255, 0.07);
+  transition: fill 0.35s ease;
+}
+
+.bl-seg.on {
+  fill: #ffb020;
+  filter: drop-shadow(0 0 2px rgba(255, 176, 32, 0.9));
+}
+
+.bl-seg.head {
+  fill: #ffe08a;
+  animation: bl-seg-blink 1s ease-in-out infinite alternate;
+}
+
+@keyframes bl-seg-blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.35;
+  }
+}
+
+/* The beam: a conic wedge with a bright leading edge, inside the ring. */
+.bl-sweep {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255, 176, 32, 0) 0deg, rgba(255, 176, 32, 0) 290deg, rgba(255, 176, 32, 0.32) 358deg, rgba(255, 224, 138, 0.9) 359.5deg, rgba(255, 176, 32, 0) 360deg);
+  animation: bl-sweep 4s linear infinite;
+}
+
+@keyframes bl-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bl-blip {
+  fill: #ffe08a;
+  opacity: 0;
+  animation: bl-blip 4s linear infinite;
+  filter: drop-shadow(0 0 2px #ffb020);
+}
+
+@keyframes bl-blip {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  1% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0;
+  }
+}
+
+.bl-radarlook .bl-face {
+  text-shadow: 0 0.4cqw 2cqw rgba(0, 0, 0, 0.8);
+}
+
+.bl-radarlook .bl-num {
+  color: #fff3d6;
+}
+
+.bl-radarlook .bl-mode {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 194, 61, 0.45);
+  color: #ffc23d;
+}
+
+.bl-radarlook .bl-card.is-on {
+  border-color: rgba(255, 176, 32, 0.5);
+  background: linear-gradient(135deg, rgba(255, 176, 32, 0.16), rgba(255, 176, 32, 0.04));
+  box-shadow: 0 12px 30px -12px rgba(255, 176, 32, 0.45);
+}
+
+.bl-radarlook .bl-pill span {
+  background: linear-gradient(90deg, #a86a00, #ffb020);
+}
+
+.bl-radarlook .bl-card.is-on .bl-pill span {
+  background: linear-gradient(90deg, #a86a00, #ffb020, #ffe08a, #ffb020, #a86a00);
+  background-size: 200% 100%;
+}
+
+.bl-paused .bl-sweep,
+.bl-paused .bl-blip,
+.bl-paused .bl-seg.head {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-seg {
+    transition: none;
+  }
+
+  .bl-sweep,
+  .bl-blip,
+  .bl-seg.head {
+    animation: none;
+  }
+
+  .bl-blip {
+    opacity: 1;
+  }
+}
