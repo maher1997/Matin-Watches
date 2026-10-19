@@ -7716,6 +7716,38 @@ html.rv-on .rv.card.rv-in .card-media img {
     background: #0f1116;
   }
 
+  /* Where the browser can, the name bar and the scroll thumb are moved by
+     the table's own scroll position, so they slide in the same frame as
+     the table instead of trailing behind it. */
+  @supports (animation-timeline: scroll()) {
+    .cmp-panel {
+      timeline-scope: --cmp;
+    }
+
+    .cmp-scroll {
+      scroll-timeline: --cmp x;
+    }
+
+    .cmp-bar-row {
+      container-type: inline-size;
+    }
+
+    .cmp-bar-inner {
+      animation: cmp-slide linear both;
+      animation-timeline: --cmp;
+    }
+
+    .cmp-bar-corner {
+      animation: cmp-pin linear both;
+      animation-timeline: --cmp;
+    }
+
+    .cmp-thumb {
+      animation: cmp-thumb linear both;
+      animation-timeline: --cmp;
+    }
+  }
+
   /* Scroll bar along the bottom of the screen while the table is in view. */
   .cmp-track {
     display: block;
@@ -7744,6 +7776,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   .cmp-thumb {
     position: absolute;
     top: 10px;
+    left: 14px;
     height: 10px;
     border-radius: 99px;
     background: #5285f7;
@@ -7942,5 +7975,23 @@ html.rv-on .rv.card.rv-in .card-media img {
 @media (prefers-reduced-motion: reduce) {
   .cmp-hint svg {
     animation: none;
+  }
+}
+
+@keyframes cmp-slide {
+  to {
+    transform: translateX(calc(100cqw - var(--cmp-label) - 4 * var(--cmp-col)));
+  }
+}
+
+@keyframes cmp-pin {
+  to {
+    transform: translateX(calc(var(--cmp-label) + 4 * var(--cmp-col) - 100cqw));
+  }
+}
+
+@keyframes cmp-thumb {
+  to {
+    transform: translateX(var(--travel, 0px));
   }
 }

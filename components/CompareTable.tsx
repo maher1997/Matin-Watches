@@ -63,26 +63,34 @@ export default function CompareTable({
   useEffect(() => {
     const sc = scroller.current;
     if (!sc) return;
+    // Browsers with scroll-driven animations move the bar and thumb in CSS,
+    // in step with the scroll; here we only size the thumb. Others follow
+    // the scroll events.
+    const css =
+      typeof CSS !== "undefined" && CSS.supports("animation-timeline: scroll()");
     const sync = () => {
       const x = sc.scrollLeft;
       const max = sc.scrollWidth - sc.clientWidth;
+      const t = thumb.current;
+      const tr = track.current;
+      let tw = 0;
+      let w = 0;
+      if (t && tr) {
+        // The groove is inset 14px on each side of the pill.
+        w = tr.clientWidth - 28;
+        tw = max > 0 ? Math.max(28, (w * sc.clientWidth) / sc.scrollWidth) : w;
+        t.style.width = `${tw}px`;
+        t.style.setProperty("--travel", `${w - tw}px`);
+      }
+      if (css) return;
       if (barInner.current)
         barInner.current.style.transform = x ? `translateX(${-x}px)` : "";
       if (barCorner.current)
         barCorner.current.style.transform = x ? `translateX(${x}px)` : "";
-      const t = thumb.current;
-      const tr = track.current;
-      if (t && tr) {
-        // The groove is inset 14px on each side of the pill.
-        const w = tr.clientWidth - 28;
-        const tw =
-          max > 0 ? Math.max(28, (w * sc.clientWidth) / sc.scrollWidth) : w;
-        t.style.width = `${tw}px`;
-        t.style.left = `${14 + (max > 0 ? ((w - tw) * x) / max : 0)}px`;
-      }
+      if (t) t.style.left = `${14 + (max > 0 ? ((w - tw) * x) / max : 0)}px`;
     };
     sync();
-    sc.addEventListener("scroll", sync, { passive: true });
+    if (!css) sc.addEventListener("scroll", sync, { passive: true });
     addEventListener("resize", sync);
     return () => {
       sc.removeEventListener("scroll", sync);
