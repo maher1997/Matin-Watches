@@ -7082,9 +7082,11 @@ button.thumb:focus-visible {
 /* ---------- Arrive animations (components/Motion.tsx) ----------
    Only blocks still below the first screen get .rv, and only once the
    script runs; they rise and fade in on their own clock when reached. */
+/* A plain 2D shift: no 3D or scale, so waiting blocks do not each hold a
+   big GPU layer (too many of those can make the browser reload the page). */
 html.rv-on .rv {
   opacity: 0;
-  transform: translate3d(0, 34px, 0) scale(0.985);
+  transform: translateY(28px);
 }
 
 html.rv-on .rv.rv-in {
@@ -7093,18 +7095,6 @@ html.rv-on .rv.rv-in {
   transition:
     opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--rv-d, 0ms),
     transform 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
-}
-
-/* Product photos in cards settle from a slight zoom as the card arrives */
-html.rv-on .rv .card-media img,
-html.rv-on .rv.card .card-media img {
-  transform: scale(1.06);
-}
-
-html.rv-on .rv.rv-in .card-media img,
-html.rv-on .rv.card.rv-in .card-media img {
-  transform: none;
-  transition: transform 1.4s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
