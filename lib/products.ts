@@ -142,7 +142,7 @@ export const collections: {
       "Military-style smartwatches with armored metal cases, bright AMOLED screens and weeks of battery. Made for work sites, training and hard days outside.",
     seoTitle: "Tactical Smartwatches for Men | Rugged & Military-Style",
     seoDescription:
-      "Rugged tactical smartwatches for men: military-style metal cases, AMOLED screens, GPS or Bluetooth calling and up to 30 days battery. Free US shipping.",
+      "Rugged tactical smartwatches for men: military-style metal cases, AMOLED screens, GPS or Bluetooth calling and up to 30 days battery. Free worldwide shipping.",
   },
   {
     id: "outdoor",
@@ -154,7 +154,7 @@ export const collections: {
       "Tough smartwatches for hiking, camping and long days outside, with screens you can read in the sun and batteries that last for weeks.",
     seoTitle: "Rugged Outdoor Smartwatches for Hiking & Camping",
     seoDescription:
-      "Rugged outdoor smartwatches for men: GPS, compass, flashlight, bright AMOLED screens and up to 30 days battery for hiking and camping. Free US shipping.",
+      "Rugged outdoor smartwatches for men: GPS, compass, flashlight, bright AMOLED screens and up to 30 days battery for hiking and camping. Free worldwide shipping.",
   },
   {
     id: "gps",
@@ -166,7 +166,7 @@ export const collections: {
       "Rugged smartwatches with built-in GPS, so you can track your route, distance and pace without carrying your phone.",
     seoTitle: "Rugged GPS Smartwatches for Men | Built-In GPS",
     seoDescription:
-      "Rugged GPS smartwatches for men with built-in GPS route tracking, sport modes, AMOLED screens and up to 30 days battery. Free US shipping.",
+      "Rugged GPS smartwatches for men with built-in GPS route tracking, sport modes, AMOLED screens and up to 30 days battery. Free worldwide shipping.",
   },
   {
     id: "calling",
@@ -178,7 +178,7 @@ export const collections: {
       "Rugged smartwatches with a built-in speaker and microphone, so you can answer and make calls from your wrist while your phone stays in your pocket.",
     seoTitle: "Rugged Bluetooth Calling Smartwatches for Men",
     seoDescription:
-      "Rugged smartwatches with Bluetooth calling: answer and make calls from your wrist, AMOLED screens, heart rate and up to 30 days battery. Free US shipping.",
+      "Rugged smartwatches with Bluetooth calling: answer and make calls from your wrist, AMOLED screens, heart rate and up to 30 days battery. Free worldwide shipping.",
   },
   {
     id: "long-battery",
@@ -190,7 +190,7 @@ export const collections: {
       "Every watch here lasts up to 30 days on one charge with light use or power saving, so you charge it a few times a month instead of every night.",
     seoTitle: "Rugged Smartwatches with Long Battery Life (30 Days)",
     seoDescription:
-      "Rugged smartwatches with long battery life: up to 30 days on one charge, tough metal cases, AMOLED screens and GPS or calling. Free US shipping.",
+      "Rugged smartwatches with long battery life: up to 30 days on one charge, tough metal cases, AMOLED screens and GPS or calling. Free worldwide shipping.",
   },
 ];
 
@@ -526,7 +526,7 @@ export const products: Product[] = [
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
       },
     ],
     seoTitle: "MATIN Trekon Tactical GPS Smartwatch for Men | Rugged",
@@ -670,7 +670,7 @@ export const products: Product[] = [
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
       },
     ],
     seoTitle: "MATIN Torvan Military Smartwatch | Bluetooth Calling, AMOLED",
@@ -834,12 +834,12 @@ export const products: Product[] = [
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
       },
     ],
     seoTitle: "MATIN Kaldor Tactical GPS Smartwatch with Flashlight",
     seoDescription:
-      'MATIN Kaldor tactical GPS smartwatch for men: LED flashlight, compass, Bluetooth calls, 1.43" AMOLED, heart rate, 15 day battery, 3ATM. Free US shipping.',
+      'MATIN Kaldor tactical GPS smartwatch for men: LED flashlight, compass, Bluetooth calls, 1.43" AMOLED, heart rate, 15 day battery, 3ATM. Free worldwide shipping.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#e8e04a" },
   },
   {
@@ -990,7 +990,7 @@ export const products: Product[] = [
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
       },
     ],
     seoTitle: "MATIN Varkon Rugged GPS Smartwatch | 30 Day Battery",

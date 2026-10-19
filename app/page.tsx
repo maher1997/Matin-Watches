@@ -68,7 +68,7 @@ const faq = [
   },
   {
     q: "How much is shipping, and can I return my watch?",
-    a: "Shipping is free on every US order. Every watch comes with a 2 year warranty and 30 day returns.",
+    a: "Shipping is free worldwide. Every watch comes with a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
   },
 ];
 
@@ -104,8 +104,8 @@ export default function Home() {
             <Link href="/compare" className="btn btn-ghost">Compare models</Link>
           </div>
           <ul className="lp-perks">
-            <li>Free US shipping</li>
-            <li>2 year warranty</li>
+            <li>Free worldwide shipping</li>
+            <li>1 year warranty</li>
             <li>30 day returns</li>
           </ul>
         </div>
@@ -244,8 +244,8 @@ export default function Home() {
 
       <section className="section trust">
         {[
-          ["Free shipping", "On every US order"],
-          ["2 year warranty", "We stand behind every watch"],
+          ["Free shipping", "Worldwide, on every order"],
+          ["1 year warranty", "We stand behind every watch"],
           ["30 day returns", "Not right? Send it back"],
           ["Secure checkout", "Card, Apple Pay, PayPal"],
         ].map(([t, s]) => (

@@ -7795,3 +7795,40 @@ html.rv-on .rv.card.rv-in .card-media img {
   font-size: 0.75rem;
   color: #5d6376;
 }
+
+/* Delivery times under the trust strip */
+.pdp-delivery {
+  margin-top: 0.6rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.pdp-delivery p {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+
+.pdp-delivery ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.4rem;
+  row-gap: 0.3rem;
+}
+
+.pdp-delivery li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #c7ccd8;
+}
+
+.pdp-delivery strong {
+  font-weight: 600;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categories, formatPrice, getProduct, products, type Product } from "@/lib/products";
-import { absoluteUrl, site, siteUrl } from "@/lib/site";
+import { absoluteUrl, delivery, site, siteUrl } from "@/lib/site";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
@@ -62,8 +62,8 @@ const groupIcons = {
 
 // Short reasons to buy, under the Add to cart button.
 const trust = [
-  { title: "Free shipping", text: "Across the USA", icon: <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" /> },
-  { title: "2 year warranty", text: "On every watch", icon: <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /> },
+  { title: "Free shipping", text: "Worldwide", icon: <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" /> },
+  { title: "1 year warranty", text: "On every watch", icon: <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /> },
   { title: "30 day returns", text: "Change your mind", icon: <path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" /> },
   { title: "iPhone & Android", text: "Free phone app", icon: <path d="M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2" /> },
 ];
@@ -111,16 +111,20 @@ export default async function ProductPage({ params }: Props) {
           availability: "https://schema.org/InStock",
           itemCondition: "https://schema.org/NewCondition",
           seller: { "@id": `${siteUrl}/#org` },
-          shippingDetails: {
+          shippingDetails: delivery.map((d) => ({
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "0", currency: site.currency },
-            shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
-          },
+            shippingDestination: { "@type": "DefinedRegion", addressCountry: [...d.countries] },
+            deliveryTime: {
+              "@type": "ShippingDeliveryTime",
+              transitTime: { "@type": "QuantitativeValue", minValue: d.days[0], maxValue: d.days[1], unitCode: "DAY" },
+            },
+          })),
           hasMerchantReturnPolicy: {
             "@type": "MerchantReturnPolicy",
             returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
             merchantReturnDays: 30,
-            applicableCountry: "US",
+            applicableCountry: delivery.flatMap((d) => d.countries),
           },
         },
       },
@@ -200,6 +204,19 @@ export default async function ProductPage({ params }: Props) {
               </li>
             ))}
           </ul>
+          <div className="pdp-delivery">
+            <p>Delivery time (business days)</p>
+            <ul>
+              {delivery.map((d) => (
+                <li key={d.region}>
+                  <span>{d.region}</span>
+                  <strong>
+                    {d.days[0]}–{d.days[1]}
+                  </strong>
+                </li>
+              ))}
+            </ul>
+          </div>
           {lineupSlugs.includes(product.slug as (typeof lineupSlugs)[number]) && (
             <Link href="/compare" className="pdp-compare">
               Compare with the other MATIN watches
