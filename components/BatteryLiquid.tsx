@@ -72,18 +72,22 @@ export default function BatteryLiquid({
   const [active, setActive] = useState(modes.length - 1);
   const [shown, setShown] = useState(max);
   const [live, setLive] = useState(true);
+  const [empty, setEmpty] = useState(false);
   const [heldUntil, setHeldUntil] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const shownRef = useRef(max);
 
   const mode = modes[active];
-  const frac = mode.days / max;
+  // Until the section first reaches the screen the face waits empty, then
+  // fills up to the mode's days (and the number counts up) as it arrives.
+  const days = empty ? 0 : mode.days;
+  const frac = days / max;
   const cells = look === "cells";
   const radar = look === "radar";
   const rings = look === "rings";
   const litRings = Math.round(frac * RINGS.length);
   // Cells light from the bottom, one per CELLS-th of the longest mode.
-  const litCells = Math.max(1, Math.round(frac * CELLS));
+  const litCells = empty ? 0 : Math.max(1, Math.round(frac * CELLS));
   const box =
     "r" in screen
       ? {
@@ -104,11 +108,39 @@ export default function BatteryLiquid({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setLive(e.isIntersecting), {
-      threshold: 0.15,
-    });
+    // Start empty only when the section is still below the screen, so the
+    // switch is never seen; it fills when it arrives. A safety check fills it
+    // anyway if it is on screen and the observer never reported it.
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let waiting =
+      !reduced && el.getBoundingClientRect().top > window.innerHeight;
+    if (waiting) {
+      shownRef.current = 0;
+      setShown(0);
+      setEmpty(true);
+    }
+    const fill = () => {
+      if (!waiting) return;
+      waiting = false;
+      setEmpty(false);
+    };
+    const io = new IntersectionObserver(
+      ([e]) => {
+        setLive(e.isIntersecting);
+        if (e.isIntersecting) fill();
+      },
+      { threshold: 0.15 },
+    );
     io.observe(el);
-    return () => io.disconnect();
+    const safety = window.setInterval(() => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) fill();
+      if (!waiting) window.clearInterval(safety);
+    }, 1500);
+    return () => {
+      io.disconnect();
+      window.clearInterval(safety);
+    };
   }, []);
 
   useEffect(() => {
@@ -124,7 +156,7 @@ export default function BatteryLiquid({
 
   useEffect(() => {
     const from = shownRef.current;
-    const to = mode.days;
+    const to = days;
     if (from === to) return;
     const start = performance.now();
     let raf = 0;
@@ -137,7 +169,7 @@ export default function BatteryLiquid({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [mode.days]);
+  }, [days]);
 
   const pick = (i: number) => {
     setActive(i);
@@ -252,7 +284,7 @@ export default function BatteryLiquid({
                     })}
                     {Array.from({ length: max }, (_, i) => {
                       const step = 360 / max;
-                      const lit = i < mode.days;
+                      const lit = i < days;
                       return (
                         <path
                           key={i}
@@ -264,7 +296,7 @@ export default function BatteryLiquid({
                           )}
                           className={
                             lit
-                              ? i === mode.days - 1
+                              ? i === days - 1
                                 ? "bl-seg on head"
                                 : "bl-seg on"
                               : "bl-seg"
@@ -335,9 +367,9 @@ export default function BatteryLiquid({
                           y1={100 + c * 90}
                           x2={100 + s * (i % 5 === 0 ? 82 : 86)}
                           y2={100 + c * (i % 5 === 0 ? 82 : 86)}
-                          className={i < mode.days ? "on" : undefined}
+                          className={i < days ? "on" : undefined}
                           style={{
-                            transitionDelay: `${(i < mode.days ? i : max - i) * 12}ms`,
+                            transitionDelay: `${(i < days ? i : max - i) * 12}ms`,
                           }}
                         />
                       );
