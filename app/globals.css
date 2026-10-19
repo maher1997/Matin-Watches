@@ -7630,12 +7630,51 @@ html.rv-on .rv.card.rv-in .card-media img {
     font-size: 0.82rem;
   }
 
+  /* The two watch cards on top use the full width (no empty label column):
+     the table becomes blocks, and each group of rows is its own small table
+     with the same column widths. */
+  .cmp-table,
+  .cmp-table thead {
+    display: block;
+  }
+
+  .cmp-table tbody {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .cmp-row td {
+    width: calc((100% - var(--cmp-label)) / 2);
+  }
+
+  .cmp-table thead tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cmp-corner {
+    display: none;
+  }
+
+  .cmp-table thead .cmp-watch + .cmp-watch {
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .cmp-table thead .cmp-watch:first-of-type {
+    border-left: 0;
+  }
+
+  .cmp-row th {
+    width: var(--cmp-label);
+  }
+
   .cmp-watch {
-    padding: 0.9rem 0.35rem 1.1rem;
+    padding: 0.9rem 0.5rem 1.1rem;
   }
 
   .cmp-watch-media {
-    max-width: 6.5rem;
+    max-width: 8.5rem;
     margin-bottom: 0.6rem;
   }
 
@@ -7684,7 +7723,11 @@ html.rv-on .rv.card.rv-in .card-media img {
 
   /* Group titles are blocks so their colspan (which counts the hidden
      watches) does not add empty columns. */
-  .cmp-group,
+  .cmp-group {
+    display: table-caption;
+    caption-side: top;
+  }
+
   .cmp-group th {
     display: block;
   }
