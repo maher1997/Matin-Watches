@@ -145,10 +145,6 @@ export default function CompareTable({
 
   return (
     <div className="cmp-panel">
-      <p className="cmp-hint">
-        Swipe the table to see all {watches.length} watches
-      </p>
-
       <div className={`cmp-bar${stuck ? " is-on" : ""}`} aria-hidden="true">
         <div className="cmp-bar-row">
           <div ref={barInner} className="cmp-bar-inner">
@@ -170,7 +166,14 @@ export default function CompareTable({
           </caption>
           <thead ref={head}>
             <tr>
-              <td className="cmp-corner" />
+              <td className="cmp-corner">
+                <span className="cmp-hint" aria-hidden="true">
+                  Swipe to see all {watches.length}
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+              </td>
               {cols.map((i) => {
                 const w = watches[i];
                 return (

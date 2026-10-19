@@ -7594,8 +7594,8 @@ html.rv-on .rv.card.rv-in .card-media img {
 
 @media (max-width: 760px) {
   .cmp-panel {
-    --cmp-label: 6.6rem;
-    --cmp-col: 9.2rem;
+    --cmp-label: 5.4rem;
+    --cmp-col: 8.6rem;
     --cmp-pad: 0.9rem;
     padding: 0.4rem var(--cmp-pad) 0.9rem;
     border-radius: 22px;
@@ -7638,31 +7638,35 @@ html.rv-on .rv.card.rv-in .card-media img {
     left: 0.9rem;
   }
 
+  /* Compact watch heads on phones. */
   .cmp-watch {
-    padding: 0.9rem 0.5rem 1.1rem;
+    padding: 0.6rem 0.4rem 0.75rem;
   }
 
   .cmp-watch-media {
-    max-width: 6.8rem;
-    margin-bottom: 0.6rem;
+    max-width: 4.6rem;
+    margin-bottom: 0.35rem;
   }
 
   .cmp-watch-name {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .cmp-watch-price {
-    font-size: 0.88rem;
+    margin-top: 0.1rem;
+    font-size: 0.8rem;
   }
 
   .cmp-watch-best {
-    font-size: 0.72rem;
-    margin-bottom: 0.75rem;
+    display: none;
   }
 
-  .cmp-watch-btn {
-    padding: 0.45rem 1rem;
-    font-size: 0.8rem;
+  .cmp-watch .cmp-watch-btn {
+    height: 30px;
+    margin-top: 0.5rem;
+    padding: 0 0.9rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
   }
 
   .cmp-table tbody th,
@@ -7680,7 +7684,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   }
 
   .cmp-row th {
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     line-height: 1.3;
   }
 
@@ -7746,12 +7750,39 @@ html.rv-on .rv.card.rv-in .card-media img {
     box-shadow: 0 2px 10px rgba(82, 133, 247, 0.5);
   }
 
+  .cmp-corner {
+    vertical-align: middle;
+    padding: 0 0.5rem 0 0.9rem;
+  }
+
   .cmp-hint {
-    display: block;
-    margin: 0 0 0.6rem;
-    text-align: center;
-    font-size: 0.78rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    line-height: 1.3;
     color: var(--muted);
+  }
+
+  .cmp-hint svg {
+    width: 22px;
+    height: 22px;
+    padding: 4px;
+    border-radius: 50%;
+    background: rgba(82, 133, 247, 0.16);
+    fill: none;
+    stroke: #8fb3ff;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: cmp-nudge 1.6s ease-in-out infinite;
+  }
+
+  @keyframes cmp-nudge {
+    50% {
+      transform: translateX(4px);
+    }
   }
 }
 
@@ -7906,4 +7937,10 @@ html.rv-on .rv.card.rv-in .card-media img {
   font-weight: 600;
   color: #fff;
   font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmp-hint svg {
+    animation: none;
+  }
 }
