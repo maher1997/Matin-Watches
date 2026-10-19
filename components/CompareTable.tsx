@@ -47,28 +47,74 @@ export default function CompareTable({
   groups: Group[];
   heading?: "h2" | "h3";
 }) {
-  const [picks, setPicks] = useState([0, 1]);
   const [stuck, setStuck] = useState(false);
   const head = useRef<HTMLTableSectionElement>(null);
   const table = useRef<HTMLTableElement>(null);
+  const scroller = useRef<HTMLDivElement>(null);
+  const barInner = useRef<HTMLDivElement>(null);
+  const barCorner = useRef<HTMLSpanElement>(null);
+  const thumb = useRef<HTMLSpanElement>(null);
+  const track = useRef<HTMLDivElement>(null);
   const H = heading;
+  const cols = watches.map((_, i) => i);
 
-  const off = (i: number) => (picks.includes(i) ? "" : " cmp-off");
-  // The two chosen watches come first; on a computer (where the menus are
-  // hidden) the picks never change, so the order stays 1, 2, 3, 4.
-  const cols = [
-    ...picks,
-    ...watches.map((_, i) => i).filter((i) => !picks.includes(i)),
-  ];
+  // Phones: keep the name bar and the bottom scroll bar in step with the
+  // table as it slides sideways.
+  useEffect(() => {
+    const sc = scroller.current;
+    if (!sc) return;
+    const sync = () => {
+      const x = sc.scrollLeft;
+      const max = sc.scrollWidth - sc.clientWidth;
+      if (barInner.current)
+        barInner.current.style.transform = x ? `translateX(${-x}px)` : "";
+      if (barCorner.current)
+        barCorner.current.style.transform = x ? `translateX(${x}px)` : "";
+      const t = thumb.current;
+      const tr = track.current;
+      if (t && tr) {
+        // The groove is inset 14px on each side of the pill.
+        const w = tr.clientWidth - 28;
+        const tw =
+          max > 0 ? Math.max(28, (w * sc.clientWidth) / sc.scrollWidth) : w;
+        t.style.width = `${tw}px`;
+        t.style.left = `${14 + (max > 0 ? ((w - tw) * x) / max : 0)}px`;
+      }
+    };
+    sync();
+    sc.addEventListener("scroll", sync, { passive: true });
+    addEventListener("resize", sync);
+    return () => {
+      sc.removeEventListener("scroll", sync);
+      removeEventListener("resize", sync);
+    };
+  }, []);
 
-  const pick = (slot: number, i: number) =>
-    setPicks((p) => {
-      const next = [...p];
-      // Choosing the watch already in the other column swaps the two.
-      if (next[1 - slot] === i) next[1 - slot] = next[slot];
-      next[slot] = i;
-      return next;
-    });
+  // Dragging (or tapping) the bottom bar slides the table.
+  const drag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const sc = scroller.current;
+    const tr = track.current;
+    if (!sc || !tr) return;
+    const move = (clientX: number) => {
+      const r = tr.getBoundingClientRect();
+      const p = Math.min(
+        1,
+        Math.max(0, (clientX - r.left - 14) / (r.width - 28)),
+      );
+      sc.scrollLeft = p * (sc.scrollWidth - sc.clientWidth);
+    };
+    move(e.clientX);
+    tr.setPointerCapture(e.pointerId);
+    const onMove = (ev: PointerEvent) => move(ev.clientX);
+    const onUp = () => {
+      tr.removeEventListener("pointermove", onMove);
+      tr.removeEventListener("pointerup", onUp);
+      tr.removeEventListener("pointercancel", onUp);
+    };
+    tr.addEventListener("pointermove", onMove);
+    tr.addEventListener("pointerup", onUp);
+    tr.addEventListener("pointercancel", onUp);
+  };
 
   useEffect(() => {
     let raf = 0;
@@ -99,105 +145,96 @@ export default function CompareTable({
 
   return (
     <div className="cmp-panel">
-      <div className="cmp-pickers">
-        {picks.map((sel, slot) => (
-          <label key={slot} className="cmp-picker">
-            <span className="sr-only">Watch {slot + 1} to compare</span>
-            <select
-              value={sel}
-              onChange={(e) => pick(slot, Number(e.target.value))}
-            >
-              {watches.map((w, i) => (
-                <option key={w.product.slug} value={i}>
-                  {w.product.name}
-                </option>
-              ))}
-            </select>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 10l5 5 5-5" />
-            </svg>
-          </label>
-        ))}
-      </div>
+      <p className="cmp-hint">
+        Swipe the table to see all {watches.length} watches
+      </p>
 
       <div className={`cmp-bar${stuck ? " is-on" : ""}`} aria-hidden="true">
         <div className="cmp-bar-row">
-          <span className="cmp-bar-corner" />
-          {cols.map((i) => (
-            <span key={i} className={`cmp-bar-cell${off(i)}`}>
-              <strong>{watches[i].product.name.replace("MATIN ", "")}</strong>
-              {watches[i].price}
-            </span>
-          ))}
+          <div ref={barInner} className="cmp-bar-inner">
+            <span ref={barCorner} className="cmp-bar-corner" />
+            {cols.map((i) => (
+              <span key={i} className="cmp-bar-cell">
+                <strong>{watches[i].product.name.replace("MATIN ", "")}</strong>
+                {watches[i].price}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <table ref={table} className="cmp-table">
-        <caption className="sr-only">
-          MATIN smartwatches compared feature by feature
-        </caption>
-        <thead ref={head}>
-          <tr>
-            <td className="cmp-corner" />
-            {cols.map((i) => {
-              const w = watches[i];
-              return (
-                <th
-                  key={w.product.slug}
-                  scope="col"
-                  className={`cmp-watch${off(i)}`}
-                >
-                  <Link
-                    href={`/product/${w.product.slug}`}
-                    className="cmp-watch-media"
-                    tabIndex={-1}
-                    aria-hidden="true"
-                  >
-                    <ProductImage
-                      product={w.product}
-                      sizes="(max-width: 760px) 42vw, 18vw"
-                    />
-                  </Link>
-                  <H className="cmp-watch-name">
-                    <Link href={`/product/${w.product.slug}`}>
-                      {w.product.name}
+      <div ref={scroller} className="cmp-scroll">
+        <table ref={table} className="cmp-table">
+          <caption className="sr-only">
+            MATIN smartwatches compared feature by feature
+          </caption>
+          <thead ref={head}>
+            <tr>
+              <td className="cmp-corner" />
+              {cols.map((i) => {
+                const w = watches[i];
+                return (
+                  <th key={w.product.slug} scope="col" className="cmp-watch">
+                    <Link
+                      href={`/product/${w.product.slug}`}
+                      className="cmp-watch-media"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    >
+                      <ProductImage
+                        product={w.product}
+                        sizes="(max-width: 760px) 42vw, 18vw"
+                      />
                     </Link>
-                  </H>
-                  <span className="cmp-watch-price">{w.price}</span>
-                  <span className="cmp-watch-best">{w.bestFor}</span>
-                  <Link
-                    href={`/product/${w.product.slug}`}
-                    className="btn btn-ghost cmp-watch-btn"
-                  >
-                    View
-                  </Link>
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        {groups.map((g, gi) => (
-          <tbody key={g.title ?? gi}>
-            {g.title && (
-              <tr className="cmp-group">
-                <th scope="colgroup" colSpan={watches.length + 1}>
-                  {g.title}
-                </th>
-              </tr>
-            )}
-            {g.rows.map((r) => (
-              <tr key={r.label} className="cmp-row">
-                <th scope="row">{r.label}</th>
-                {cols.map((i) => (
-                  <td key={i} className={off(i).trim() || undefined}>
-                    <Value v={r.values[i]} />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        ))}
-      </table>
+                    <H className="cmp-watch-name">
+                      <Link href={`/product/${w.product.slug}`}>
+                        {w.product.name}
+                      </Link>
+                    </H>
+                    <span className="cmp-watch-price">{w.price}</span>
+                    <span className="cmp-watch-best">{w.bestFor}</span>
+                    <Link
+                      href={`/product/${w.product.slug}`}
+                      className="btn btn-ghost cmp-watch-btn"
+                    >
+                      View
+                    </Link>
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          {groups.map((g, gi) => (
+            <tbody key={g.title ?? gi}>
+              {g.title && (
+                <tr className="cmp-group">
+                  <th scope="colgroup" colSpan={watches.length + 1}>
+                    <span>{g.title}</span>
+                  </th>
+                </tr>
+              )}
+              {g.rows.map((r) => (
+                <tr key={r.label} className="cmp-row">
+                  <th scope="row">{r.label}</th>
+                  {cols.map((i) => (
+                    <td key={i}>
+                      <Value v={r.values[i]} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
+      <div
+        ref={track}
+        className="cmp-track"
+        onPointerDown={drag}
+        aria-hidden="true"
+      >
+        <span ref={thumb} className="cmp-thumb" />
+      </div>
     </div>
   );
 }

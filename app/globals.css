@@ -7493,8 +7493,6 @@ html.rv-on .rv.card.rv-in .card-media img {
 }
 
 .cmp-bar-row {
-  display: grid;
-  grid-template-columns: var(--cmp-label) repeat(4, minmax(0, 1fr));
   padding: 0.65rem var(--cmp-pad);
   background: #0f1116;
   border-bottom: 1px solid var(--border-strong);
@@ -7505,6 +7503,11 @@ html.rv-on .rv.card.rv-in .card-media img {
   transition:
     opacity 0.25s ease,
     transform 0.25s ease;
+}
+
+.cmp-bar-inner {
+  display: grid;
+  grid-template-columns: var(--cmp-label) repeat(4, minmax(0, 1fr));
 }
 
 .cmp-bar.is-on .cmp-bar-row {
@@ -7570,103 +7573,69 @@ html.rv-on .rv.card.rv-in .card-media img {
   }
 }
 
-@media (max-width: 760px) {
-  .cmp-off {
-    display: none !important;
-  }
+/* Phones: all four watches in one table that slides sideways. The feature
+   names stay pinned on the left, and a bar at the bottom of the screen shows
+   where you are (drag it or swipe the table). */
+.cmp-scroll {
+  /* relative so hidden screen-reader text inside cannot widen the page */
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
 
+.cmp-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.cmp-track {
+  display: none;
+}
+
+@media (max-width: 760px) {
   .cmp-panel {
+    --cmp-label: 6.6rem;
+    --cmp-col: 9.2rem;
     --cmp-pad: 0.9rem;
-    padding-top: var(--cmp-pad);
+    padding: 0.4rem var(--cmp-pad) 0.9rem;
     border-radius: 22px;
   }
 
-  .cmp-pickers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-
-  .cmp-picker {
-    position: relative;
-  }
-
-  .cmp-picker select {
-    width: 100%;
-    appearance: none;
-    -webkit-appearance: none;
-    padding: 0.7rem 2rem 0.7rem 0.85rem;
-    border: 1px solid var(--border-strong);
-    border-radius: 12px;
-    background: #171a22;
-    color: #fff;
-    font: inherit;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .cmp-picker svg {
-    position: absolute;
-    right: 0.65rem;
-    top: 50%;
-    width: 18px;
-    height: 18px;
-    transform: translateY(-50%);
-    fill: none;
-    stroke: var(--muted);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    pointer-events: none;
-  }
-
-  /* Phones: a real 3-column table (feature, watch, watch), so the lines
-     between columns run straight from top to bottom. */
-  .cmp-panel {
-    --cmp-label: 30%;
+  .cmp-scroll {
+    margin: 0 calc(var(--cmp-pad) * -1);
   }
 
   .cmp-table {
+    width: calc(var(--cmp-label) + 4 * var(--cmp-col));
     font-size: 0.82rem;
   }
 
-  /* The two watch cards on top use the full width (no empty label column):
-     the table becomes blocks, and each group of rows is its own small table
-     with the same column widths. */
-  .cmp-table,
-  .cmp-table thead {
-    display: block;
-  }
-
-  .cmp-table tbody {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  .cmp-row td {
-    width: calc((100% - var(--cmp-label)) / 2);
-  }
-
-  .cmp-table thead tr {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
   .cmp-corner {
-    display: none;
-  }
-
-  .cmp-table thead .cmp-watch + .cmp-watch {
-    border-left: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .cmp-table thead .cmp-watch:first-of-type {
-    border-left: 0;
-  }
-
-  .cmp-row th {
     width: var(--cmp-label);
+  }
+
+  /* Pinned first column; solid so values slide under it. */
+  .cmp-corner,
+  .cmp-table tbody .cmp-row th {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #11141a;
+    box-shadow: 1px 0 0 rgba(255, 255, 255, 0.07);
+  }
+
+  .cmp-row:nth-child(even) th {
+    background: #14171d;
+  }
+
+  .cmp-group th {
+    padding: 1.6rem 0.9rem 0.6rem;
+    font-size: 1rem;
+  }
+
+  .cmp-group th span {
+    position: sticky;
+    left: 0.9rem;
   }
 
   .cmp-watch {
@@ -7674,7 +7643,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   }
 
   .cmp-watch-media {
-    max-width: 8.5rem;
+    max-width: 6.8rem;
     margin-bottom: 0.6rem;
   }
 
@@ -7698,7 +7667,11 @@ html.rv-on .rv.card.rv-in .card-media img {
 
   .cmp-table tbody th,
   .cmp-table tbody td {
-    padding: 0.75rem 0.45rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .cmp-table tbody .cmp-row th {
+    padding-left: 0.9rem;
   }
 
   .cmp-row th,
@@ -7721,25 +7694,70 @@ html.rv-on .rv.card.rv-in .card-media img {
     height: 20px;
   }
 
-  /* Group titles are blocks so their colspan (which counts the hidden
-     watches) does not add empty columns. */
-  .cmp-group {
-    display: table-caption;
-    caption-side: top;
-  }
-
-  .cmp-group th {
-    display: block;
-  }
-
-  .cmp-group th {
-    padding: 1.6rem 0.45rem 0.6rem;
-    font-size: 1rem;
-    white-space: nowrap;
-  }
-
+  /* The slim name bar slides together with the table. */
   .cmp-bar-row {
-    grid-template-columns: var(--cmp-label) 1fr 1fr;
+    padding: 0.55rem 0;
+    overflow: hidden;
+  }
+
+  .cmp-bar-inner {
+    width: calc(var(--cmp-label) + 4 * var(--cmp-col));
+    grid-template-columns: var(--cmp-label) repeat(4, var(--cmp-col));
+    will-change: transform;
+  }
+
+  .cmp-bar-corner {
+    position: relative;
+    z-index: 1;
+    background: #0f1116;
+  }
+
+  /* Scroll bar along the bottom of the screen while the table is in view. */
+  .cmp-track {
+    display: block;
+    position: sticky;
+    bottom: calc(env(safe-area-inset-bottom) + 0.9rem);
+    z-index: 4;
+    height: 30px;
+    margin: 0.6rem auto 0;
+    width: min(62%, 14rem);
+    border-radius: 99px;
+    background: rgba(10, 11, 14, 0.88);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 20px rgba(0, 0, 0, 0.5);
+    touch-action: none;
+    cursor: pointer;
+  }
+
+  .cmp-track::before {
+    content: "";
+    position: absolute;
+    inset: 12px 14px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  }
+
+  .cmp-thumb {
+    position: absolute;
+    top: 10px;
+    height: 10px;
+    border-radius: 99px;
+    background: #5285f7;
+    box-shadow: 0 2px 10px rgba(82, 133, 247, 0.5);
+  }
+
+  .cmp-hint {
+    display: block;
+    margin: 0 0 0.6rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+}
+
+@media (min-width: 761px) {
+  .cmp-hint {
+    display: none;
   }
 }
 
