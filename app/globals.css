@@ -1955,13 +1955,14 @@ button.thumb:focus-visible {
   scrollbar-width: none;
 }
 
-/* Centred when the tabs fit, and still scrollable from the first tab when not */
-.stories-tabs > :first-child {
-  margin-left: auto;
+/* Centred when the tabs fit. The two extra copies are only for the endless
+   row on phones. */
+.stories-tabs {
+  justify-content: center;
 }
 
-.stories-tabs > :last-child {
-  margin-right: auto;
+.stories-tabs .stories-clone {
+  display: none;
 }
 
 .stories-tabs::-webkit-scrollbar {
@@ -2269,6 +2270,14 @@ button.thumb:focus-visible {
     margin-right: calc(-1 * clamp(1rem, 4vw, 2rem));
     margin-bottom: 0.55rem;
     padding: 0 clamp(1rem, 4vw, 2rem);
+  }
+  .stories-tabs .stories-clone {
+    display: block;
+  }
+  /* Room after the last copy so its tabs can still sit in the middle */
+  .stories-tabs::after {
+    content: "";
+    flex: 0 0 50vw;
   }
   .stories-tabs button {
     padding: 0.6rem 1.05rem;

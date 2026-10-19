@@ -84,16 +84,46 @@ export default function Stories({ product }: { product: Product }) {
     return () => clearTimeout(id);
   }, [active, inView, paused, n]);
 
-  // Slide the tab row so the current tab sits in the middle and can be read
-  // when the slider moves on by itself. Only the row scrolls, never the page.
+  // Phones: the tab row is three copies of the tabs, so it can keep sliding
+  // forward forever. The current tab glides to the middle; once it is in the
+  // first or last copy the row jumps (invisibly) by one copy back to the
+  // middle one. Desktop shows one copy that fits, so nothing moves there.
+  const pos = useRef(-1);
   useEffect(() => {
     const row = tabsRef.current;
-    const tab = row?.children[active] as HTMLElement | undefined;
-    if (!row || !tab || row.scrollWidth <= row.clientWidth) return;
-    const left = tab.offsetLeft - (row.clientWidth - tab.offsetWidth) / 2;
-    const max = row.scrollWidth - row.clientWidth;
-    row.scrollTo({ left: Math.max(0, Math.min(max, left)), behavior: "smooth" });
-  }, [active]);
+    if (!row || n < 2) return;
+    const btns = row.children as HTMLCollectionOf<HTMLElement>;
+    if (btns.length < 3 * n || row.scrollWidth <= row.clientWidth + 1) return;
+    const centre = (v: number) =>
+      btns[v].offsetLeft - (row.clientWidth - btns[v].offsetWidth) / 2;
+    if (pos.current < 0) {
+      pos.current = n + active;
+      row.scrollLeft = centre(pos.current);
+      return;
+    }
+    // The copy of the active tab nearest to where the row is now; ties go forward.
+    let v = pos.current;
+    for (let d = 0; d < n; d++) {
+      if ((pos.current + d) % n === active) {
+        v = pos.current + d;
+        break;
+      }
+      if (pos.current - d >= 0 && (pos.current - d) % n === active) {
+        v = pos.current - d;
+        break;
+      }
+    }
+    pos.current = v;
+    row.scrollTo({ left: centre(v), behavior: "smooth" });
+    const id = setTimeout(() => {
+      if (pos.current >= n && pos.current < 2 * n) return;
+      const shift = pos.current < n ? n : -n;
+      const copy = btns[n].offsetLeft - btns[0].offsetLeft;
+      pos.current += shift;
+      row.scrollLeft += shift > 0 ? copy : -copy;
+    }, 1000);
+    return () => clearTimeout(id);
+  }, [active, n]);
 
   if (n === 0) return null;
   const go = (i: number) => setActive((i + n) % n);
@@ -120,27 +150,41 @@ export default function Stories({ product }: { product: Product }) {
           role="tablist"
           aria-label="Choose a highlight"
         >
-          {stories.map((s, i) => (
-            <button
-              key={s.image}
-              type="button"
-              role="tab"
-              id={`story-tab-${i}`}
-              aria-selected={i === active}
-              aria-controls={`story-${i}`}
-              className={i === active ? "on" : undefined}
-              onClick={() => go(i)}
-            >
-              {s.tab}
-              {i === active && (
-                <span
-                  key={`${active}-${inView}`}
-                  className="stories-progress"
-                  aria-hidden="true"
-                />
-              )}
-            </button>
-          ))}
+          {[0, 1, 2].flatMap((copy) =>
+            stories.map((s, i) => {
+              const main = copy === 1;
+              return (
+                <button
+                  key={`${copy}-${s.image}`}
+                  type="button"
+                  role={main ? "tab" : undefined}
+                  id={main ? `story-tab-${i}` : undefined}
+                  aria-selected={main ? i === active : undefined}
+                  aria-controls={main ? `story-${i}` : undefined}
+                  aria-hidden={main ? undefined : true}
+                  tabIndex={main ? undefined : -1}
+                  className={
+                    [i === active && "on", !main && "stories-clone"]
+                      .filter(Boolean)
+                      .join(" ") || undefined
+                  }
+                  onClick={() => {
+                    pos.current = copy * n + i;
+                    go(i);
+                  }}
+                >
+                  {s.tab}
+                  {i === active && (
+                    <span
+                      key={`${active}-${inView}`}
+                      className="stories-progress"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              );
+            }),
+          )}
         </div>
 
         <button
