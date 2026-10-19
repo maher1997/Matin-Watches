@@ -334,9 +334,9 @@ export const products: Product[] = [
         ],
       },
       {
-        image: "/products/life/matin-trekon-heart-rate-monitoring.webp",
+        image: "/products/life/matin-trekon-heart-rate-running.webp",
         tab: "Heart rate",
-        alt: "Hiker checking his heart rate on the MATIN Trekon smartwatch",
+        alt: "Trail runner in the mountains with the MATIN Trekon smartwatch showing workout time, heart rate, distance and calories",
         title: ["Heart rate", "monitoring"],
         text: "Track your heart rate in real time and stay in control of your health every day.",
         points: [
