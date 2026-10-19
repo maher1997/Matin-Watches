@@ -7765,3 +7765,28 @@ html.rv-on .rv.card.rv-in .card-media img {
     padding: 0.65rem;
   }
 }
+
+/* Page error (app/error.tsx) */
+.page-error {
+  text-align: center;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.page-error h1 {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.page-error p {
+  margin: 0.75rem 0 1.5rem;
+  color: var(--muted);
+}
+
+.page-error .page-error-code {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: #5d6376;
+}

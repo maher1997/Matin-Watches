@@ -74,12 +74,26 @@ const orgData = {
   ],
 };
 
+const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)return;var r=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this){return c}return r.apply(this,arguments)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,ref){if(ref&&ref.parentNode!==this){return n}return i.apply(this,arguments)}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-US" data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable} ${brand.variable}`}>
-      <body>
+    <html
+      lang="en-US"
+      data-scroll-behavior="smooth"
+      className={`${sans.variable} ${display.variable} ${brand.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Browser extensions and auto-translate wrap or move text on the
+            page; when React later updates that text it can no longer find
+            it and the whole page breaks. This makes those two DOM calls
+            forgiving, so the page keeps working. */}
+        <script dangerouslySetInnerHTML={{ __html: domGuard }} />
+      </head>
+      <body suppressHydrationWarning>
         <JsonLd data={orgData} />
         <CartProvider>
           <Header />
