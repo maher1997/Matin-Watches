@@ -175,6 +175,7 @@ export default function Stories({ product }: { product: Product }) {
                 alt={s.alt}
                 fill
                 quality={75}
+                style={s.focus ? { objectPosition: s.focus } : undefined}
                 sizes="(max-width: 860px) 100vw, 1240px"
               />
             </div>

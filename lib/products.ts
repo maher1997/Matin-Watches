@@ -86,6 +86,9 @@ export type Product = {
   stories?: {
     image: string;
     alt: string;
+    // Where the original sits in a photo extended on one side only
+    // (CSS object-position), so the square desktop crop shows all of it.
+    focus?: string;
     // Short name on the slider button
     tab: string;
     title: [string, string];
@@ -307,9 +310,10 @@ export const products: Product[] = [
     ],
     stories: [
       {
-        image: "/products/life/matin-trekon-built-for-the-tough.webp",
+        image: "/products/life/matin-trekon-tough-mission.webp",
+        focus: "100% 50%",
         tab: "Tough",
-        alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist in the mountains",
+        alt: "MATIN Trekon rugged smartwatch on a gloved soldier's wrist in the mountains, with climbing, trekking and river scenes",
         title: ["Built for", "the tough"],
         text: "For work. For mission. For more.",
         tags: ["For work", "For mission", "For more"],
@@ -318,6 +322,19 @@ export const products: Product[] = [
           { icon: "drop", title: "Water resistant", text: "Ready for rain, dust and more" },
           { icon: "mountain", title: "Built for extremes", text: "Reliable performance in any environment" },
           { icon: "thermo", title: "Wide temp range", text: "-4°F to 140°F" },
+        ],
+      },
+      {
+        image: "/products/life/matin-trekon-construction-work.webp",
+        tab: "Construction",
+        alt: "Construction worker in gloves and a hi-vis vest wearing the MATIN Trekon rugged smartwatch on a snowy building site",
+        title: ["Built for", "the job site"],
+        text: "Snow, dust and hard knocks. The Trekon is a rugged smartwatch made for construction work, and it keeps going shift after shift.",
+        points: [
+          { icon: "shield", title: "Shock resistant", text: "Takes knocks from tools, rebar and concrete" },
+          { icon: "dust", title: "Dust and dirt", text: "Keeps working on dusty, muddy sites" },
+          { icon: "thermo", title: "Cold and heat", text: "Works from -4°F to 140°F" },
+          { icon: "battery", title: "Lasts the work week", text: "Up to 20 days with typical use" },
         ],
       },
       {
