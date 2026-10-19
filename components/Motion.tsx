@@ -54,9 +54,6 @@ export default function Motion() {
         cs.position !== "sticky" &&
         cs.transform === "none" &&
         cs.display !== "none" &&
-        // Very tall blocks are left alone: fading them costs a lot of
-        // memory and they fill the screen anyway.
-        el.offsetHeight < window.innerHeight * 1.2 &&
         !el.querySelector(".buy-bar")
       );
     };
