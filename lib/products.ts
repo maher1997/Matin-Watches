@@ -334,15 +334,27 @@ export const products: Product[] = [
         ],
       },
       {
-        image: "/products/life/matin-trekon-heart-rate-running.webp",
+        image: "/products/life/matin-trekon-heart-rate-hiker.webp",
         tab: "Heart rate",
-        alt: "Trail runner in the mountains with the MATIN Trekon smartwatch showing workout time, heart rate, distance and calories",
+        alt: "Hiker checking his heart rate graph on the MATIN Trekon smartwatch above a mountain lake",
         title: ["Heart rate", "monitoring"],
         text: "Track your heart rate in real time and stay in control of your health every day.",
         points: [
           { icon: "heart", title: "Real-time heart rate", text: "24/7 continuous monitoring" },
           { icon: "chart", title: "Heart rate trends", text: "View your daily, weekly and monthly data" },
           { icon: "run", title: "Stay active and healthy", text: "Get insights to improve your fitness" },
+        ],
+      },
+      {
+        image: "/products/life/matin-trekon-heart-rate-running.webp",
+        tab: "Workout",
+        alt: "Trail runner in the mountains with the MATIN Trekon smartwatch showing workout time, heart rate, distance and calories",
+        title: ["Every workout", "tracked"],
+        text: "Start a run and see your time, heart rate, distance and calories live on your wrist.",
+        points: [
+          { icon: "run", title: "170+ sport modes", text: "Running, hiking, cycling and more" },
+          { icon: "heart", title: "Live heart rate", text: "See your effort as you move" },
+          { icon: "route", title: "Distance and calories", text: "Every kilometre and calorie counted" },
         ],
       },
       {
