@@ -7580,13 +7580,15 @@ html.rv-on .rv.card.rv-in .card-media img {
 }
 
 /* Phones: all four watches in one table that slides sideways. The feature
-   names stay pinned on the left, and a bar at the bottom of the screen shows
-   where you are (drag it or swipe the table). */
+   names stay pinned on the left, and a bar under the table shows where you
+   are (drag it or swipe the table). */
 .cmp-scroll {
   /* relative so hidden screen-reader text inside cannot widen the page */
   position: relative;
   overflow-x: auto;
-  overscroll-behavior-x: contain;
+  /* No rubber-band bounce at the ends: while bouncing, the pinned feature
+     names stay put and the values slide under them, which looks broken. */
+  overscroll-behavior-x: none;
   scrollbar-width: none;
 }
 
@@ -7607,9 +7609,12 @@ html.rv-on .rv.card.rv-in .card-media img {
     border-radius: 22px;
   }
 
-  /* Two watches fill the space beside the feature column exactly. */
+  /* Two watches fill the space beside the feature column exactly. The
+     panel clips to its rounded corners so the square table corners do not
+     poke past the border. */
   .cmp-panel {
     container-type: inline-size;
+    overflow: clip;
   }
 
   .cmp-scroll,
