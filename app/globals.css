@@ -7790,3 +7790,22 @@ html.rv-on .rv.card.rv-in .card-media img {
   font-size: 0.75rem;
   color: #5d6376;
 }
+
+/* Page change: a soft, quick cross-fade. The header and footer stay put. */
+.header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

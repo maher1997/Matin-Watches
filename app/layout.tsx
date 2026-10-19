@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { ViewTransition } from "react";
 import localFont from "next/font/local";
 import { CartProvider } from "@/components/Cart";
 import Header from "@/components/Header";
@@ -76,6 +77,10 @@ const orgData = {
 
 const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)return;var r=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this){return c}return r.apply(this,arguments)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,ref){if(ref&&ref.parentNode!==this){return n}return i.apply(this,arguments)}})();`;
 
+// Safari (and every iPhone browser) is slow to start a view transition, so
+// there the page switches straight away and Motion adds a light fade instead.
+const vtGate = `(function(){var u=navigator.userAgent;if(/AppleWebKit/.test(u)&&!/(Chrome|Chromium|Edg)\\//.test(u)){try{document.startViewTransition=undefined}catch(e){}}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -92,12 +97,17 @@ export default function RootLayout({
             it and the whole page breaks. This makes those two DOM calls
             forgiving, so the page keeps working. */}
         <script dangerouslySetInnerHTML={{ __html: domGuard }} />
+        <script dangerouslySetInnerHTML={{ __html: vtGate }} />
       </head>
       <body suppressHydrationWarning>
         <JsonLd data={orgData} />
         <CartProvider>
           <Header />
-          <main>{children}</main>
+          <main>
+            {/* Moving to another page cross-fades the old page into the new
+                one (browsers without view transitions just switch). */}
+            <ViewTransition>{children}</ViewTransition>
+          </main>
           <Motion />
           <Footer />
         </CartProvider>
