@@ -8349,3 +8349,23 @@ html.rv-on .rv.card.rv-in .card-media img {
 .faq-ask a {
   color: #8fb0ff;
 }
+
+.help-list {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+  color: #c7ccd8;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.help-list li::marker {
+  color: #5285f7;
+}
+
+.help-steps li::marker {
+  font-weight: 700;
+}
+
+.help-card p + .help-list {
+  margin-top: 0.7rem;
+}

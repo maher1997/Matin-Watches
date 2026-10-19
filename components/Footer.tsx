@@ -70,7 +70,7 @@ export default function Footer() {
           <Link href="/faq">FAQs</Link>
           <Link href="/help#shipping">Shipping</Link>
           <Link href="/help#returns">Returns</Link>
-          <Link href="/help#warranty">Warranty</Link>
+          <Link href="/warranty">Warranty</Link>
           <Link href="/help#contact">Contact us</Link>
         </div>
         <div className="footer-col">

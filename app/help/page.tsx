@@ -53,7 +53,7 @@ export default function HelpPage() {
         <h2>Warranty</h2>
         <p>
           Every MATIN watch comes with a 1 year warranty from the day it is
-          delivered.
+          delivered. <Link href="/warranty">See what it covers</Link>.
         </p>
       </section>
 

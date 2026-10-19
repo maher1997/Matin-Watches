@@ -145,6 +145,7 @@ const groups: Group[] = [
   {
     id: "returns",
     title: "Returns and warranty",
+    more: { href: "/warranty", label: "Read the full warranty" },
     items: [
       {
         q: "Can I return my watch?",
@@ -152,7 +153,7 @@ const groups: Group[] = [
       },
       {
         q: "What warranty do MATIN watches have?",
-        a: "Every MATIN watch comes with a 1 year warranty from the day it is delivered.",
+        a: "Every MATIN watch comes with a 1 year warranty from the day it is delivered. It covers defects in materials or workmanship under normal use, like a watch that will not charge or a screen or button that stops working. It does not cover drops, accidents or normal wear.",
       },
       {
         q: "How do I contact MATIN?",
