@@ -35,7 +35,7 @@ function Value({ v }: { v: string }) {
 }
 
 // The side-by-side table. A computer shows all four watches; a phone shows
-// two, and the menus above swap which two. Once the watch photos scroll away,
+// two at a time and slides sideways to the others. Once the watch photos scroll away,
 // a slim bar with the names stays under the header. Every value is in the
 // page's HTML either way, so search engines read the whole table.
 export default function CompareTable({
@@ -111,10 +111,13 @@ export default function CompareTable({
       );
       sc.scrollLeft = p * (sc.scrollWidth - sc.clientWidth);
     };
+    // Slide freely while dragging, then settle on whole columns.
+    sc.classList.add("is-drag");
     move(e.clientX);
     tr.setPointerCapture(e.pointerId);
     const onMove = (ev: PointerEvent) => move(ev.clientX);
     const onUp = () => {
+      sc.classList.remove("is-drag");
       tr.removeEventListener("pointermove", onMove);
       tr.removeEventListener("pointerup", onUp);
       tr.removeEventListener("pointercancel", onUp);

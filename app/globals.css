@@ -7314,6 +7314,12 @@ html.rv-on .rv.card.rv-in .card-media img {
   white-space: nowrap;
 }
 
+@property --cmp-col {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 .cmp-panel {
   --cmp-label: 12rem;
   --cmp-pad: 1.75rem;
@@ -7601,8 +7607,29 @@ html.rv-on .rv.card.rv-in .card-media img {
     border-radius: 22px;
   }
 
+  /* Two watches fill the space beside the feature column exactly, and a
+     swipe always comes to rest on whole columns, never half of one. */
+  .cmp-panel {
+    container-type: inline-size;
+  }
+
+  .cmp-scroll,
+  .cmp-bar {
+    --cmp-col: calc((100cqw + 2 * var(--cmp-pad) - var(--cmp-label)) / 2);
+  }
+
   .cmp-scroll {
     margin: 0 calc(var(--cmp-pad) * -1);
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--cmp-label);
+  }
+
+  .cmp-scroll.is-drag {
+    scroll-snap-type: none;
+  }
+
+  .cmp-watch {
+    scroll-snap-align: start;
   }
 
   .cmp-table {
