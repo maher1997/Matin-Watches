@@ -111,13 +111,10 @@ export default function CompareTable({
       );
       sc.scrollLeft = p * (sc.scrollWidth - sc.clientWidth);
     };
-    // Slide freely while dragging, then settle on whole columns.
-    sc.classList.add("is-drag");
     move(e.clientX);
     tr.setPointerCapture(e.pointerId);
     const onMove = (ev: PointerEvent) => move(ev.clientX);
     const onUp = () => {
-      sc.classList.remove("is-drag");
       tr.removeEventListener("pointermove", onMove);
       tr.removeEventListener("pointerup", onUp);
       tr.removeEventListener("pointercancel", onUp);
