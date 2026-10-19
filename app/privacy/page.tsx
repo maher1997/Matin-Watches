@@ -3,7 +3,7 @@ import Link from "next/link";
 import { contactEmail } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | MATIN",
+  title: "Privacy Policy",
   description:
     "How MATIN collects, uses and protects your information when you visit our store or buy a watch.",
   alternates: { canonical: "/privacy" },

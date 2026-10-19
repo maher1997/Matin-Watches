@@ -4,7 +4,7 @@ import { formatPrice, products } from "@/lib/products";
 import { contactEmail } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About MATIN | Rugged Smartwatches from Toronto, Canada",
+  title: "About MATIN: Rugged Smartwatches from Toronto, Canada",
   description:
     "MATIN is a Canadian rugged smartwatch brand from Toronto, founded in 2020. Tough watches with long battery life, GPS and Bluetooth calls.",
   alternates: { canonical: "/about" },

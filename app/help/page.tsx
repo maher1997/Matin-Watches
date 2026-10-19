@@ -3,7 +3,7 @@ import Link from "next/link";
 import { contactEmail, delivery } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Shipping, Returns and Warranty | MATIN",
+  title: "Shipping, Returns and Warranty",
   description:
     "Free worldwide shipping on every MATIN watch, delivery times by region, 30 day returns and a 1 year warranty.",
   alternates: { canonical: "/help" },
