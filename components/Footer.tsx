@@ -21,10 +21,9 @@ export default function Footer() {
         </div>
         <div className="footer-col">
           <h4>Help</h4>
-          <a href="#">Shipping</a>
-          <a href="#">Returns</a>
-          <a href="#">Warranty</a>
-          <a href="#">Contact us</a>
+          <Link href="/help#shipping">Shipping</Link>
+          <Link href="/help#returns">Returns</Link>
+          <Link href="/help#warranty">Warranty</Link>
         </div>
         <form className="footer-news" action="#">
           <h4>Join the unit</h4>
@@ -36,9 +35,6 @@ export default function Footer() {
         </form>
       </div>
       <div className="footer-bottom">
-        <a href="#">Terms of Service</a>
-        <span className="dot">•</span>
-        <a href="#">Privacy Policy</a>
         <p>© {new Date().getFullYear()} MATIN</p>
       </div>
     </footer>
