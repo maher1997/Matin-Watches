@@ -8369,3 +8369,93 @@ html.rv-on .rv.card.rv-in .card-media img {
 .help-card p + .help-list {
   margin-top: 0.7rem;
 }
+
+/* Contact form */
+.contact-form {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.contact-form label > span {
+  font-size: 0.82rem;
+  color: #c7ccd8;
+}
+
+.contact-form em {
+  font-style: normal;
+  color: var(--muted);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 0.8rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--fg);
+  font: inherit;
+  /* 16px stops iPhone Safari zooming in when a field is tapped */
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.contact-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa4b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 16px;
+  padding-right: 2.4rem;
+}
+
+.contact-form select option {
+  background: #14161c;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #5285f7;
+  box-shadow: 0 0 0 3px rgba(82, 133, 247, 0.25);
+}
+
+.contact-send {
+  justify-self: start;
+  height: 48px;
+  padding: 0 1.6rem;
+}
+
+.contact-note {
+  font-size: 0.82rem;
+}
+
+@media (max-width: 560px) {
+  .contact-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact-send {
+    justify-self: stretch;
+  }
+}

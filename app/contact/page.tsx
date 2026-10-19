@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ContactForm from "@/components/ContactForm";
 import { contactEmail } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -27,11 +28,15 @@ export default function ContactPage() {
       </header>
 
       <section className="help-card">
-        <h2>Email</h2>
+        <h2>Send us a message</h2>
+        <ContactForm />
+      </section>
+
+      <section className="help-card">
+        <h2>Or email us</h2>
         <p>
           <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
         </p>
-        <p>Add your order number if your question is about an order.</p>
       </section>
 
       <section className="help-card">
