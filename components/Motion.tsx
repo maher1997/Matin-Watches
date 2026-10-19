@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 // Blocks that rise and fade in when they first reach the screen, and the
 // cards inside them that follow one after another.
@@ -18,26 +18,6 @@ const SAFETY = 1600; // ms: anything still waiting after it is in view shows any
 // not played, so a section can never stay blank.
 export default function Motion() {
   const path = usePathname();
-  const first = useRef(true);
-
-  // Moving to another page where the browser has no view transition (Safari,
-  // iPhone): the new page brightens in quickly from mostly visible, never
-  // from blank, so the change is soft without a flash.
-  useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    if (typeof document.startViewTransition === "function") return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document
-      .querySelector("main")
-      ?.animate?.([{ opacity: 0.55 }, { opacity: 1 }], {
-        duration: 260,
-        easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-      });
-  }, [path]);
-
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const root = document.documentElement;
