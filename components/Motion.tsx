@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 // Blocks that rise and fade in when they first reach the screen, and the
 // cards inside them that follow one after another.
@@ -18,6 +18,26 @@ const SAFETY = 1600; // ms: anything still waiting after it is in view shows any
 // not played, so a section can never stay blank.
 export default function Motion() {
   const path = usePathname();
+  const first = useRef(true);
+
+  // Moving to another page: the new page fades and rises in softly. Never on
+  // the first load (so the first photo paints at once), and the animation
+  // only runs on top of a visible page, so if it fails nothing is hidden.
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const main = document.querySelector("main");
+    main?.animate?.(
+      [
+        { opacity: 0, transform: "translate3d(0, 14px, 0)" },
+        { opacity: 1, transform: "none" },
+      ],
+      { duration: 550, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" },
+    );
+  }, [path]);
 
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;

@@ -7,6 +7,7 @@ import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
+import { lineupSlugs } from "@/lib/lineup";
 import JsonLd from "@/components/JsonLd";
 import Stories from "@/components/Stories";
 import CountUp from "@/components/CountUp";
@@ -58,6 +59,14 @@ const groupIcons = {
   smart: svg("M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"),
   tools: svg("M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 9v4l2.5 2.5M5 3 2 6M19 3l3 3"),
 };
+
+// Short reasons to buy, under the Add to cart button.
+const trust = [
+  { title: "Free shipping", text: "Across the USA", icon: <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" /> },
+  { title: "2 year warranty", text: "On every watch", icon: <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /> },
+  { title: "30 day returns", text: "Change your mind", icon: <path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" /> },
+  { title: "iPhone & Android", text: "Free phone app", icon: <path d="M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2" /> },
+];
 
 export default async function ProductPage({ params }: Props) {
   const product = getProduct((await params).slug);
@@ -178,11 +187,27 @@ export default async function ProductPage({ params }: Props) {
             </ul>
           )}
           <AddToCart product={product} />
-          <ul className="perks">
-            <li>Free shipping across the USA</li>
-            <li>2 year warranty</li>
-            <li>30 day returns</li>
+          <ul className="trust" aria-label="Buy with confidence">
+            {trust.map((t) => (
+              <li key={t.title}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  {t.icon}
+                </svg>
+                <span>
+                  <strong>{t.title}</strong>
+                  {t.text}
+                </span>
+              </li>
+            ))}
           </ul>
+          {lineupSlugs.includes(product.slug as (typeof lineupSlugs)[number]) && (
+            <Link href="/compare" className="pdp-compare">
+              Compare with the other MATIN watches
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )}
           <p className="pdp-desc">{product.description}</p>
         </div>
       </div>

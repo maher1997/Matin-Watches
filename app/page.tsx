@@ -5,6 +5,7 @@ import { collections, formatPrice, getProduct, productsIn, type CollectionId, ty
 import ProductImage from "@/components/ProductImage";
 import SectionHead from "@/components/SectionHead";
 import JsonLd from "@/components/JsonLd";
+import { bestFor, homeRowLabels, homeRows, lineupSlugs } from "@/lib/lineup";
 
 export const metadata: Metadata = {
   title: { absolute: "MATIN | Rugged Military & Tactical Smartwatches for Men" },
@@ -12,77 +13,6 @@ export const metadata: Metadata = {
     "Rugged military-style and tactical smartwatches for men: GPS, Bluetooth calling, AMOLED screens, heart rate and up to 30 days battery. Free shipping.",
   alternates: { canonical: "/" },
 };
-
-// The real watches, in the order the home page shows them. Each row is
-// written out by hand so the comparison only says what each watch really has.
-const lineup: {
-  slug: string;
-  bestFor: string;
-  rows: { screen: string; gps: string; calls: string; battery: string; water: string; sports: string; build: string };
-}[] = [
-  {
-    slug: "matin-trekon",
-    bestFor: "Long trips and training",
-    rows: {
-      screen: '1.95" AMOLED, square',
-      gps: "Yes",
-      calls: "Call alerts",
-      battery: "11 to 30 days, 1000mAh",
-      water: "3ATM",
-      sports: "170+",
-      build: "Zinc alloy case",
-    },
-  },
-  {
-    slug: "matin-torvan",
-    bestFor: "Calls, health and everyday wear",
-    rows: {
-      screen: '1.43" AMOLED, round',
-      gps: "No",
-      calls: "Yes, from your wrist",
-      battery: "About 14 days (30 saving), 550mAh",
-      water: "5ATM",
-      sports: "9",
-      build: "Steel case, sapphire glass",
-    },
-  },
-  {
-    slug: "matin-kaldor",
-    bestFor: "Nights out, trails and navigation",
-    rows: {
-      screen: '1.43" AMOLED, round',
-      gps: "Yes, multi-system",
-      calls: "Yes, from your wrist",
-      battery: "7 to 15 days, 530mAh",
-      water: "3ATM",
-      sports: "Multiple",
-      build: "Zinc alloy case, flashlight",
-    },
-  },
-  {
-    slug: "matin-varkon",
-    bestFor: "GPS, calls and tough jobs",
-    rows: {
-      screen: '1.43" AMOLED, round, 1000 nits',
-      gps: "Yes, 6 systems",
-      calls: "Yes, from your wrist",
-      battery: "About 12 days (30 saving), 500mAh",
-      water: "5ATM, IP69K",
-      sports: "170+",
-      build: "316L steel case",
-    },
-  },
-];
-
-const rowLabels: [keyof (typeof lineup)[number]["rows"], string][] = [
-  ["screen", "Screen"],
-  ["gps", "GPS"],
-  ["calls", "Bluetooth calls"],
-  ["battery", "Battery"],
-  ["water", "Water rating"],
-  ["sports", "Sport modes"],
-  ["build", "Build"],
-];
 
 const reasons = [
   {
@@ -143,7 +73,9 @@ const faq = [
 ];
 
 export default function Home() {
-  const real = lineup.map((l) => ({ ...l, product: getProduct(l.slug) })).filter((l): l is typeof l & { product: Product } => !!l.product);
+  const real = lineupSlugs
+    .map((slug) => ({ bestFor: bestFor[slug], rows: homeRows[slug], product: getProduct(slug) }))
+    .filter((l): l is typeof l & { product: Product } => !!l.product);
   const [trekon, torvan, kaldor] = real.map((l) => l.product);
 
   return (
@@ -168,7 +100,7 @@ export default function Home() {
           </p>
           <div className="hero-cta">
             <Link href="/shop" className="btn btn-primary">Shop watches</Link>
-            <a href="#compare" className="btn btn-ghost">Compare models</a>
+            <Link href="/compare" className="btn btn-ghost">Compare models</Link>
           </div>
           <ul className="lp-perks">
             <li>Free US shipping</li>
@@ -226,7 +158,7 @@ export default function Home() {
               </div>
               <p className="lp-bestfor">Best for: {bestFor}</p>
               <dl className="lp-specs">
-                {rowLabels.map(([key, label]) => (
+                {homeRowLabels.map(([key, label]) => (
                   <div key={key} className={rows[key] === "No" ? "is-no" : undefined}>
                     <dt>{label}</dt>
                     <dd>{rows[key]}</dd>
@@ -239,6 +171,11 @@ export default function Home() {
             </article>
           ))}
         </div>
+        <p className="lp-compare-more">
+          <Link href="/compare" className="btn btn-ghost">
+            See the full comparison
+          </Link>
+        </p>
       </section>
 
       <section className="section" aria-labelledby="why-title">

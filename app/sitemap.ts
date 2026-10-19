@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/shop"), changeFrequency: "weekly", priority: 0.9 },
+    { url: absoluteUrl("/compare"), changeFrequency: "monthly", priority: 0.85 },
     ...collections.map((c) => ({
       url: absoluteUrl(`/collections/${c.id}`),
       changeFrequency: "weekly" as const,

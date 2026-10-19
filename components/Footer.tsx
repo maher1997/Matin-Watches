@@ -17,6 +17,7 @@ export default function Footer() {
           <Link href="/collections/gps">GPS</Link>
           <Link href="/collections/calling">Bluetooth calling</Link>
           <Link href="/collections/long-battery">Long battery</Link>
+          <Link href="/compare">Compare watches</Link>
         </div>
         <div className="footer-col">
           <h4>Help</h4>
