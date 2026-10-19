@@ -450,9 +450,9 @@ export const products: Product[] = [
         eyebrow: "Sport & fitness",
         title: "Every sport. Covered.",
         text: "Running, cycling, hiking, gym, basketball and more: over 170 sport modes in all. Pick your workout and the Trekon tracks heart rate, calories, distance and time.",
-        image: "/products/matin-trekon-every-sport-modes.webp",
+        image: "/products/matin-trekon-workout-menu-hiking.webp",
         imageAlt:
-          "MATIN Trekon rugged smartwatch on a hiker's wrist showing its workout menu, with running, cycling, hiking, gym and basketball sport modes floating above the mountains",
+          "MATIN Trekon rugged smartwatch on a hiker's wrist showing its workout menu with outdoor run, cycling, hiking and indoor run, above a mountain lake",
       },
       {
         eyebrow: "Waterproof",
@@ -483,10 +483,10 @@ export const products: Product[] = [
     ],
     posters: [
       {
-        src: "/products/matin-trekon-every-sport-modes.webp",
-        alt: "MATIN Trekon rugged smartwatch on a hiker's wrist showing its workout menu, with running, cycling, hiking, gym and basketball sport modes floating above the mountains",
-        width: 2000,
-        height: 2000,
+        src: "/products/matin-trekon-workout-menu-hiking.webp",
+        alt: "MATIN Trekon rugged smartwatch on a hiker's wrist showing its workout menu with outdoor run, cycling, hiking and indoor run, above a mountain lake",
+        width: 1408,
+        height: 1117,
       },
       {
         src: "/products/matin-trekon-waterproof-river-splash.webp",

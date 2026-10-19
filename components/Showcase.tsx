@@ -42,6 +42,12 @@ export default function Showcase({ product }: { product: Product }) {
 
   if (chapters.length === 0) return null;
 
+  const posterFor = (src?: string) => product.posters?.find((p) => p.src === src);
+  const ratio = (src?: string) => {
+    const p = posterFor(src);
+    return `${p?.width ?? 1200} / ${p?.height ?? 1500}`;
+  };
+
   return (
     <div ref={ref} className={`showcase-panel${auto && inView ? " is-auto" : ""}`}>
       <div className="showcase-copy">
@@ -83,9 +89,14 @@ export default function Showcase({ product }: { product: Product }) {
           ))}
         </div>
       </div>
-      <div className="showcase-pics">
+      {/* On phones the picture box takes the shape of the picture on show, so
+          a wider photo never leaves an empty band under it */}
+      <div
+        className="showcase-pics"
+        style={{ ["--ar" as string]: ratio(chapters[active]?.image) }}
+      >
         {chapters.map((ch, i) => {
-          const poster = product.posters?.find((p) => p.src === ch.image);
+          const poster = posterFor(ch.image);
           return ch.image ? (
             <Image
               key={ch.image}

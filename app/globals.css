@@ -2619,6 +2619,11 @@ button.thumb:focus-visible {
     place-items: start center;
     margin: calc(-1 * var(--pad)) calc(-1 * var(--pad)) 0;
   }
+  .showcase-pics {
+    aspect-ratio: var(--ar, auto);
+    overflow: hidden;
+    transition: aspect-ratio 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
   .showcase-pics img {
     border-radius: 0;
     box-shadow: none;
