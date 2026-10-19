@@ -321,9 +321,9 @@ export const products: Product[] = [
         ],
       },
       {
-        image: "/products/life/matin-trekon-built-tough-outdoors.webp",
+        image: "/products/life/matin-trekon-outdoors-route.webp",
         tab: "Outdoors",
-        alt: "Hiker checking a GPS route on the MATIN Trekon smartwatch above a mountain lake",
+        alt: "Hiker at sunrise checking his route, altitude and heart rate on the MATIN Trekon smartwatch above a mountain lake",
         title: ["Built", "tough"],
         text: "Designed for real adventures, ready for any environment.",
         points: [
