@@ -429,9 +429,9 @@ export const products: Product[] = [
         eyebrow: "Waterproof",
         title: "Rain or river. Keep going.",
         text: "Rain, splashes, sweat and stream crossings don't slow it down. Wear it on every trail and never stop to take it off.",
-        image: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",
+        image: "/products/matin-trekon-waterproof-river-splash.webp",
         imageAlt:
-          "Waterproof MATIN Trekon rugged smartwatch splashed with water on a hiker's wrist by a mountain river",
+          "Waterproof MATIN Trekon rugged smartwatch covered in water drops on a hiker's wrist in a splashing mountain river",
       },
     ],
     sports: [
@@ -460,8 +460,8 @@ export const products: Product[] = [
         height: 2000,
       },
       {
-        src: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",
-        alt: "Waterproof MATIN Trekon rugged smartwatch splashed with water on a hiker's wrist by a mountain river",
+        src: "/products/matin-trekon-waterproof-river-splash.webp",
+        alt: "Waterproof MATIN Trekon rugged smartwatch covered in water drops on a hiker's wrist in a splashing mountain river",
         width: 2000,
         height: 2000,
       },
