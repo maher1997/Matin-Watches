@@ -218,7 +218,7 @@ export default function Home() {
         </ul>
       </section>
 
-      <section className="section" aria-labelledby="home-faq-title">
+      <section className="section" id="faq" aria-labelledby="home-faq-title">
         <SectionHead
           id="home-faq-title"
           eyebrow="FAQ"

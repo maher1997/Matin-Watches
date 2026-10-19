@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { delivery } from "@/lib/site";
+import { contactEmail, delivery } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Shipping, Returns and Warranty | MATIN",
@@ -54,6 +54,14 @@ export default function HelpPage() {
         <p>
           Every MATIN watch comes with a 1 year warranty from the day it is
           delivered.
+        </p>
+      </section>
+
+      <section id="contact" className="help-card">
+        <h2>Contact us</h2>
+        <p>
+          Questions about a watch, an order, a return or the warranty? Email us
+          at <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
         </p>
       </section>
     </div>

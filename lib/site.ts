@@ -13,6 +13,8 @@ export const site = {
   currency: "USD",
 };
 
+export const contactEmail = "info@matin-watches.com";
+
 // Free shipping everywhere; delivery times in business days per region.
 export const delivery = [
   { region: "United States", short: "USA", days: [8, 10], countries: ["US"] },

@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/shop"), changeFrequency: "weekly", priority: 0.9 },
     { url: absoluteUrl("/compare"), changeFrequency: "monthly", priority: 0.85 },
+    { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.5 },
     { url: absoluteUrl("/help"), changeFrequency: "monthly", priority: 0.4 },
     { url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
     ...collections.map((c) => ({

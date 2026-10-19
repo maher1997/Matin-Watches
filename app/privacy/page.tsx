@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { contactEmail } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | MATIN",
@@ -67,7 +68,9 @@ export default function PrivacyPage() {
         <h2>Your choices</h2>
         <p>
           You can ask us to show, correct or delete the personal information we
-          hold about you, and we will reply within 30 days. We keep order
+          hold about you by emailing{" "}
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>, and we will
+          reply within 30 days. We keep order
           records only as long as needed for warranty, returns, and tax and
           accounting rules.
         </p>
