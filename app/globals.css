@@ -7182,3 +7182,78 @@ button.thumb:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---------- Arrive animations (components/Motion.tsx) ----------
+   Only blocks still below the first screen get .rv, and only once the
+   script runs; they rise and fade in on their own clock when reached. */
+html.rv-on .rv {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0) scale(0.985);
+}
+
+html.rv-on .rv.rv-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--rv-d, 0ms),
+    transform 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
+}
+
+/* Product photos in cards settle from a slight zoom as the card arrives */
+html.rv-on .rv .card-media img,
+html.rv-on .rv.card .card-media img {
+  transform: scale(1.06);
+}
+
+html.rv-on .rv.rv-in .card-media img,
+html.rv-on .rv.card.rv-in .card-media img {
+  transform: none;
+  transition: transform 1.4s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.rv-on .rv {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Premium touches ---------- */
+/* A soft light sweeps across the main buttons on hover */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+    transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  /* Cards lift with a faint blue glow, and the watch photo eases closer */
+  .card {
+    transition: border-color 0.3s, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.3s, box-shadow 0.4s;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 50px -24px rgba(82, 133, 247, 0.45), 0 0 0 1px rgba(82, 133, 247, 0.18);
+  }
+  .card-media img {
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .card:hover .card-media img {
+    transform: scale(1.05);
+  }
+}

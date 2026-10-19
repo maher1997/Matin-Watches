@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/Cart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
+import Motion from "@/components/Motion";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -83,6 +84,7 @@ export default function RootLayout({
         <CartProvider>
           <Header />
           <main>{children}</main>
+          <Motion />
           <Footer />
         </CartProvider>
       </body>
