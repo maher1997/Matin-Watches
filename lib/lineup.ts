@@ -18,68 +18,46 @@ export const bestFor: Record<LineupSlug, string> = {
   "matin-varkon": "GPS, calls and tough jobs",
 };
 
-// The short card on the home page.
-export const homeRows: Record<
-  LineupSlug,
-  {
-    screen: string;
-    gps: string;
-    calls: string;
-    battery: string;
-    water: string;
-    sports: string;
-    build: string;
-  }
-> = {
-  "matin-trekon": {
-    screen: '1.95" AMOLED, square',
-    gps: "Yes",
-    calls: "Call alerts",
-    battery: "11 to 30 days, 1000mAh",
-    water: "3ATM",
-    sports: "170+",
-    build: "Zinc alloy case",
-  },
-  "matin-torvan": {
-    screen: '1.43" AMOLED, round',
-    gps: "No",
-    calls: "Yes, from your wrist",
-    battery: "About 14 days (30 saving), 550mAh",
-    water: "5ATM, IP69K",
-    sports: "9",
-    build: "316L steel case, sapphire glass, flashlight",
-  },
-  "matin-kaldor": {
-    screen: '1.43" AMOLED, round',
-    gps: "Yes, multi-system",
-    calls: "Yes, from your wrist",
-    battery: "7 to 15 days, 530mAh",
-    water: "3ATM",
-    sports: "30+",
-    build: "Zinc alloy case, flashlight",
-  },
-  "matin-varkon": {
-    screen: '1.43" AMOLED, round, 1000 nits',
-    gps: "Yes, 6 systems",
-    calls: "Yes, from your wrist",
-    battery: "About 12 days (30 saving), 500mAh",
-    water: "5ATM, IP69K",
-    sports: "170+",
-    build: "316L steel case, flashlight",
-  },
-};
-
-export const homeRowLabels: [keyof (typeof homeRows)[LineupSlug], string][] = [
-  ["screen", "Screen"],
-  ["gps", "GPS"],
-  ["calls", "Bluetooth calls"],
-  ["battery", "Battery"],
-  ["water", "Water rating"],
-  ["sports", "Sport modes"],
-  ["build", "Build"],
-];
-
 const NO = "—";
+
+type Row = { label: string; values: [string, string, string, string] };
+
+// The short table on the home page: what most buyers choose on.
+export const keyRows: Row[] = [
+  {
+    label: "Screen",
+    values: [
+      '1.95" square AMOLED',
+      '1.43" round AMOLED',
+      '1.43" round AMOLED',
+      '1.43" round AMOLED',
+    ],
+  },
+  { label: "GPS", values: ["Yes", "No", "Yes, 5 systems", "Yes, 6 systems"] },
+  {
+    label: "Bluetooth calls",
+    values: ["Call alerts only", "Yes", "Yes", "Yes"],
+  },
+  { label: "Flashlight", values: ["No", "Yes", "Yes", "Yes"] },
+  { label: "Blood oxygen (SpO2)", values: ["No", "Yes", "No", "Yes"] },
+  {
+    label: "Battery, typical use",
+    values: ["20 days", "14 days", "7 days", "12 days"],
+  },
+  {
+    label: "Battery, longest",
+    values: ["30 days", "30 days", "15 days", "30 days"],
+  },
+  {
+    label: "Water rating",
+    values: ["3ATM", "5ATM + IP69K", "3ATM", "5ATM + IP69K"],
+  },
+  { label: "Sport modes", values: ["170+", "9", "30+", "170+"] },
+  {
+    label: "Case",
+    values: ["Zinc alloy", "316L steel", "Zinc alloy", "316L steel"],
+  },
+];
 
 // The full table on /compare: groups of rows, one value per watch in the
 // order of lineupSlugs.
@@ -140,12 +118,7 @@ export const compareGroups: {
     rows: [
       {
         label: "GPS",
-        values: [
-          "Built-in",
-          "No",
-          "Built-in, 5 systems",
-          "Built-in, 6 systems",
-        ],
+        values: ["Yes", "No", "Yes, 5 systems", "Yes, 6 systems"],
       },
       { label: "Compass", values: ["Yes", NO, "Yes", "Yes"] },
       {
@@ -159,7 +132,7 @@ export const compareGroups: {
       },
       {
         label: "Flashlight",
-        values: ["No", "LED flashlight", "LED, 3 modes", "Yes"],
+        values: ["No", "Yes, LED", "Yes, LED with 3 modes", "Yes"],
       },
     ],
   },
@@ -170,7 +143,7 @@ export const compareGroups: {
         label: "Heart rate",
         values: [
           "Yes",
-          "Continuous, every minute",
+          "Yes, every minute",
           "Yes",
           "Yes, with high and low alerts",
         ],
@@ -178,7 +151,7 @@ export const compareGroups: {
       { label: "Blood oxygen (SpO2)", values: ["No", "Yes", "No", "Yes"] },
       {
         label: "Sleep",
-        values: ["Yes", "Sleep score", "Yes", "Sleep and naps"],
+        values: ["Yes", "Yes, with sleep score", "Yes", "Yes, with naps"],
       },
     ],
   },

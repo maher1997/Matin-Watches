@@ -4753,100 +4753,6 @@ button.thumb:focus-visible {
   transform: translateY(-4px);
 }
 
-/* Lineup comparison */
-.lp-compare {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-@media (max-width: 1180px) {
-  .lp-compare {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.lp-model {
-  display: flex;
-  flex-direction: column;
-  padding: 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background:
-    radial-gradient(120% 60% at 50% 0%, rgba(82, 133, 247, 0.1), transparent 60%),
-    linear-gradient(180deg, #13161e, #0c0e13);
-}
-
-.lp-model-media {
-  position: relative;
-  display: block;
-  aspect-ratio: 1;
-  margin: -0.25rem 0 0.75rem;
-}
-
-.lp-model-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.lp-model-head h3 {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: none;
-}
-
-.lp-model-head a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.lp-price {
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.lp-bestfor {
-  margin: 0.3rem 0 1rem;
-  font-size: 0.9rem;
-  color: #7fa8ff;
-}
-
-.lp-specs {
-  margin: 0 0 1.25rem;
-  border-top: 1px solid var(--border);
-}
-
-.lp-specs div {
-  display: grid;
-  grid-template-columns: 7.5rem 1fr;
-  gap: 0.75rem;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.88rem;
-}
-
-.lp-specs dt {
-  color: var(--muted);
-}
-
-.lp-specs dd {
-  margin: 0;
-  color: #e8ebf3;
-}
-
-.lp-specs .is-no dd {
-  color: #6b7184;
-}
-
-.lp-model-btn {
-  margin-top: auto;
-  width: 100%;
-}
-
 /* Reasons */
 .lp-reasons {
   list-style: none;
@@ -4939,12 +4845,6 @@ button.thumb:focus-visible {
     max-width: 480px;
   }
 
-  .lp-compare {
-    grid-template-columns: 1fr;
-    max-width: 520px;
-    margin: 0 auto;
-  }
-
   .lp-collections {
     grid-template-columns: 1fr;
   }
@@ -4953,10 +4853,6 @@ button.thumb:focus-visible {
 @media (max-width: 520px) {
   .lp-reasons {
     grid-template-columns: 1fr;
-  }
-
-  .lp-specs div {
-    grid-template-columns: 6.5rem 1fr;
   }
 }
 
@@ -5053,7 +4949,7 @@ button.thumb:focus-visible {
 
 @media (max-width: 640px) {
   .lp-colls {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .lp-colls li:last-child {
@@ -7401,8 +7297,9 @@ html.rv-on .rv.card.rv-in .card-media img {
   }
 }
 
-/* Compare page (app/compare): watch cards, then one table with every
-   difference. Phones show two watches at a time, picked from two menus. */
+/* Watch comparison table (components/CompareTable.tsx), used on the home
+   page and on /compare. Computers see all four watches; phones see two,
+   picked from two menus. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -7412,6 +7309,230 @@ html.rv-on .rv.card.rv-in .card-media img {
   white-space: nowrap;
 }
 
+.cmp-panel {
+  --cmp-label: 12rem;
+  --cmp-pad: 1.75rem;
+  position: relative;
+  padding: 0.5rem var(--cmp-pad) 1rem;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background:
+    radial-gradient(90% 40% at 50% 0%, rgba(82, 133, 247, 0.09), transparent 70%),
+    linear-gradient(180deg, #12151c, #0b0d11);
+}
+
+.cmp-pickers {
+  display: none;
+}
+
+.cmp-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 0.92rem;
+}
+
+.cmp-corner {
+  width: var(--cmp-label);
+}
+
+/* Watch heads: photo, name, price, who it is for, and a button. */
+.cmp-watch {
+  vertical-align: bottom;
+  padding: 1rem 0.75rem 1.5rem;
+  text-align: center;
+  font-weight: 400;
+}
+
+.cmp-watch-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 10.5rem;
+  aspect-ratio: 1;
+  margin: 0 auto 0.9rem;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .cmp-watch:hover .cmp-watch-media {
+    transform: translateY(-4px) scale(1.03);
+  }
+}
+
+.cmp-watch-name {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.cmp-watch-name a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.cmp-watch-price {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e8ebf3;
+}
+
+.cmp-watch-best {
+  display: block;
+  min-height: 2.6em;
+  margin: 0.4rem auto 1rem;
+  max-width: 13rem;
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: #7fa8ff;
+}
+
+.cmp-watch-btn {
+  padding: 0.55rem 1.4rem;
+  font-size: 0.85rem;
+}
+
+/* Rows */
+.cmp-table tbody th,
+.cmp-table tbody td {
+  padding: 0.95rem 0.75rem;
+  border-top: 1px solid var(--border);
+  vertical-align: middle;
+  line-height: 1.35;
+}
+
+.cmp-row th,
+.cmp-row td {
+  height: 3.5rem;
+}
+
+.cmp-row th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.cmp-row td {
+  text-align: center;
+  color: #eef1f7;
+}
+
+.cmp-row:nth-child(even) th,
+.cmp-row:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.022);
+}
+
+@media (hover: hover) {
+  .cmp-row:hover th,
+  .cmp-row:hover td {
+    background: rgba(82, 133, 247, 0.07);
+  }
+}
+
+.cmp-yes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.cmp-yes svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 50%;
+  background: rgba(82, 133, 247, 0.16);
+  fill: none;
+  stroke: #8fb3ff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cmp-dash {
+  color: #4b5061;
+  font-weight: 500;
+}
+
+.cmp-group th {
+  padding: 2.25rem 0.75rem 0.85rem;
+  text-align: left;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #fff;
+}
+
+.cmp-table tbody .cmp-group th {
+  border-top: 0;
+}
+
+/* Slim bar with the watch names, shown under the header once the photos
+   have scrolled away. It sits in the panel, so its columns line up with the
+   table's. */
+.cmp-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 5;
+  height: 0;
+  margin: 0 calc(var(--cmp-pad) * -1);
+}
+
+.cmp-bar-row {
+  display: grid;
+  grid-template-columns: var(--cmp-label) repeat(4, minmax(0, 1fr));
+  padding: 0.65rem var(--cmp-pad);
+  background: #0f1116;
+  border-bottom: 1px solid var(--border-strong);
+  box-shadow: 0 12px 24px -16px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.cmp-bar.is-on .cmp-bar-row {
+  opacity: 1;
+  transform: none;
+}
+
+.cmp-bar-cell {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+.cmp-bar-cell strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.cmp-note {
+  margin-top: 1.25rem;
+  max-width: 44rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.lp-compare-more {
+  margin-top: 1.75rem;
+  text-align: center;
+}
+
+/* Compare page header */
 .cmp-intro {
   max-width: 44rem;
   margin: 0.5rem 0 2.25rem;
@@ -7437,165 +7558,11 @@ html.rv-on .rv.card.rv-in .card-media img {
   line-height: 1.6;
 }
 
-.cmp-pickers {
-  display: none;
-}
-
-.cmp-cards,
-.cmp-table {
-  --cmp-label: 13rem;
-}
-
-.cmp-cards {
-  display: grid;
-  grid-template-columns: var(--cmp-label) repeat(4, minmax(0, 1fr));
-  gap: 0;
-}
-
-.cmp-cards::before {
-  content: "";
-}
-
-.cmp-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 0 0.75rem 1.5rem;
-}
-
-.cmp-card-media {
-  position: relative;
-  display: block;
-  width: 100%;
-  max-width: 13rem;
-  aspect-ratio: 1;
-  margin-bottom: 0.75rem;
-}
-
-.cmp-card h2 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: -0.02em;
-  font-size: 1.3rem;
-}
-
-.cmp-card h2 a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.cmp-price {
-  margin-top: 0.2rem;
-  font-weight: 600;
-  font-size: 1.05rem;
-}
-
-.cmp-best {
-  margin: 0.35rem 0 1rem;
-  min-height: 2.6em;
-  font-size: 0.85rem;
-  line-height: 1.3;
-  color: #7fa8ff;
-}
-
-.cmp-btn {
-  margin-top: auto;
-  min-width: 8rem;
-}
-
-.cmp-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  table-layout: fixed;
-  font-size: 0.92rem;
-}
-
-.cmp-table th,
-.cmp-table td {
-  padding: 0.85rem 0.75rem;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-  vertical-align: top;
-  line-height: 1.4;
-}
-
-.cmp-table td {
-  color: #e8ebf3;
-}
-
-.cmp-table td.cmp-no {
-  color: #5d6376;
-}
-
-.cmp-table tbody th[scope="row"] {
-  text-align: left;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-.cmp-table .cmp-corner {
-  width: var(--cmp-label);
-}
-
-/* The watch names stay in view while you read down the table. */
-.cmp-table thead th {
-  position: sticky;
-  top: var(--header-h);
-  z-index: 2;
-  padding: 0.75rem;
-  background: #0f1116;
-  box-shadow: 0 1px 0 var(--border-strong);
-  font-family: var(--font-sans), sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: -0.01em;
-  color: #fff;
-}
-
-.cmp-table thead th span {
-  display: block;
-  margin-top: 0.1rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-.cmp-table .cmp-group th {
-  padding: 2.25rem 0.75rem 0.75rem;
-  text-align: left;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: -0.02em;
-  color: #fff;
-  border-bottom-color: var(--border-strong);
-}
-
-.cmp-table tbody tr:not(.cmp-group) {
-  transition: background 0.2s ease;
-}
-
-@media (hover: hover) {
-  .cmp-table tbody tr:not(.cmp-group):hover {
-    background: rgba(82, 133, 247, 0.05);
+@media (max-width: 1100px) {
+  .cmp-panel {
+    --cmp-label: 9rem;
+    --cmp-pad: 1.25rem;
   }
-}
-
-.cmp-note {
-  margin-top: 1.5rem;
-  max-width: 44rem;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-.lp-compare-more {
-  margin-top: 1.75rem;
-  text-align: center;
 }
 
 @media (max-width: 760px) {
@@ -7603,28 +7570,16 @@ html.rv-on .rv.card.rv-in .card-media img {
     display: none !important;
   }
 
-  .cmp-cards,
-  .cmp-table {
-    --cmp-label: 0px;
-  }
-
-  .cmp-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .cmp-cards::before {
-    display: none;
-  }
-
-  .cmp-card {
-    padding: 0 0.4rem 1.25rem;
+  .cmp-panel {
+    --cmp-pad: 0.9rem;
+    padding-top: var(--cmp-pad);
+    border-radius: 22px;
   }
 
   .cmp-pickers {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.6rem;
-    margin-bottom: 1rem;
   }
 
   .cmp-picker {
@@ -7635,10 +7590,10 @@ html.rv-on .rv.card.rv-in .card-media img {
     width: 100%;
     appearance: none;
     -webkit-appearance: none;
-    padding: 0.7rem 2rem 0.7rem 0.9rem;
+    padding: 0.7rem 2rem 0.7rem 0.85rem;
     border: 1px solid var(--border-strong);
     border-radius: 12px;
-    background: #12141a;
+    background: #171a22;
     color: #fff;
     font: inherit;
     font-size: 16px;
@@ -7647,7 +7602,7 @@ html.rv-on .rv.card.rv-in .card-media img {
 
   .cmp-picker svg {
     position: absolute;
-    right: 0.7rem;
+    right: 0.65rem;
     top: 50%;
     width: 18px;
     height: 18px;
@@ -7660,11 +7615,12 @@ html.rv-on .rv.card.rv-in .card-media img {
     pointer-events: none;
   }
 
-  /* On a phone the feature name sits on its own line above the two values. */
-  .cmp-table .cmp-corner {
+  .cmp-corner,
+  .cmp-bar-corner {
     display: none;
   }
 
+  /* Each feature name sits on its own line above the two values. */
   .cmp-table,
   .cmp-table thead,
   .cmp-table tbody {
@@ -7676,36 +7632,60 @@ html.rv-on .rv.card.rv-in .card-media img {
     grid-template-columns: 1fr 1fr;
   }
 
-  .cmp-table thead {
-    position: sticky;
-    top: var(--header-h);
-    z-index: 2;
+  .cmp-watch {
+    padding: 1rem 0.4rem 1.25rem;
   }
 
-  .cmp-table thead th {
-    position: static;
+  .cmp-watch-media {
+    max-width: 9rem;
   }
 
-  .cmp-table tbody th[scope="row"] {
+  .cmp-watch-name {
+    font-size: 1.05rem;
+  }
+
+  .cmp-table tbody .cmp-row th,
+  .cmp-table tbody .cmp-row td {
+    border-top: 0;
+    height: auto;
+    padding: 0.2rem 0.5rem 0.8rem;
+  }
+
+  .cmp-table tbody .cmp-row th {
     grid-column: 1 / -1;
-    padding: 0.85rem 0.5rem 0;
-    border-bottom: 0;
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
+    padding: 0.8rem 0.6rem 0.15rem;
+    font-size: 0.78rem;
   }
 
-  .cmp-table td {
-    padding: 0.35rem 0.5rem 0.85rem;
+  .cmp-row:nth-child(even) th,
+  .cmp-row:nth-child(even) td {
+    background: none;
   }
 
-  .cmp-table .cmp-group {
+  .cmp-row th {
+    background: none;
+  }
+
+  .cmp-table tbody .cmp-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .cmp-table tbody .cmp-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.022);
+  }
+
+  .cmp-group {
+    display: block !important;
+  }
+
+  .cmp-group th {
     display: block;
+    padding: 1.75rem 0.6rem 0.6rem;
+    font-size: 1.05rem;
   }
 
-  .cmp-table .cmp-group th {
-    display: block;
-    padding: 2rem 0.5rem 0.6rem;
-    font-size: 1.15rem;
+  .cmp-bar-row {
+    grid-template-columns: 1fr 1fr;
   }
 }
 

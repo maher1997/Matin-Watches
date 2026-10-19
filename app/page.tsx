@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { collections, formatPrice, getProduct, productsIn, type CollectionId, type Product } from "@/lib/products";
-import ProductImage from "@/components/ProductImage";
 import SectionHead from "@/components/SectionHead";
 import JsonLd from "@/components/JsonLd";
-import { bestFor, homeRowLabels, homeRows, lineupSlugs } from "@/lib/lineup";
+import { bestFor, keyRows, lineupSlugs } from "@/lib/lineup";
+import CompareTable from "@/components/CompareTable";
 
 export const metadata: Metadata = {
   title: { absolute: "MATIN | Rugged Military & Tactical Smartwatches for Men" },
@@ -74,8 +74,9 @@ const faq = [
 
 export default function Home() {
   const real = lineupSlugs
-    .map((slug) => ({ bestFor: bestFor[slug], rows: homeRows[slug], product: getProduct(slug) }))
+    .map((slug) => ({ bestFor: bestFor[slug], product: getProduct(slug) }))
     .filter((l): l is typeof l & { product: Product } => !!l.product);
+  const lineup = real.map((l) => ({ ...l, price: formatPrice(l.product.price) }));
   const [trekon, torvan, kaldor] = real.map((l) => l.product);
 
   return (
@@ -144,33 +145,7 @@ export default function Home() {
           }
           intro="Every MATIN watch is rugged and goes for days between charges. Here is how they differ."
         />
-        <div className="lp-compare">
-          {real.map(({ product: p, bestFor, rows }) => (
-            <article key={p.slug} className="lp-model">
-              <Link href={`/product/${p.slug}`} className="lp-model-media" tabIndex={-1} aria-hidden="true">
-                <ProductImage product={p} sizes="(max-width: 860px) 80vw, 30vw" />
-              </Link>
-              <div className="lp-model-head">
-                <h3>
-                  <Link href={`/product/${p.slug}`}>{p.name}</Link>
-                </h3>
-                <span className="lp-price">{formatPrice(p.price)}</span>
-              </div>
-              <p className="lp-bestfor">Best for: {bestFor}</p>
-              <dl className="lp-specs">
-                {homeRowLabels.map(([key, label]) => (
-                  <div key={key} className={rows[key] === "No" ? "is-no" : undefined}>
-                    <dt>{label}</dt>
-                    <dd>{rows[key]}</dd>
-                  </div>
-                ))}
-              </dl>
-              <Link href={`/product/${p.slug}`} className="btn btn-ghost lp-model-btn">
-                View {p.name.replace("MATIN ", "")}
-              </Link>
-            </article>
-          ))}
-        </div>
+        <CompareTable watches={lineup} groups={[{ rows: keyRows }]} heading="h3" />
         <p className="lp-compare-more">
           <Link href="/compare" className="btn btn-ghost">
             See the full comparison
