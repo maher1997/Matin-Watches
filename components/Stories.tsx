@@ -45,6 +45,7 @@ export default function Stories({ product }: { product: Product }) {
   const [inView, setInView] = useState(false);
   const [paused, setPaused] = useState(false);
   const touchX = useRef(0);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   // Plain scroll check instead of IntersectionObserver: on iPhone Safari the
   // observer did not report this tall section, so the slides stayed hidden.
@@ -83,6 +84,17 @@ export default function Stories({ product }: { product: Product }) {
     return () => clearTimeout(id);
   }, [active, inView, paused, n]);
 
+  // Slide the tab row so the current tab sits in the middle and can be read
+  // when the slider moves on by itself. Only the row scrolls, never the page.
+  useEffect(() => {
+    const row = tabsRef.current;
+    const tab = row?.children[active] as HTMLElement | undefined;
+    if (!row || !tab || row.scrollWidth <= row.clientWidth) return;
+    const left = tab.offsetLeft - (row.clientWidth - tab.offsetWidth) / 2;
+    const max = row.scrollWidth - row.clientWidth;
+    row.scrollTo({ left: Math.max(0, Math.min(max, left)), behavior: "smooth" });
+  }, [active]);
+
   if (n === 0) return null;
   const go = (i: number) => setActive((i + n) % n);
 
@@ -103,6 +115,7 @@ export default function Stories({ product }: { product: Product }) {
       </div>
       <div className="stories-bar">
         <div
+          ref={tabsRef}
           className="stories-tabs"
           role="tablist"
           aria-label="Choose a highlight"

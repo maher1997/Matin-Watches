@@ -1947,12 +1947,21 @@ button.thumb:focus-visible {
 }
 
 .stories-tabs {
+  position: relative;
   display: flex;
-  justify-content: center;
   gap: 0.5rem;
   margin-bottom: 1.25rem;
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+/* Centred when the tabs fit, and still scrollable from the first tab when not */
+.stories-tabs > :first-child {
+  margin-left: auto;
+}
+
+.stories-tabs > :last-child {
+  margin-right: auto;
 }
 
 .stories-tabs::-webkit-scrollbar {
