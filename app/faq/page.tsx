@@ -122,7 +122,7 @@ const groups: Group[] = [
   {
     id: "shipping",
     title: "Shipping and orders",
-    more: { href: "/help#shipping", label: "See delivery times" },
+    more: { href: "/shipping", label: "See delivery times" },
     items: [
       {
         q: "How much is shipping?",
@@ -145,7 +145,7 @@ const groups: Group[] = [
   {
     id: "returns",
     title: "Returns and warranty",
-    more: { href: "/warranty", label: "Read the full warranty" },
+    more: { href: "/returns", label: "Read the returns policy" },
     items: [
       {
         q: "Can I return my watch?",

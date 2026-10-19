@@ -91,7 +91,7 @@ export default function WarrantyPage() {
         <h2>Changed your mind instead?</h2>
         <p>
           If nothing is wrong with your watch but it is not right for you, see
-          our <Link href="/help#returns">30 day returns</Link>.
+          our <Link href="/returns">30 day returns</Link>.
         </p>
         <p>
           This warranty does not limit any rights you have under the consumer
