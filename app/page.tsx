@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { collections, formatPrice, getProduct, productsIn, type CollectionId, type Product } from "@/lib/products";
 import SectionHead from "@/components/SectionHead";
+import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
 import { bestFor, keyRows, lineupSlugs } from "@/lib/lineup";
 import CompareTable from "@/components/CompareTable";
@@ -228,17 +229,8 @@ export default function Home() {
             </>
           }
         />
-        <div className="faq lp-faq">
-          {faq.map((f, i) => (
-            <details key={f.q} name="home-faq">
-              <summary>
-                <span className="faq-num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="faq-q">{f.q}</span>
-                <span className="faq-icon" aria-hidden="true" />
-              </summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
+        <div className="lp-faq">
+          <FaqList items={faq} />
         </div>
       </section>
 

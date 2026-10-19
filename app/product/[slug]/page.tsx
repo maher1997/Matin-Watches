@@ -8,6 +8,7 @@ import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
 import { lineupSlugs } from "@/lib/lineup";
+import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
 import Stories from "@/components/Stories";
 import CountUp from "@/components/CountUp";
@@ -401,18 +402,7 @@ export default async function ProductPage({ params }: Props) {
               </>
             }
           />
-          <div className="faq">
-            {product.faq.map((f, i) => (
-              <details key={f.q} name="faq">
-                <summary>
-                  <span className="faq-num">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="faq-q">{f.q}</span>
-                  <span className="faq-icon" aria-hidden="true" />
-                </summary>
-                <p>{f.a}</p>
-              </details>
-            ))}
-          </div>
+          <FaqList items={product.faq} />
         </section>
       )}
 

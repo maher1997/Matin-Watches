@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
 import { absoluteUrl, contactEmail } from "@/lib/site";
 
@@ -162,7 +163,13 @@ const groups: Group[] = [
 ];
 
 export default function FaqPage() {
-  let n = 0;
+  // Numbers run on from one group to the next.
+  let n = 1;
+  const numbered = groups.map((g) => {
+    const start = n;
+    n += g.items.length;
+    return { ...g, start };
+  });
   return (
     <div className="container page-pad faq-page">
       <JsonLd
@@ -211,24 +218,10 @@ export default function FaqPage() {
         ))}
       </nav>
 
-      {groups.map((g) => (
+      {numbered.map((g) => (
         <section key={g.id} id={g.id} className="faq-group" aria-labelledby={`${g.id}-title`}>
           <h2 id={`${g.id}-title`}>{g.title}</h2>
-          <div className="faq">
-            {g.items.map((f) => {
-              n += 1;
-              return (
-                <details key={f.q}>
-                  <summary>
-                    <span className="faq-num">{String(n).padStart(2, "0")}</span>
-                    <h3 className="faq-q">{f.q}</h3>
-                    <span className="faq-icon" aria-hidden="true" />
-                  </summary>
-                  <p>{f.a}</p>
-                </details>
-              );
-            })}
-          </div>
+          <FaqList items={g.items} start={g.start} heading="h3" />
           {g.more && (
             <Link href={g.more.href} className="faq-more">
               {g.more.label} →
