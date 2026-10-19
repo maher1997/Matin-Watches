@@ -7620,95 +7620,93 @@ html.rv-on .rv.card.rv-in .card-media img {
     pointer-events: none;
   }
 
-  .cmp-corner,
-  .cmp-bar-corner {
-    display: none;
+  /* Phones: a real 3-column table (feature, watch, watch), so the lines
+     between columns run straight from top to bottom. */
+  .cmp-panel {
+    --cmp-label: 30%;
   }
 
-  /* Each feature name sits on its own line above the two values. */
-  .cmp-table,
-  .cmp-table thead,
-  .cmp-table tbody {
-    display: block;
-  }
-
-  .cmp-table tr {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .cmp-table {
+    font-size: 0.82rem;
   }
 
   .cmp-watch {
-    padding: 1rem 0.4rem 1.25rem;
+    padding: 0.9rem 0.35rem 1.1rem;
   }
 
   .cmp-watch-media {
-    max-width: 9rem;
+    max-width: 6.5rem;
+    margin-bottom: 0.6rem;
   }
 
   .cmp-watch-name {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
   }
 
-  .cmp-table tbody .cmp-row th,
-  .cmp-table tbody .cmp-row td {
-    border-top: 0;
+  .cmp-watch-price {
+    font-size: 0.88rem;
+  }
+
+  .cmp-watch-best {
+    font-size: 0.72rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .cmp-watch-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .cmp-table tbody th,
+  .cmp-table tbody td {
+    padding: 0.75rem 0.45rem;
+  }
+
+  .cmp-row th,
+  .cmp-row td {
     height: auto;
-    padding: 0.2rem 0.5rem 0.8rem;
-  }
-
-  .cmp-table tbody .cmp-row th {
-    grid-column: 1 / -1;
-    padding: 0.8rem 0.6rem 0.15rem;
-    font-size: 0.78rem;
-  }
-
-  .cmp-row:nth-child(even) th,
-  .cmp-row:nth-child(even) td {
-    background: none;
   }
 
   .cmp-row th {
-    background: none;
+    font-size: 0.76rem;
+    line-height: 1.3;
   }
 
-  .cmp-table tbody .cmp-row {
-    border-top: 1px solid var(--border);
+  .cmp-yes {
+    flex-direction: column;
+    gap: 0.25rem;
   }
 
-  .cmp-table tbody .cmp-row:nth-child(even) {
-    background: rgba(255, 255, 255, 0.022);
+  .cmp-yes svg {
+    width: 20px;
+    height: 20px;
   }
 
-  .cmp-group {
-    display: block !important;
+  /* Group titles are blocks so their colspan (which counts the hidden
+     watches) does not add empty columns. */
+  .cmp-group,
+  .cmp-group th {
+    display: block;
   }
 
   .cmp-group th {
-    display: block;
-    padding: 1.75rem 0.6rem 0.6rem;
-    font-size: 1.05rem;
+    padding: 1.6rem 0.45rem 0.6rem;
+    font-size: 1rem;
+    white-space: nowrap;
   }
 
   .cmp-bar-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: var(--cmp-label) 1fr 1fr;
   }
 }
 
-/* Light vertical lines between the watch columns (computer only; on phones
-   each value sits under its own label, so lines there look broken). */
+/* Light vertical lines between the columns. */
 .cmp-watch,
 .cmp-row td,
 .cmp-bar-cell {
   border-left: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-@media (max-width: 760px) {
-  .cmp-watch,
-  .cmp-row td,
-  .cmp-bar-cell {
-    border-left: 0;
-  }
-}
 
 /* Trust strip under Add to cart on the product page. */
 .trust {
