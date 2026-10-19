@@ -7694,8 +7694,8 @@ html.rv-on .rv.card.rv-in .card-media img {
   }
 }
 
-/* Light vertical lines between the watch columns. On phones only the line
-   between the two shown watches. */
+/* Light vertical lines between the watch columns (computer only; on phones
+   each value sits under its own label, so lines there look broken). */
 .cmp-watch,
 .cmp-row td,
 .cmp-bar-cell {
@@ -7707,11 +7707,6 @@ html.rv-on .rv.card.rv-in .card-media img {
   .cmp-row td,
   .cmp-bar-cell {
     border-left: 0;
-  }
-  .cmp-watch + .cmp-watch,
-  .cmp-row td + td,
-  .cmp-bar-cell + .cmp-bar-cell {
-    border-left: 1px solid rgba(255, 255, 255, 0.07);
   }
 }
 
