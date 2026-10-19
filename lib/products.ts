@@ -334,7 +334,7 @@ export const products: Product[] = [
         ],
       },
       {
-        image: "/products/life/matin-trekon-heart-rate-hiker.webp",
+        image: "/products/life/matin-trekon-heart-rate-graph.webp",
         tab: "Heart rate",
         alt: "Hiker checking his heart rate graph on the MATIN Trekon smartwatch above a mountain lake",
         title: ["Heart rate", "monitoring"],
