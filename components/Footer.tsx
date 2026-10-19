@@ -35,6 +35,7 @@ export default function Footer() {
         </form>
       </div>
       <div className="footer-bottom">
+        <Link href="/privacy">Privacy Policy</Link>
         <p>© {new Date().getFullYear()} MATIN</p>
       </div>
     </footer>

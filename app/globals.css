@@ -1125,7 +1125,17 @@ button.thumb:focus-visible {
   opacity: 0.6;
 }
 
+.footer-bottom a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.footer-bottom a:hover,
+.footer-bottom a:active {
+  color: var(--fg);
+}
+
 .footer-bottom p {
+  margin-top: 0.6rem;
   letter-spacing: 0.08em;
 }
 
@@ -8070,6 +8080,10 @@ html.rv-on .rv.card.rv-in .card-media img {
 
 .help-card p {
   color: var(--muted);
+}
+
+.help-card p + p {
+  margin-top: 0.75rem;
 }
 
 .help-times {
