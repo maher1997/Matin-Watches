@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { colorRange, type Product } from "@/lib/products";
 import ProductImage from "./ProductImage";
+import Lightbox from "./Lightbox";
 
 // Product photos: a big picture plus a row of thumbnails. Tapping a
 // thumbnail (or swiping the big picture) fades over to that photo.
@@ -18,13 +19,17 @@ export default function PdpGallery({ product }: { product: Product }) {
   // Fade only after the first tap, so the first photo shows instantly.
   const [fx, setFx] = useState(false);
   const touchX = useRef(0);
+  const [zoom, setZoom] = useState(false);
 
   // Once the page has settled, load the other photos quietly in the
   // background so switching is instant instead of waiting on a download.
   useEffect(() => {
     if (count < 2) return;
     const id = setTimeout(
-      () => setSeen((v) => [...new Set([...v, ...photos.map((_, i) => start + i)])]),
+      () =>
+        setSeen((v) => [
+          ...new Set([...v, ...photos.map((_, i) => start + i)]),
+        ]),
       2500,
     );
     return () => clearTimeout(id);
@@ -54,7 +59,8 @@ export default function PdpGallery({ product }: { product: Product }) {
   return (
     <div className={`pdp-gallery${fx ? " fx" : ""}`}>
       <div
-        className="pdp-main"
+        className={`pdp-main${count ? " can-zoom" : ""}`}
+        onClick={() => count && setZoom(true)}
         onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
         onTouchEnd={(e) => {
           const dx = e.changedTouches[0].clientX - touchX.current;
@@ -62,6 +68,22 @@ export default function PdpGallery({ product }: { product: Product }) {
         }}
       >
         {product.badge && <span className="badge">{product.badge}</span>}
+        {count > 0 && (
+          <button
+            type="button"
+            className="pdp-zoom"
+            aria-label="Open photo full screen"
+            onClick={(e) => {
+              e.stopPropagation();
+              setZoom(true);
+            }}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6" />
+            </svg>
+          </button>
+        )}
         {count === 0 ? (
           <ProductImage
             product={product}
@@ -101,10 +123,28 @@ export default function PdpGallery({ product }: { product: Product }) {
               aria-pressed={i === active}
               onClick={() => show(i)}
             >
-              <ProductImage product={product} index={start + i} sizes="120px" alt="" />
+              <ProductImage
+                product={product}
+                index={start + i}
+                sizes="120px"
+                alt=""
+              />
             </button>
           ))}
         </div>
+      )}
+      {zoom && count > 0 && (
+        <Lightbox
+          images={photos}
+          alts={photos.map(
+            (_, i) =>
+              product.imageAlts?.[start + i] ??
+              `${product.name} rugged smartwatch`,
+          )}
+          index={active}
+          onIndex={show}
+          onClose={() => setZoom(false)}
+        />
       )}
       {count === 0 && (
         <div className="pdp-thumbs">

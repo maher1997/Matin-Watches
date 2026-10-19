@@ -7257,3 +7257,146 @@ html.rv-on .rv.card.rv-in .card-media img {
     transform: scale(1.05);
   }
 }
+
+/* ---------- Full-screen photo viewer (components/Lightbox.tsx) ---------- */
+.pdp-main.can-zoom {
+  cursor: zoom-in;
+}
+
+.pdp-zoom {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(169, 194, 255, 0.25);
+  background: rgba(10, 12, 18, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #e8ecf8;
+  cursor: pointer;
+}
+
+.pdp-zoom svg,
+.lb-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: radial-gradient(circle at 50% 40%, #1a1d26, #07080b 75%);
+  animation: lb-in 0.3s ease;
+}
+
+@keyframes lb-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.lb-stage {
+  position: absolute;
+  inset: 64px 0 24px;
+  overflow: hidden;
+  touch-action: none;
+  cursor: zoom-in;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.lb-stage.zoomed {
+  cursor: grab;
+}
+
+.lb-pic {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.lb-pic img {
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.lb-top {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0.75rem 0 1.25rem;
+  color: #c9cfe6;
+  font-size: 0.85rem;
+}
+
+.lb-count {
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  font-weight: 600;
+}
+
+.lb-hint {
+  flex: 1;
+  color: #8b93ad;
+}
+
+.lb-btn {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(169, 194, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: pointer;
+}
+
+.lb-prev,
+.lb-next {
+  position: absolute;
+  top: 50%;
+  margin-top: -23px;
+  z-index: 2;
+}
+
+.lb-prev {
+  left: 1rem;
+}
+
+.lb-next {
+  right: 1rem;
+}
+
+@media (max-width: 860px) {
+  .lb-prev,
+  .lb-next {
+    top: auto;
+    bottom: 1.25rem;
+    margin: 0;
+  }
+  .lb-prev {
+    left: calc(50% - 56px);
+  }
+  .lb-next {
+    right: calc(50% - 56px);
+  }
+  .lb-stage {
+    inset: 64px 0 84px;
+  }
+}
