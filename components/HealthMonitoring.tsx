@@ -131,7 +131,7 @@ export default function HealthMonitoring({
     let t0 = 0;
     const step = (now: number) => {
       if (!t0) t0 = now;
-      const u = Math.min(1, (now - t0) / (id === "activity" ? 1600 : 1300));
+      const u = Math.min(1, Math.max(0, now - t0) / (id === "activity" ? 1600 : 1300));
       const e = 1 - Math.pow(1 - u, 3);
       if (id === "spo2") setO2(Math.round(90 + 8 * e));
       else setSteps(Math.round(STEPS * e));

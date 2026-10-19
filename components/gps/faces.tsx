@@ -92,7 +92,7 @@ const ALT_AREA = `${ALT_LINE} L160 60 L0 60 Z`;
 const FT_LOW = 820;
 const FT_HIGH = 1284;
 export const altFeet = (p: number) => {
-  const f = Math.min(ALT_PTS.length - 1, p * (ALT_PTS.length - 1));
+  const f = Math.min(ALT_PTS.length - 1, Math.max(0, p * (ALT_PTS.length - 1) || 0));
   const i = Math.floor(f);
   const [, y0] = ALT_PTS[i];
   const [, y1] = ALT_PTS[Math.min(ALT_PTS.length - 1, i + 1)];
@@ -197,7 +197,7 @@ export default function GpsWatch({
       : map.end;
   const altIdx = Math.min(
     ALT_PTS.length - 1,
-    Math.round(p * (ALT_PTS.length - 1)),
+    Math.max(0, Math.round(p * (ALT_PTS.length - 1)) || 0),
   );
   const [ax, ay] = ALT_PTS[altIdx];
 

@@ -29,7 +29,7 @@ export default function Fitness({
     let raf = 0;
     const t0 = performance.now() - clock.current * 1000;
     const tick = (now: number) => {
-      clock.current = (now - t0) / 1000;
+      clock.current = Math.max(0, now - t0) / 1000;
       setT(clock.current);
       raf = requestAnimationFrame(tick);
     };

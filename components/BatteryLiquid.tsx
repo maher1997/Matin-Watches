@@ -129,7 +129,7 @@ export default function BatteryLiquid({
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / 1300);
+      const p = Math.min(1, Math.max(0, now - start) / 1300);
       const v = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
       shownRef.current = v;
       setShown(v);

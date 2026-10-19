@@ -90,7 +90,9 @@ export default function GpsShowcase({
     let raf = 0;
     const t0 = performance.now();
     const tick = (now: number) => {
-      const t = (now - t0) % (DRAW_MS + HOLD_MS);
+      // A frame's time can be a touch earlier than t0; never let it go
+      // below zero, or the altitude lookup reads past the start of its list.
+      const t = Math.max(0, now - t0) % (DRAW_MS + HOLD_MS);
       const u = Math.min(1, t / DRAW_MS);
       setP(u * u * (3 - 2 * u) * 0.15 + u * 0.85);
       raf = requestAnimationFrame(tick);
@@ -105,7 +107,7 @@ export default function GpsShowcase({
     let raf = 0;
     const t0 = performance.now();
     const tick = (now: number) => {
-      const t = now - t0;
+      const t = Math.max(0, now - t0);
       setHeading(42 + 30 * Math.sin(t / 2300) + 9 * Math.sin(t / 830));
       raf = requestAnimationFrame(tick);
     };
@@ -123,7 +125,7 @@ export default function GpsShowcase({
     let t0 = 0;
     const tick = (now: number) => {
       if (!t0) t0 = now;
-      const u = Math.min(1, (now - t0) / 2200);
+      const u = Math.min(1, Math.max(0, now - t0) / 2200);
       setSats(Math.round(satTarget * (1 - Math.pow(1 - u, 2))));
       if (u < 1) raf = requestAnimationFrame(tick);
     };

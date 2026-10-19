@@ -69,7 +69,7 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     let t0 = -1;
     const step = (now: number) => {
       if (t0 < 0) t0 = now;
-      const k = Math.min(1, (now - t0) / 650);
+      const k = Math.min(1, Math.max(0, now - t0) / 650);
       const e = 1 - Math.pow(1 - k, 3);
       paint(from + (to - from) * e);
       if (k < 1) anim.current = requestAnimationFrame(step);
