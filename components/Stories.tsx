@@ -253,8 +253,10 @@ export default function Stories({ product }: { product: Product }) {
               )}
             </div>
             {/* Keyed on `shown`: the words are already there at load, and they
-                play in again the first time the slider comes into view. */}
-            <div key={`${i}-${shown}`} className="story-copy">
+                play in again the first time the slider comes into view. Only
+                the first slide (the one on show then) is rebuilt, not all
+                seven, so the scroll there stays smooth. */}
+            <div key={i === 0 ? `0-${shown}` : i} className="story-copy">
               <h3>
                 <span>{s.title[0]}</span>
                 <span className="story-accent">{s.title[1]}</span>

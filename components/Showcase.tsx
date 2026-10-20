@@ -40,6 +40,16 @@ export default function Showcase({ product }: { product: Product }) {
     return () => clearTimeout(id);
   }, [active, auto, inView, chapters.length]);
 
+  // Pictures load one tab ahead instead of all at once: they all loading
+  // and decoding together on the way past made the scroll catch in
+  // Instagram's browser.
+  const [loaded, setLoaded] = useState<number[]>([0]);
+  useEffect(() => {
+    if (!inView || chapters.length < 2) return;
+    const next = (active + 1) % chapters.length;
+    setLoaded((l) => (l.includes(active) && l.includes(next) ? l : [...new Set([...l, active, next])]));
+  }, [active, inView, chapters.length]);
+
   if (chapters.length === 0) return null;
 
   const posterFor = (src?: string) => product.posters?.find((p) => p.src === src);
@@ -97,7 +107,7 @@ export default function Showcase({ product }: { product: Product }) {
       >
         {chapters.map((ch, i) => {
           const poster = posterFor(ch.image);
-          return ch.image ? (
+          return ch.image && loaded.includes(i) ? (
             <Image
               key={ch.image}
               src={ch.image}
