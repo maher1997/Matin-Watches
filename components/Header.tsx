@@ -134,7 +134,7 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
 
   useEffect(() => {
     if (open) return setShown(true);
-    const t = setTimeout(() => setShown(false), 240);
+    const t = setTimeout(() => setShown(false), 420);
     return () => clearTimeout(t);
   }, [open]);
 
@@ -184,71 +184,74 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
             aria-hidden={!open}
             inert={!open}
           >
-            <div className="mmenu-in">
-              <div className="mmenu-head">
-                <p className="mmenu-label">Watches</p>
-                <Link href="/shop" className="mmenu-all" onClick={close}>
-                  Shop all
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </Link>
-              </div>
-              <ul className="mmenu-watches">
-                {watches.map((w, i) => (
-                  <li key={w.slug} style={{ "--i": i } as React.CSSProperties}>
-                    <Link href={`/product/${w.slug}`} onClick={close}>
-                      <span className="mmenu-photo">
-                        {w.image && (
-                          <Image
-                            src={w.image}
-                            alt=""
-                            fill
-                            sizes="160px"
-                            loading="eager"
-                            fetchPriority="low"
-                            style={{ objectFit: "contain" }}
-                          />
-                        )}
-                      </span>
-                      <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
-                      <span className="mmenu-price">{w.price}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <button className="mmenu-backdrop" aria-label="Close menu" tabIndex={-1} onClick={close} />
+            <div className="mmenu-panel">
+              <div className="mmenu-in">
+                <div className="mmenu-head">
+                  <p className="mmenu-label">Watches</p>
+                  <Link href="/shop" className="mmenu-all" onClick={close}>
+                    Shop all
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </Link>
+                </div>
+                <ul className="mmenu-watches">
+                  {watches.map((w, i) => (
+                    <li key={w.slug} style={{ "--i": i } as React.CSSProperties}>
+                      <Link href={`/product/${w.slug}`} onClick={close}>
+                        <span className="mmenu-photo">
+                          {w.image && (
+                            <Image
+                              src={w.image}
+                              alt=""
+                              fill
+                              sizes="160px"
+                              loading="eager"
+                              fetchPriority="low"
+                              style={{ objectFit: "contain" }}
+                            />
+                          )}
+                        </span>
+                        <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
+                        <span className="mmenu-price">{w.price}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
 
-              <p className="mmenu-label">Shop by</p>
-              <ul className="mmenu-tiles">
-                {shopBy.map((s, i) => (
-                  <li key={s.href} style={{ "--i": i + 2 } as React.CSSProperties}>
-                    <Link href={s.href} onClick={close}>
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        {s.icon}
-                      </svg>
-                      {s.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                <p className="mmenu-label">Shop by</p>
+                <ul className="mmenu-tiles">
+                  {shopBy.map((s, i) => (
+                    <li key={s.href} style={{ "--i": i + 2 } as React.CSSProperties}>
+                      <Link href={s.href} onClick={close}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          {s.icon}
+                        </svg>
+                        {s.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
 
-              <p className="mmenu-label">Help</p>
-              <ul className="mmenu-help">
-                {help.map((h) => (
-                  <li key={h.href}>
-                    <Link href={h.href} onClick={close}>
-                      {h.label}
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M9 6l6 6-6 6" />
-                      </svg>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                <p className="mmenu-label">Help</p>
+                <ul className="mmenu-help">
+                  {help.map((h) => (
+                    <li key={h.href}>
+                      <Link href={h.href} onClick={close}>
+                        {h.label}
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M9 6l6 6-6 6" />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="mmenu-foot">
-                <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-                <span>Free worldwide shipping · 1 year warranty</span>
+                <div className="mmenu-foot">
+                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                  <span>Free worldwide shipping · 1 year warranty</span>
+                </div>
               </div>
             </div>
           </div>

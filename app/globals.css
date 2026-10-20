@@ -8768,46 +8768,61 @@ html.menu-open body {
   right: 0;
   bottom: 0;
   z-index: 49;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mmenu.is-open,
+.mmenu.is-closing {
+  visibility: visible;
+}
+
+.mmenu.is-open {
+  pointer-events: auto;
+}
+
+/* The page behind dims softly while the drawer is open. */
+.mmenu-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: rgba(4, 5, 8, 0.62);
+  opacity: 0;
+  transition: opacity 0.42s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mmenu.is-open .mmenu-backdrop {
+  opacity: 1;
+  transition-duration: 0.6s;
+}
+
+/* The drawer glides in from the left and settles gently; it leaves a
+   little quicker. Only transform and opacity move. */
+.mmenu-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(88vw, 420px);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   background:
-    radial-gradient(120% 60% at 100% 0%, rgba(82, 133, 247, 0.14), transparent 60%),
+    radial-gradient(120% 50% at 100% 0%, rgba(82, 133, 247, 0.13), transparent 60%),
     linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0%, transparent 40%, rgba(255, 255, 255, 0.012) 65%, transparent 90%),
     #0d0f13;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 24px 0 60px -20px rgba(0, 0, 0, 0.8);
+  transform: translateX(-102%);
+  transition: transform 0.42s cubic-bezier(0.55, 0, 0.75, 0.2);
 }
 
-.mmenu.is-open {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-  animation: mmenu-slide 0.36s cubic-bezier(0.32, 0.72, 0, 1) both;
-}
-
-/* Open: the menu slides in from the left. Close: it slides back out a
-   little faster. Only transform moves, so it stays light on the phone. */
-.mmenu.is-closing {
-  visibility: visible;
-  opacity: 1;
-  animation: mmenu-slide-out 0.24s cubic-bezier(0.4, 0, 1, 1) both;
-}
-
-@keyframes mmenu-slide {
-  from {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes mmenu-slide-out {
-  from {
-    transform: none;
-  }
-  to {
-    transform: translateX(-100%);
-  }
+.mmenu.is-open .mmenu-panel {
+  transform: none;
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mmenu-in {
@@ -8918,24 +8933,24 @@ html.menu-open body {
 
 .mmenu-tiles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
 .mmenu-tiles a {
-  display: grid;
-  justify-items: center;
-  gap: 0.45rem;
-  padding: 0.85rem 0.3rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 0.85rem;
   border-radius: 14px;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   color: #d5d9e3;
-  text-align: center;
 }
 
 .mmenu-tiles svg {
-  width: 24px;
-  height: 24px;
+  flex: none;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: #5285f7;
   stroke-width: 1.4;
@@ -8981,14 +8996,14 @@ html.menu-open body {
 /* Blocks rise in one after another when the menu opens (time-based, once). */
 .mmenu.is-open .mmenu-watches li,
 .mmenu.is-open .mmenu-tiles li {
-  animation: mmenu-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(90ms + var(--i, 0) * 22ms);
+  animation: mmenu-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(150ms + var(--i, 0) * 45ms);
 }
 
 @keyframes mmenu-in {
   from {
     opacity: 0;
-    transform: translateX(-14px);
+    transform: translateX(-18px);
   }
 }
 
