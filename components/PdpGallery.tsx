@@ -23,16 +23,25 @@ export default function PdpGallery({ product }: { product: Product }) {
 
   // Once the page has settled, load the other photos quietly in the
   // background so switching is instant instead of waiting on a download.
+  // Never while the page is scrolling: three big photos decoding mid-scroll
+  // made the first scroll catch in slower browsers like Instagram's.
   useEffect(() => {
     if (count < 2) return;
-    const id = setTimeout(
-      () =>
-        setSeen((v) => [
-          ...new Set([...v, ...photos.map((_, i) => start + i)]),
-        ]),
-      2500,
-    );
-    return () => clearTimeout(id);
+    let id = 0;
+    const load = () => {
+      removeEventListener("scroll", wait);
+      setSeen((v) => [...new Set([...v, ...photos.map((_, i) => start + i)])]);
+    };
+    const wait = () => {
+      clearTimeout(id);
+      id = window.setTimeout(load, 1200);
+    };
+    id = window.setTimeout(load, 2500);
+    addEventListener("scroll", wait, { passive: true });
+    return () => {
+      clearTimeout(id);
+      removeEventListener("scroll", wait);
+    };
   }, [count, start]);
 
   useEffect(() => {
