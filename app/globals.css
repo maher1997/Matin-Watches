@@ -1293,6 +1293,14 @@ button.thumb:focus-visible {
   filter: drop-shadow(0 0 22px rgba(82, 133, 247, 0.3)) drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
 }
 
+/* The gallery photos get their own layer, so their soft double shadow is
+   drawn once and kept. Without it, a browser that resizes the page while
+   scrolling (Instagram hides its bar on the first scroll) had to redraw
+   that heavy shadow in the middle of the scroll. Looks exactly the same. */
+.pdp-gallery .product-photo {
+  will-change: transform;
+}
+
 /* Product key numbers under the price */
 .pdp-stats {
   list-style: none;
@@ -9079,28 +9087,4 @@ html.rv-on .rv.card.rv-in .card-media img {
     animation: none !important;
     transition: none !important;
   }
-}
-
-/* Temporary test switches (?t=), see layout.tsx. */
-html[data-t="1"] .buy-bar,
-html[data-t="6"] .buy-bar {
-  display: none !important;
-}
-html[data-t="2"] *,
-html[data-t="6"] * {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-html[data-t="3"] body::before,
-html[data-t="3"] body::after,
-html[data-t="6"] body::before,
-html[data-t="6"] body::after {
-  display: none;
-}
-html[data-t="5"] *,
-html[data-t="6"] * {
-  animation: none !important;
-}
-html[data-t="7"] .header {
-  position: relative;
 }
