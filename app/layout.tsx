@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import Motion from "@/components/Motion";
+import { formatPrice, products } from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -96,7 +97,14 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <JsonLd data={orgData} />
         <CartProvider>
-          <Header />
+          <Header
+            watches={products.map((p) => ({
+              slug: p.slug,
+              name: p.name,
+              price: formatPrice(p.price).replace(/\.00$/, ""),
+              image: p.images[0],
+            }))}
+          />
           <main>{children}</main>
           <Motion />
           <Footer />

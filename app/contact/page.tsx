@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
+const quick = [
+  { href: "/faq", label: "FAQ", note: "Most asked questions" },
+  { href: "/shipping", label: "Shipping", note: "Free worldwide, delivery times" },
+  { href: "/returns", label: "Returns", note: "30 days from delivery" },
+  { href: "/warranty", label: "Warranty", note: "1 year from delivery" },
+];
+
 export default function ContactPage() {
   return (
     <div className="container page-pad help">
@@ -27,35 +34,44 @@ export default function ContactPage() {
         </p>
       </header>
 
-      <section className="help-card">
-        <h2>Send us a message</h2>
-        <ContactForm />
-      </section>
+      <div className="contact-wrap">
+        <section className="contact-card">
+          <h2>Send us a message</h2>
+          <ContactForm />
+        </section>
 
-      <section className="help-card">
-        <h2>Or email us</h2>
-        <p>
-          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-        </p>
-      </section>
+        <aside className="contact-side">
+          <a className="contact-mail" href={`mailto:${contactEmail}`}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5.5" width="18" height="13" rx="2.5" />
+              <path d="M4 7.5l8 5.5 8-5.5" />
+            </svg>
+            <span>
+              <small>Or email us directly</small>
+              {contactEmail}
+            </span>
+          </a>
 
-      <section className="help-card">
-        <h2>Quick answers</h2>
-        <ul className="help-list">
-          <li>
-            <Link href="/faq">FAQ</Link>
-          </li>
-          <li>
-            <Link href="/shipping">Shipping and delivery times</Link>
-          </li>
-          <li>
-            <Link href="/returns">Returns</Link>
-          </li>
-          <li>
-            <Link href="/warranty">Warranty</Link>
-          </li>
-        </ul>
-      </section>
+          <div className="contact-quick">
+            <h2>Quick answers</h2>
+            <ul>
+              {quick.map((q) => (
+                <li key={q.href}>
+                  <Link href={q.href}>
+                    <span>
+                      {q.label}
+                      <small>{q.note}</small>
+                    </span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" />
+                    </svg>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }
