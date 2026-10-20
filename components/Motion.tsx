@@ -20,6 +20,8 @@ export default function Motion() {
   const path = usePathname();
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = document.documentElement.getAttribute("data-t");
+    if (t === "4" || t === "6") return;
     const root = document.documentElement;
     const timers: number[] = [];
     let raf = 0;

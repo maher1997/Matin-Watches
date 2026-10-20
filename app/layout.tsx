@@ -83,6 +83,10 @@ const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)retur
 // height made the whole page lay out again mid-scroll, a visible hitch.
 const screenHeight = `(function(){var d=document.documentElement,w=0;function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
 
+// Temporary: ?t=1..6 switches one part off, to find what makes the first
+// scroll catch inside Instagram. Remove once found.
+const testSwitch = `(function(){var t=new URLSearchParams(location.search).get("t");if(t)document.documentElement.setAttribute("data-t",t)})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -100,6 +104,7 @@ export default function RootLayout({
             forgiving, so the page keeps working. */}
         <script dangerouslySetInnerHTML={{ __html: domGuard }} />
         <script dangerouslySetInnerHTML={{ __html: screenHeight }} />
+        <script dangerouslySetInnerHTML={{ __html: testSwitch }} />
       </head>
       <body suppressHydrationWarning>
         <JsonLd data={orgData} />
