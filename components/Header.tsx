@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useCart } from "./Cart";
 import Logo from "./Logo";
 import { contactEmail } from "@/lib/site";
@@ -87,20 +87,22 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
   // switches a class, with no work that could make it stutter.
   const [ready, setReady] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const close = () => setOpen(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const close = useCallback(() => setOpen(false), []);
 
-  // While the phone menu is open: start it right under the header (the
-  // announcement bar may or may not be on screen), stop the page behind it
-  // from scrolling, and close it with Escape or when the screen gets wide.
+  // Starts the menu right under the header. Set on the menu itself, not the
+  // page root: a change on the root makes the browser restyle the whole
+  // page, which is what made the tap feel slow on the longer pages.
+  const place = useCallback(() => {
+    const bottom = headerRef.current?.getBoundingClientRect().bottom ?? 0;
+    menuRef.current?.style.setProperty("--menu-top", `${Math.max(0, Math.round(bottom))}px`);
+  }, []);
+
+  // While the phone menu is open: keep it under the header and close it with
+  // Escape or when the screen gets wide.
   useEffect(() => {
     if (!open) return;
-    const root = document.documentElement;
-    const place = () => {
-      const bottom = headerRef.current?.getBoundingClientRect().bottom ?? 0;
-      root.style.setProperty("--menu-top", `${Math.max(0, Math.round(bottom))}px`);
-    };
     place();
-    root.classList.add("menu-open");
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     const wide = window.matchMedia("(min-width: 861px)");
     const onWide = () => wide.matches && setOpen(false);
@@ -108,12 +110,11 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
     window.addEventListener("resize", place);
     wide.addEventListener("change", onWide);
     return () => {
-      root.classList.remove("menu-open");
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", place);
       wide.removeEventListener("change", onWide);
     };
-  }, [open]);
+  }, [open, place]);
 
   useEffect(() => {
     const go = () => setReady(true);
@@ -148,7 +149,10 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
             aria-label={open ? "Close menu" : "Menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+              if (!open) place();
+              setOpen(!open);
+            }}
           >
             <span className="menu-lines" aria-hidden="true">
               <i />
@@ -178,6 +182,7 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
         {(ready || open) && (
           <div
             id="mobile-menu"
+            ref={menuRef}
             className={`mmenu${open ? " is-open" : shown ? " is-closing" : ""}`}
             role="dialog"
             aria-label="Menu"
@@ -186,73 +191,7 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
           >
             <button className="mmenu-backdrop" aria-label="Close menu" tabIndex={-1} onClick={close} />
             <div className="mmenu-panel">
-              <div className="mmenu-in">
-                <div className="mmenu-head">
-                  <p className="mmenu-label">Watches</p>
-                  <Link href="/shop" className="mmenu-all" onClick={close}>
-                    Shop all
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M5 12h14M13 6l6 6-6 6" />
-                    </svg>
-                  </Link>
-                </div>
-                <ul className="mmenu-watches">
-                  {watches.map((w, i) => (
-                    <li key={w.slug} style={{ "--i": i } as React.CSSProperties}>
-                      <Link href={`/product/${w.slug}`} onClick={close}>
-                        <span className="mmenu-photo">
-                          {w.image && (
-                            <Image
-                              src={w.image}
-                              alt=""
-                              fill
-                              sizes="160px"
-                              loading="eager"
-                              fetchPriority="low"
-                              style={{ objectFit: "contain" }}
-                            />
-                          )}
-                        </span>
-                        <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
-                        <span className="mmenu-price">{w.price}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="mmenu-label">Shop by</p>
-                <ul className="mmenu-tiles">
-                  {shopBy.map((s, i) => (
-                    <li key={s.href} style={{ "--i": i + 2 } as React.CSSProperties}>
-                      <Link href={s.href} onClick={close}>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          {s.icon}
-                        </svg>
-                        {s.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="mmenu-label">Help</p>
-                <ul className="mmenu-help">
-                  {help.map((h) => (
-                    <li key={h.href}>
-                      <Link href={h.href} onClick={close}>
-                        {h.label}
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M9 6l6 6-6 6" />
-                        </svg>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mmenu-foot">
-                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-                  <span>Free worldwide shipping · 1 year warranty</span>
-                </div>
-              </div>
+              <MenuBody watches={watches} onNav={close} />
             </div>
           </div>
         )}
@@ -260,3 +199,77 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
     </>
   );
 }
+
+// The menu's contents never change while it opens or closes, so they are
+// kept out of the re-render a tap causes: only the wrapper's class changes.
+const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch[]; onNav: () => void }) {
+  return (
+    <div className="mmenu-in">
+      <div className="mmenu-head">
+        <p className="mmenu-label">Watches</p>
+        <Link href="/shop" className="mmenu-all" onClick={onNav}>
+          Shop all
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </Link>
+      </div>
+      <ul className="mmenu-watches">
+        {watches.map((w, i) => (
+          <li key={w.slug} style={{ "--i": i } as React.CSSProperties}>
+            <Link href={`/product/${w.slug}`} onClick={onNav}>
+              <span className="mmenu-photo">
+                {w.image && (
+                  <Image
+                    src={w.image}
+                    alt=""
+                    fill
+                    sizes="160px"
+                    loading="eager"
+                    fetchPriority="low"
+                    style={{ objectFit: "contain" }}
+                  />
+                )}
+              </span>
+              <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
+              <span className="mmenu-price">{w.price}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mmenu-label">Shop by</p>
+      <ul className="mmenu-tiles">
+        {shopBy.map((s, i) => (
+          <li key={s.href} style={{ "--i": i + 2 } as React.CSSProperties}>
+            <Link href={s.href} onClick={onNav}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                {s.icon}
+              </svg>
+              {s.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mmenu-label">Help</p>
+      <ul className="mmenu-help">
+        {help.map((h) => (
+          <li key={h.href}>
+            <Link href={h.href} onClick={onNav}>
+              {h.label}
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mmenu-foot">
+        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        <span>Free worldwide shipping · 1 year warranty</span>
+      </div>
+    </div>
+  );
+});

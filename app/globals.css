@@ -8756,10 +8756,6 @@ html.rv-on .rv.card.rv-in .card-media img {
   transform: translateY(-6.2px) rotate(-45deg);
 }
 
-html.menu-open,
-html.menu-open body {
-  overflow: hidden;
-}
 
 .mmenu {
   position: fixed;
@@ -8792,6 +8788,8 @@ html.menu-open body {
   opacity: 0;
   transition: opacity 0.42s ease;
   -webkit-tap-highlight-color: transparent;
+  /* Dragging on the dimmed page does not scroll it. */
+  touch-action: none;
 }
 
 .mmenu.is-open .mmenu-backdrop {
