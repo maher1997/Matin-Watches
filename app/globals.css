@@ -2324,7 +2324,7 @@ button.thumb:focus-visible {
     /* The photos are a little wider than square (their sides were
        extended), so the box can be wider than tall without cutting
        anything from the original square. Never wider than 6:5. */
-    --pic: max((100vw - 2rem - 2px) / 1.2, min(100vw - 2rem - 2px, 100svh - 352px));
+    --pic: max((100vw - 2rem - 2px) / 1.2, min(100vw - 2rem - 2px, var(--sv, 100svh) - 352px));
     width: 100%;
     height: var(--pic);
     padding-bottom: 0;

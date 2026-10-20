@@ -77,6 +77,12 @@ const orgData = {
 
 const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)return;var r=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this){return c}return r.apply(this,arguments)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,ref){if(ref&&ref.parentNode!==this){return n}return i.apply(this,arguments)}})();`;
 
+// The phone's screen height, measured once when the page opens and again only
+// if the phone is turned. Inside apps like Instagram the app's own bars slide
+// away on the first scroll and the page's height changes; sizes tied to that
+// height made the whole page lay out again mid-scroll, a visible hitch.
+const screenHeight = `(function(){var d=document.documentElement,w=0;function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -93,6 +99,7 @@ export default function RootLayout({
             it and the whole page breaks. This makes those two DOM calls
             forgiving, so the page keeps working. */}
         <script dangerouslySetInnerHTML={{ __html: domGuard }} />
+        <script dangerouslySetInnerHTML={{ __html: screenHeight }} />
       </head>
       <body suppressHydrationWarning>
         <JsonLd data={orgData} />
