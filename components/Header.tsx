@@ -80,6 +80,8 @@ export type MenuWatch = { slug: string; name: string; price: string; image?: str
 export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
   const { count } = useCart();
   const [open, setOpen] = useState(false);
+  // Keeps the menu on screen for its short closing fade.
+  const [shown, setShown] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const close = () => setOpen(false);
 
@@ -107,6 +109,12 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
       window.removeEventListener("resize", place);
       wide.removeEventListener("change", onWide);
     };
+  }, [open]);
+
+  useEffect(() => {
+    if (open) return setShown(true);
+    const t = setTimeout(() => setShown(false), 160);
+    return () => clearTimeout(t);
   }, [open]);
 
   return (
@@ -146,8 +154,8 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
           </Link>
         </div>
 
-        {open && (
-          <div id="mobile-menu" className="mmenu" role="dialog" aria-label="Menu">
+        {(open || shown) && (
+          <div id="mobile-menu" className={`mmenu${open ? "" : " is-closing"}`} role="dialog" aria-label="Menu">
             <div className="mmenu-in">
               <div className="mmenu-head">
                 <p className="mmenu-label">Watches</p>

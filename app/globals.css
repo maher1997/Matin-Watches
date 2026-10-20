@@ -8726,7 +8726,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   height: 1.6px;
   border-radius: 2px;
   background: currentColor;
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s, width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.16s;
 }
 
 .menu-lines i:nth-child(1) {
@@ -8736,6 +8736,7 @@ html.rv-on .rv.card.rv-in .card-media img {
 .menu-lines i:nth-child(2) {
   top: 6.2px;
   width: 70%;
+  transform-origin: left center;
 }
 
 .menu-lines i:nth-child(3) {
@@ -8748,7 +8749,7 @@ html.rv-on .rv.card.rv-in .card-media img {
 
 .menu-btn.is-open .menu-lines i:nth-child(2) {
   opacity: 0;
-  width: 0;
+  transform: scaleX(0);
 }
 
 .menu-btn.is-open .menu-lines i:nth-child(3) {
@@ -8774,12 +8775,35 @@ html.menu-open body {
     radial-gradient(120% 60% at 100% 0%, rgba(82, 133, 247, 0.14), transparent 60%),
     linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0%, transparent 40%, rgba(255, 255, 255, 0.012) 65%, transparent 90%),
     #0d0f13;
-  opacity: 1;
-  transition: opacity 0.28s ease;
+  animation: mmenu-fade 0.2s ease-out both;
 }
 
-@starting-style {
-  .mmenu {
+/* Open: a quick fade while the content drops 10px into place.
+   Close: a faster fade out. Only opacity and transform move, so it stays
+   light on the phone. */
+.mmenu-in {
+  animation: mmenu-drop 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.mmenu.is-closing {
+  animation: mmenu-out 0.16s ease-in both;
+  pointer-events: none;
+}
+
+@keyframes mmenu-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mmenu-drop {
+  from {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes mmenu-out {
+  to {
     opacity: 0;
   }
 }
@@ -8955,14 +8979,14 @@ html.menu-open body {
 /* Blocks rise in one after another when the menu opens (time-based, once). */
 .mmenu-watches li,
 .mmenu-tiles li {
-  animation: mmenu-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--i, 0) * 35ms);
+  animation: mmenu-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(40ms + var(--i, 0) * 18ms);
 }
 
 @keyframes mmenu-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
 }
 
@@ -8974,6 +8998,7 @@ html.menu-open body {
 
 @media (prefers-reduced-motion: reduce) {
   .mmenu,
+  .mmenu-in,
   .mmenu li,
   .menu-lines i {
     animation: none;
