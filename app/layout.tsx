@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import Motion from "@/components/Motion";
+import ScrollProbe from "@/components/ScrollProbe";
 import { formatPrice, products } from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -114,6 +115,7 @@ export default function RootLayout({
           />
           <main>{children}</main>
           <Motion />
+          <ScrollProbe />
           <Footer />
         </CartProvider>
       </body>
