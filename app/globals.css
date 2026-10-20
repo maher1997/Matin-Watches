@@ -7381,6 +7381,16 @@ html.rv-on .rv.card.rv-in .card-media img {
   transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* No glow or shadow here: inside the sideways-scrolling table Safari clips
+   the blur to a square, which shows as a lighter box around each watch. */
+.cmp-watch-media .photo-glow {
+  display: none;
+}
+
+.cmp-watch-media .product-photo {
+  filter: none;
+}
+
 @media (hover: hover) {
   .cmp-watch:hover .cmp-watch-media {
     transform: translateY(-4px) scale(1.03);
