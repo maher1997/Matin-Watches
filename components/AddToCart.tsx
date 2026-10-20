@@ -33,9 +33,16 @@ export default function AddToCart({ product }: { product: Product }) {
   useEffect(() => {
     const row = rowRef.current;
     if (!row || !("IntersectionObserver" in window)) return;
+    // Room under the footer for the bar. A plain class, set once: the old
+    // body:has(.buy-bar) rule made Safari recheck the whole page each time
+    // the bar slid in, which caught the scroll inside Instagram.
+    document.body.classList.add("has-buy-bar");
     const io = new IntersectionObserver(([e]) => setRowHidden(!e.isIntersecting));
     io.observe(row);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      document.body.classList.remove("has-buy-bar");
+    };
   }, []);
 
   const addNow = () => {

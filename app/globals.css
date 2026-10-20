@@ -2966,7 +2966,7 @@ button.thumb:focus-visible {
 
 @media (max-width: 860px) {
   /* Room under the footer so the buy bar never covers it. */
-  body:has(.buy-bar) .footer {
+  body.has-buy-bar .footer {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
 }
