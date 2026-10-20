@@ -8775,36 +8775,38 @@ html.menu-open body {
     radial-gradient(120% 60% at 100% 0%, rgba(82, 133, 247, 0.14), transparent 60%),
     linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0%, transparent 40%, rgba(255, 255, 255, 0.012) 65%, transparent 90%),
     #0d0f13;
-  animation: mmenu-fade 0.2s ease-out both;
-}
-
-/* Open: a quick fade while the content drops 10px into place.
-   Close: a faster fade out. Only opacity and transform move, so it stays
-   light on the phone. */
-.mmenu-in {
-  animation: mmenu-drop 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.mmenu.is-closing {
-  animation: mmenu-out 0.16s ease-in both;
+  visibility: hidden;
+  opacity: 0;
   pointer-events: none;
 }
 
-@keyframes mmenu-fade {
+.mmenu.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  animation: mmenu-slide 0.36s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+/* Open: the menu slides in from the left. Close: it slides back out a
+   little faster. Only transform moves, so it stays light on the phone. */
+.mmenu.is-closing {
+  visibility: visible;
+  opacity: 1;
+  animation: mmenu-slide-out 0.24s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes mmenu-slide {
   from {
-    opacity: 0;
+    transform: translateX(-100%);
   }
 }
 
-@keyframes mmenu-drop {
+@keyframes mmenu-slide-out {
   from {
-    transform: translateY(-10px);
+    transform: none;
   }
-}
-
-@keyframes mmenu-out {
   to {
-    opacity: 0;
+    transform: translateX(-100%);
   }
 }
 
@@ -8977,16 +8979,16 @@ html.menu-open body {
 }
 
 /* Blocks rise in one after another when the menu opens (time-based, once). */
-.mmenu-watches li,
-.mmenu-tiles li {
-  animation: mmenu-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(40ms + var(--i, 0) * 18ms);
+.mmenu.is-open .mmenu-watches li,
+.mmenu.is-open .mmenu-tiles li {
+  animation: mmenu-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(90ms + var(--i, 0) * 22ms);
 }
 
 @keyframes mmenu-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateX(-14px);
   }
 }
 
@@ -8998,10 +9000,9 @@ html.menu-open body {
 
 @media (prefers-reduced-motion: reduce) {
   .mmenu,
-  .mmenu-in,
-  .mmenu li,
+  .mmenu *,
   .menu-lines i {
-    animation: none;
-    transition: none;
+    animation: none !important;
+    transition: none !important;
   }
 }

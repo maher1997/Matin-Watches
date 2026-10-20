@@ -82,6 +82,10 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
   const [open, setOpen] = useState(false);
   // Keeps the menu on screen for its short closing fade.
   const [shown, setShown] = useState(false);
+  // The menu is built (hidden) once the page is idle, so its photos and
+  // page links are already loaded when it is tapped: opening it then only
+  // switches a class, with no work that could make it stutter.
+  const [ready, setReady] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const close = () => setOpen(false);
 
@@ -112,8 +116,25 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
   }, [open]);
 
   useEffect(() => {
+    const go = () => setReady(true);
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(go, { timeout: 2500 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(go, 1200);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    document.querySelectorAll<HTMLImageElement>(".mmenu img").forEach((img) => {
+      img.decode?.().catch(() => {});
+    });
+  }, [ready]);
+
+  useEffect(() => {
     if (open) return setShown(true);
-    const t = setTimeout(() => setShown(false), 160);
+    const t = setTimeout(() => setShown(false), 240);
     return () => clearTimeout(t);
   }, [open]);
 
@@ -154,8 +175,15 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
           </Link>
         </div>
 
-        {(open || shown) && (
-          <div id="mobile-menu" className={`mmenu${open ? "" : " is-closing"}`} role="dialog" aria-label="Menu">
+        {(ready || open) && (
+          <div
+            id="mobile-menu"
+            className={`mmenu${open ? " is-open" : shown ? " is-closing" : ""}`}
+            role="dialog"
+            aria-label="Menu"
+            aria-hidden={!open}
+            inert={!open}
+          >
             <div className="mmenu-in">
               <div className="mmenu-head">
                 <p className="mmenu-label">Watches</p>
@@ -171,7 +199,17 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
                   <li key={w.slug} style={{ "--i": i } as React.CSSProperties}>
                     <Link href={`/product/${w.slug}`} onClick={close}>
                       <span className="mmenu-photo">
-                        {w.image && <Image src={w.image} alt="" fill sizes="160px" style={{ objectFit: "contain" }} />}
+                        {w.image && (
+                          <Image
+                            src={w.image}
+                            alt=""
+                            fill
+                            sizes="160px"
+                            loading="eager"
+                            fetchPriority="low"
+                            style={{ objectFit: "contain" }}
+                          />
+                        )}
                       </span>
                       <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
                       <span className="mmenu-price">{w.price}</span>
