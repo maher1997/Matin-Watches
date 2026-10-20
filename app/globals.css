@@ -8757,6 +8757,9 @@ html.rv-on .rv.card.rv-in .card-media img {
 }
 
 
+/* The menu stays painted just off screen (and inert) while closed, so
+   opening it only moves layers the phone has already drawn: nothing has to
+   be painted at the moment of the tap, even while a page is still loading. */
 .mmenu {
   position: fixed;
   top: var(--menu-top, var(--header-h));
@@ -8764,13 +8767,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   right: 0;
   bottom: 0;
   z-index: 49;
-  visibility: hidden;
   pointer-events: none;
-}
-
-.mmenu.is-open,
-.mmenu.is-closing {
-  visibility: visible;
 }
 
 .mmenu.is-open {
@@ -8786,6 +8783,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   padding: 0;
   background: rgba(4, 5, 8, 0.62);
   opacity: 0;
+  will-change: opacity;
   transition: opacity 0.42s ease;
   -webkit-tap-highlight-color: transparent;
   /* Dragging on the dimmed page does not scroll it. */
@@ -8814,7 +8812,9 @@ html.rv-on .rv.card.rv-in .card-media img {
     #0d0f13;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 24px 0 60px -20px rgba(0, 0, 0, 0.8);
-  transform: translateX(-102%);
+  /* Far enough left that its shadow is off screen too. */
+  transform: translateX(calc(-100% - 100px));
+  will-change: transform;
   transition: transform 0.42s cubic-bezier(0.55, 0, 0.75, 0.2);
 }
 
@@ -8989,20 +8989,6 @@ html.rv-on .rv.card.rv-in .card-media img {
 
 .mmenu-foot a {
   color: #8fb0ff;
-}
-
-/* Blocks rise in one after another when the menu opens (time-based, once). */
-.mmenu.is-open .mmenu-watches li,
-.mmenu.is-open .mmenu-tiles li {
-  animation: mmenu-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(150ms + var(--i, 0) * 45ms);
-}
-
-@keyframes mmenu-in {
-  from {
-    opacity: 0;
-    transform: translateX(-18px);
-  }
 }
 
 @media (min-width: 861px) {

@@ -80,10 +80,8 @@ export type MenuWatch = { slug: string; name: string; price: string; image?: str
 export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
   const { count } = useCart();
   const [open, setOpen] = useState(false);
-  // Keeps the menu on screen for its short closing fade.
-  const [shown, setShown] = useState(false);
-  // The menu is built (hidden) once the page is idle, so its photos and
-  // page links are already loaded when it is tapped: opening it then only
+  // The menu is built (off screen) right after the page starts, so its
+  // photos and page links are ready when it is tapped: opening it then only
   // switches a class, with no work that could make it stutter.
   const [ready, setReady] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -119,10 +117,10 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
   useEffect(() => {
     const go = () => setReady(true);
     if ("requestIdleCallback" in window) {
-      const id = requestIdleCallback(go, { timeout: 2500 });
+      const id = requestIdleCallback(go, { timeout: 800 });
       return () => cancelIdleCallback(id);
     }
-    const t = setTimeout(go, 1200);
+    const t = setTimeout(go, 400);
     return () => clearTimeout(t);
   }, []);
 
@@ -132,12 +130,6 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
       img.decode?.().catch(() => {});
     });
   }, [ready]);
-
-  useEffect(() => {
-    if (open) return setShown(true);
-    const t = setTimeout(() => setShown(false), 420);
-    return () => clearTimeout(t);
-  }, [open]);
 
   return (
     <>
@@ -183,7 +175,7 @@ export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
           <div
             id="mobile-menu"
             ref={menuRef}
-            className={`mmenu${open ? " is-open" : shown ? " is-closing" : ""}`}
+            className={`mmenu${open ? " is-open" : ""}`}
             role="dialog"
             aria-label="Menu"
             aria-hidden={!open}
@@ -216,7 +208,7 @@ const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch
       </div>
       <ul className="mmenu-watches">
         {watches.map((w, i) => (
-          <li key={w.slug} style={{ "--i": i } as React.CSSProperties}>
+          <li key={w.slug}>
             <Link href={`/product/${w.slug}`} onClick={onNav}>
               <span className="mmenu-photo">
                 {w.image && (
@@ -241,7 +233,7 @@ const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch
       <p className="mmenu-label">Shop by</p>
       <ul className="mmenu-tiles">
         {shopBy.map((s, i) => (
-          <li key={s.href} style={{ "--i": i + 2 } as React.CSSProperties}>
+          <li key={s.href}>
             <Link href={s.href} onClick={onNav}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 {s.icon}
