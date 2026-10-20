@@ -39,6 +39,17 @@ export default function ScrollProbe() {
     const bar = document.querySelector(".buy-bar");
     const mo = new MutationObserver(() => ev(`bar ${bar?.className}`));
     if (bar) mo.observe(bar, { attributes: true, attributeFilter: ["class"] });
+    // Sections that play something when they arrive.
+    const mo2 = new MutationObserver((list) => {
+      let rv = 0;
+      for (const m of list) {
+        const el = m.target as HTMLElement;
+        if (el.classList.contains("rv-in") && !(m.oldValue || "").includes("rv-in")) rv++;
+        else if (el.matches(".stories, .showcase-panel, .bl, .hm")) ev(`${el.className.slice(0, 30)}`);
+      }
+      if (rv) ev(`reveal x${rv}`);
+    });
+    mo2.observe(document.body, { attributes: true, attributeFilter: ["class"], attributeOldValue: true, subtree: true });
     const onLoad = (e: Event) => {
       const t = e.target as HTMLImageElement;
       if (t.tagName === "IMG") ev(`img ${(t.currentSrc || "").replace(/.*%2F|&.*/g, "").slice(0, 28)}`);
@@ -59,7 +70,7 @@ export default function ScrollProbe() {
           `slow frames (time:ms): ${big.map((f) => `${f[0]}:${f[1]}`).join(" ") || "none"}`,
           `scroll reversals: ${back.slice(0, 12).join(" ") || "none"}`,
           `heights: ${hs.join(",")}`,
-          ...log.filter((l) => parseInt(l) > started - t0 - 500).slice(0, 25),
+          ...log.filter((l) => parseInt(l) > started - t0 - 500).slice(0, 30),
         ].join("\n"),
       );
       cleanup();
@@ -70,6 +81,7 @@ export default function ScrollProbe() {
       removeEventListener("resize", onResize);
       document.removeEventListener("load", onLoad, true);
       mo.disconnect();
+      mo2.disconnect();
     }
     return cleanup;
   }, []);
