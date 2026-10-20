@@ -76,6 +76,20 @@ export default function Stories({ product }: { product: Product }) {
     };
   }, []);
 
+  // Photos are fetched one slide ahead instead of all at once: the seven
+  // big photos loading and decoding together, on the first scroll, made
+  // the page catch in the Instagram browser.
+  const [loaded, setLoaded] = useState<number[]>([0]);
+  useEffect(() => {
+    if (!shown || n < 2) return;
+    const next = (active + 1) % n;
+    setLoaded((l) =>
+      l.includes(active) && l.includes(next)
+        ? l
+        : [...new Set([...l, active, next])],
+    );
+  }, [active, shown, n]);
+
   // Keyed on `active`, so any jump restarts the 4 seconds.
   useEffect(() => {
     if (!inView || paused || n < 2) return;
@@ -227,14 +241,16 @@ export default function Stories({ product }: { product: Product }) {
             className={`story story-${s.accent ?? "blue"}${i === active ? " on" : ""}`}
           >
             <div className="story-pic">
-              <Image
-                src={s.image}
-                alt={s.alt}
-                fill
-                quality={75}
-                style={s.focus ? { objectPosition: s.focus } : undefined}
-                sizes="(max-width: 860px) 100vw, 1240px"
-              />
+              {loaded.includes(i) && (
+                <Image
+                  src={s.image}
+                  alt={s.alt}
+                  fill
+                  quality={75}
+                  style={s.focus ? { objectPosition: s.focus } : undefined}
+                  sizes="(max-width: 860px) 100vw, 1240px"
+                />
+              )}
             </div>
             {/* Keyed on `shown`: the words are already there at load, and they
                 play in again the first time the slider comes into view. */}
