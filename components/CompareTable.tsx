@@ -181,6 +181,23 @@ export default function CompareTable({
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
                 </span>
+                {/* Computer only: fills the corner beside the watch photos. */}
+                <div className="cmp-corner-info" aria-hidden="true">
+                  <span className="cmp-corner-eyebrow">Side by side</span>
+                  <strong>Which one fits you?</strong>
+                  <span className="cmp-corner-key">
+                    <span className="cmp-yes">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 12.5l4.5 4.5L19 7.5" />
+                      </svg>
+                    </span>
+                    Included
+                  </span>
+                  <span className="cmp-corner-key">
+                    <span className="cmp-corner-dash">—</span>
+                    Not included
+                  </span>
+                </div>
               </td>
               {cols.map((i) => {
                 const w = watches[i];
