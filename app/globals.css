@@ -2901,13 +2901,17 @@ button.thumb:focus-visible {
     background: linear-gradient(180deg, #14161c, #0e1014);
     border-top: 1px solid var(--border);
     box-shadow: 0 -12px 30px -14px rgba(0, 0, 0, 0.9);
-    transform: translateY(110%);
-    visibility: hidden;
-    transition: transform 0.25s ease, visibility 0.25s;
+    /* Kept painted just below the screen (not hidden) so the first time
+       it slides up, on the first scroll, nothing has to be drawn and the
+       scroll does not catch on iPhone. */
+    transform: translateY(calc(100% + 40px));
+    will-change: transform;
+    pointer-events: none;
+    transition: transform 0.25s ease;
   }
   .buy-bar.on {
     transform: none;
-    visibility: visible;
+    pointer-events: auto;
   }
   .buy-bar .btn {
     flex: 1;
