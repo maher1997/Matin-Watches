@@ -66,6 +66,22 @@ body::after {
   mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 30%, transparent 85%);
 }
 
+/* Phones: the backdrop keeps the height the screen had when the page
+   opened. In-app browsers like Instagram hide their bar on the first
+   scroll, and redrawing a full-screen backdrop at the new height made that
+   first scroll catch. Below it, the page colour matches the backdrop's
+   bottom edge, so the few pixels uncovered look the same. */
+@media (hover: none) {
+  body {
+    background-color: #060709;
+  }
+  body::before,
+  body::after {
+    bottom: auto;
+    height: var(--sv, 100vh);
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
