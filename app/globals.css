@@ -1100,6 +1100,11 @@ button.thumb:focus-visible {
   }
 }
 
+/* On a phone the link lights up only on a real tap (components/TapHighlight). */
+.footer a.is-tap {
+  color: var(--fg);
+}
+
 .news-row {
   display: flex;
   gap: 0.5rem;

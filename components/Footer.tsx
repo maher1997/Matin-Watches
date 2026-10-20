@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import TapHighlight from "./TapHighlight";
 import { contactEmail } from "@/lib/site";
 
 // Social accounts are not set up yet: the icons show where they will go and
@@ -37,6 +38,7 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="footer">
+      <TapHighlight selector=".footer a" />
       <div className="footer-inner">
         <div className="footer-brand">
           <Logo />
