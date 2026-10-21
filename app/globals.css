@@ -8904,7 +8904,7 @@ html.rv-on .rv.card.rv-in .card-media img {
   top: 0;
   bottom: 0;
   left: 0;
-  width: min(88vw, 420px);
+  width: 100%;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -8912,7 +8912,6 @@ html.rv-on .rv.card.rv-in .card-media img {
     radial-gradient(120% 50% at 100% 0%, rgba(82, 133, 247, 0.13), transparent 60%),
     linear-gradient(115deg, rgba(255, 255, 255, 0.025) 0%, transparent 40%, rgba(255, 255, 255, 0.012) 65%, transparent 90%),
     #0d0f13;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 24px 0 60px -20px rgba(0, 0, 0, 0.8);
   /* Far enough left that its shadow is off screen too. */
   transform: translateX(calc(-100% - 100px));
