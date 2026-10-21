@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import SectionHead from "@/components/SectionHead";
 import useShowcase from "@/components/useShowcase";
+import { scrolling } from "@/lib/scrolling";
 import GpsWatch, {
   altFeet,
   dirName,
@@ -88,14 +89,19 @@ export default function GpsShowcase({
       return;
     }
     let raf = 0;
-    const t0 = performance.now();
+    let prev = 0;
+    let clock = 0;
     const tick = (now: number) => {
-      // A frame's time can be a touch earlier than t0; never let it go
+      // A frame's time can be a touch earlier than the last; never let it go
       // below zero, or the altitude lookup reads past the start of its list.
-      const t = Math.max(0, now - t0) % (DRAW_MS + HOLD_MS);
+      const dt = prev ? Math.max(0, now - prev) : 0;
+      prev = now;
+      raf = requestAnimationFrame(tick);
+      if (scrolling()) return;
+      clock += dt;
+      const t = clock % (DRAW_MS + HOLD_MS);
       const u = Math.min(1, t / DRAW_MS);
       setP(u * u * (3 - 2 * u) * 0.15 + u * 0.85);
-      raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -105,11 +111,15 @@ export default function GpsShowcase({
   useEffect(() => {
     if (!live || reduced.current || id !== "compass") return;
     let raf = 0;
-    const t0 = performance.now();
+    let prev = 0;
+    let t = 0;
     const tick = (now: number) => {
-      const t = Math.max(0, now - t0);
-      setHeading(42 + 30 * Math.sin(t / 2300) + 9 * Math.sin(t / 830));
+      const dt = prev ? Math.max(0, now - prev) : 0;
+      prev = now;
       raf = requestAnimationFrame(tick);
+      if (scrolling()) return;
+      t += dt;
+      setHeading(42 + 30 * Math.sin(t / 2300) + 9 * Math.sin(t / 830));
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);

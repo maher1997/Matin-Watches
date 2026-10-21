@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import SectionHead from "@/components/SectionHead";
 import useShowcase from "@/components/useShowcase";
+import { scrolling } from "@/lib/scrolling";
 import Multi from "@/components/fitness/Multi";
 import Tri, { TRI_STILL } from "@/components/fitness/Tri";
 
@@ -27,11 +28,14 @@ export default function Fitness({
   useEffect(() => {
     if (!live || reduced.current) return;
     let raf = 0;
-    const t0 = performance.now() - clock.current * 1000;
+    let prev = 0;
     const tick = (now: number) => {
-      clock.current = Math.max(0, now - t0) / 1000;
-      setT(clock.current);
+      const dt = prev ? Math.max(0, now - prev) : 0;
+      prev = now;
       raf = requestAnimationFrame(tick);
+      if (scrolling()) return;
+      clock.current += dt / 1000;
+      setT(clock.current);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
