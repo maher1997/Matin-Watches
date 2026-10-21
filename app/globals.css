@@ -82,6 +82,43 @@ body::after {
   }
 }
 
+/* Instagram's browser on iPhone: the backdrop scrolls with the page instead
+   of staying fixed. Instagram moves fixed layers a little on every scroll
+   step while its bar slides, so the grid behind the page wobbled against
+   the photos and text, which made them look like they shook. */
+html[data-ig] body::before,
+html[data-ig] body::after {
+  position: absolute;
+}
+
+/* Test links (?t=1 to ?t=4, set in app/layout.tsx), each switching off one
+   more effect, to find what shakes in a browser we cannot test here.
+   1: no arrive animations (components/Motion.tsx). 2: no other animations.
+   3: no filters, shadows or extra layers. 4: nothing fixed or sticky. */
+html[data-t="2"] *, html[data-t="2"] *::before, html[data-t="2"] *::after,
+html[data-t="3"] *, html[data-t="3"] *::before, html[data-t="3"] *::after,
+html[data-t="4"] *, html[data-t="4"] *::before, html[data-t="4"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+html[data-t="3"] *, html[data-t="3"] *::before, html[data-t="3"] *::after,
+html[data-t="4"] *, html[data-t="4"] *::before, html[data-t="4"] *::after {
+  filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  will-change: auto !important;
+}
+html[data-t="4"] body::before,
+html[data-t="4"] body::after {
+  position: absolute;
+}
+html[data-t="4"] .header {
+  position: relative;
+}
+html[data-t="4"] .buy-bar {
+  display: none !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;

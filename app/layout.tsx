@@ -84,8 +84,9 @@ const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)retur
 // height made the whole page lay out again mid-scroll, a visible hitch.
 // Instagram's in-app browser on iPhone also gets data-ig: there the arriving
 // blocks only fade in (see globals.css), as anything moving while you
-// scroll looked like it shook.
-const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
+// scroll looked like it shook. ?t=1 to ?t=4 sets data-t for the test links
+// described in globals.css.
+const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-4])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
 
 export default function RootLayout({
   children,
