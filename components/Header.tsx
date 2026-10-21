@@ -75,6 +75,14 @@ const help = [
   { href: "/about", label: "About MATIN" },
 ];
 
+// One short line under each watch name in the phone menu.
+const watchLine: Record<string, string> = {
+  "matin-trekon": "Rugged · 30-day battery · 3ATM",
+  "matin-torvan": "Round AMOLED · Sapphire",
+  "matin-kaldor": "Tactical · Flashlight · GPS",
+  "matin-varkon": "AMOLED · 6-system GPS",
+};
+
 export type MenuWatch = { slug: string; name: string; price: string; image?: string };
 
 export default function Header({ watches = [] }: { watches?: MenuWatch[] }) {
@@ -207,7 +215,7 @@ const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch
         </Link>
       </div>
       <ul className="mmenu-watches">
-        {watches.map((w, i) => (
+        {watches.map((w) => (
           <li key={w.slug}>
             <Link href={`/product/${w.slug}`} onClick={onNav}>
               <span className="mmenu-photo">
@@ -216,14 +224,17 @@ const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch
                     src={w.image}
                     alt=""
                     fill
-                    sizes="160px"
+                    sizes="80px"
                     loading="eager"
                     fetchPriority="low"
                     style={{ objectFit: "contain" }}
                   />
                 )}
               </span>
-              <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
+              <span className="mmenu-text">
+                <span className="mmenu-name">{w.name.replace(/^MATIN\s+/, "")}</span>
+                {watchLine[w.slug] && <span className="mmenu-line">{watchLine[w.slug]}</span>}
+              </span>
               <span className="mmenu-price">{w.price}</span>
             </Link>
           </li>
@@ -232,7 +243,7 @@ const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch
 
       <p className="mmenu-label">Shop by</p>
       <ul className="mmenu-tiles">
-        {shopBy.map((s, i) => (
+        {shopBy.map((s) => (
           <li key={s.href}>
             <Link href={s.href} onClick={onNav}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -250,9 +261,6 @@ const MenuBody = memo(function MenuBody({ watches, onNav }: { watches: MenuWatch
           <li key={h.href}>
             <Link href={h.href} onClick={onNav}>
               {h.label}
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9 6l6 6-6 6" />
-              </svg>
             </Link>
           </li>
         ))}
