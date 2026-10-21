@@ -41,6 +41,9 @@ export default function Motion() {
     let raf = 0;
     let waiting: HTMLElement[] = [];
     const frames = new Set<number>();
+    // On computers blocks only fade in: the rise made thin borders and
+    // photos flicker on desktop screens. Phones keep the rise.
+    const desktop = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     const usable = (el: HTMLElement) => {
       const cs = getComputedStyle(el);
@@ -84,7 +87,7 @@ export default function Motion() {
     const play = (el: HTMLElement) => {
       const delay = parseFloat(el.style.getPropertyValue("--rv-d")) || 0;
       // The lineup table only fades in (its photos flickered while moving).
-      if (!el.matches(".cmp-panel")) rise(el, delay);
+      if (!el.matches(".cmp-panel") && !desktop) rise(el, delay);
       el.classList.add("rv-in");
       timers.push(window.setTimeout(() => done(el), delay + 1300));
     };

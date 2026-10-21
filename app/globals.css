@@ -7168,6 +7168,15 @@ html.rv-on .cmp-panel.rv.rv-in {
   transform: none;
 }
 
+/* Computers: blocks only fade in, with no rise or zoom (see Motion.tsx). */
+@media (hover: hover) and (pointer: fine) {
+  html.rv-on .rv,
+  html.rv-on .rv .card-media img,
+  html.rv-on .rv.card .card-media img {
+    transform: none !important;
+  }
+}
+
 /* Product photos in cards settle from a slight zoom as the card arrives */
 html.rv-on .rv .card-media img,
 html.rv-on .rv.card .card-media img {
