@@ -311,8 +311,10 @@ h3 {
   border-radius: 12px;
 }
 
-.icon-btn:hover {
-  background: var(--surface-2);
+@media (hover: hover) {
+  .icon-btn:hover {
+    background: var(--surface-2);
+  }
 }
 
 .menu-btn {
@@ -8795,27 +8797,12 @@ html.rv-on .rv.card.rv-in .card-media img {
 }
 
 
-/* Phone menu (opens under the header). The button is a small steel tile
-   (the cart beside the logo gets the same tile so the header stays even),
-   with three lines that step in, long to short. Open, they turn into an X. */
-@media (max-width: 860px) {
-  .header .menu-btn,
-  .header .cart-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-    border: 1px solid rgba(169, 194, 255, 0.16);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.015));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 6px 16px -10px rgba(0, 0, 0, 0.9);
-  }
-  .header .menu-btn.is-open {
-    border-color: rgba(82, 133, 247, 0.45);
-  }
-}
-
+/* Phone menu (opens under the header). The button is three thin lines with
+   no box; the short middle line is MATIN blue, like the "I" in the logo.
+   Open, the outer lines turn into an X. */
 .menu-lines {
   position: relative;
-  width: 20px;
+  width: 24px;
   height: 14px;
 }
 
@@ -8823,10 +8810,10 @@ html.rv-on .rv.card.rv-in .card-media img {
   position: absolute;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 1.7px;
   border-radius: 2px;
   background: currentColor;
-  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), width 0.26s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.16s;
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.16s;
 }
 
 .menu-lines i:nth-child(1) {
@@ -8835,13 +8822,13 @@ html.rv-on .rv.card.rv-in .card-media img {
 
 .menu-lines i:nth-child(2) {
   top: 6px;
-  width: 70%;
+  width: 62%;
+  background: #5285f7;
   transform-origin: left center;
 }
 
 .menu-lines i:nth-child(3) {
   top: 12px;
-  width: 45%;
 }
 
 .menu-btn.is-open .menu-lines i:nth-child(1) {
@@ -8854,7 +8841,6 @@ html.rv-on .rv.card.rv-in .card-media img {
 }
 
 .menu-btn.is-open .menu-lines i:nth-child(3) {
-  width: 100%;
   transform: translateY(-6px) rotate(-45deg);
 }
 
