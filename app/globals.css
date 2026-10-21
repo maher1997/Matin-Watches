@@ -7154,13 +7154,12 @@ html.rv-on .rv.rv-in {
     transform 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
 }
 
-/* While a block arrives it is moved as one finished picture by the
-   graphics card. Otherwise Chrome redraws the watch photos inside it at a
-   slightly different size and position every frame, which made them
-   shimmer ("shake") as the lineup table came in. Looks the same. */
-html.rv-on .rv.rv-in,
-html.rv-on .rv.rv-in .card-media img {
-  will-change: transform, opacity;
+/* Photos inside an arriving block get their own layer, drawn sharp once.
+   Without it Chrome drew them blurry while the block moved and then
+   snapped them sharp when it stopped, so the watches looked like they
+   shook as the lineup table came in. Looks the same otherwise. */
+html.rv-on .rv img {
+  will-change: transform;
 }
 
 /* The lineup table only rises (no tiny zoom), so its photos stay sharp. */
