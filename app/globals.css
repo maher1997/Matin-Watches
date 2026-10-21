@@ -7162,11 +7162,9 @@ html.rv-on .rv img {
   will-change: transform;
 }
 
-/* The lineup table only rises (no tiny zoom), so its photos stay sharp. */
-html.rv-on .cmp-panel.rv {
-  transform: translate3d(0, 34px, 0);
-}
-
+/* The lineup table only fades in, without rising: moving its detailed
+   watch photos by fractions of a pixel made them flicker in Chrome. */
+html.rv-on .cmp-panel.rv,
 html.rv-on .cmp-panel.rv.rv-in {
   transform: none;
 }
