@@ -19,7 +19,38 @@ export default function PdpGallery({ product }: { product: Product }) {
   // Fade only after the first tap, so the first photo shows instantly.
   const [fx, setFx] = useState(false);
   const touchX = useRef(0);
+  // Set when a second finger lands: a pinch is never a swipe.
+  const pinched = useRef(false);
+  const mainRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(false);
+
+  // Pinching the big photo opens the full-screen viewer (which zooms the
+  // photo itself) instead of zooming the whole page, which threw the page
+  // and the Add to cart bar out of place on phones.
+  useEffect(() => {
+    const el = mainRef.current;
+    if (!el || !count) return;
+    const block = (e: Event) => e.preventDefault();
+    const onTouch = (e: TouchEvent) => {
+      if (e.touches.length < 2) return;
+      e.preventDefault();
+      if (!pinched.current) {
+        pinched.current = true;
+        setZoom(true);
+      }
+    };
+    el.addEventListener("touchstart", onTouch, { passive: false });
+    el.addEventListener("touchmove", onTouch, { passive: false });
+    // Safari's own pinch events.
+    el.addEventListener("gesturestart", block);
+    el.addEventListener("gesturechange", block);
+    return () => {
+      el.removeEventListener("touchstart", onTouch);
+      el.removeEventListener("touchmove", onTouch);
+      el.removeEventListener("gesturestart", block);
+      el.removeEventListener("gesturechange", block);
+    };
+  }, [count]);
 
   // Once the page has settled, load the other photos quietly in the
   // background so switching is instant instead of waiting on a download.
@@ -68,10 +99,17 @@ export default function PdpGallery({ product }: { product: Product }) {
   return (
     <div className={`pdp-gallery${fx ? " fx" : ""}`}>
       <div
+        ref={mainRef}
         className={`pdp-main${count ? " can-zoom" : ""}`}
         onClick={() => count && setZoom(true)}
-        onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+        onTouchStart={(e) => {
+          if (e.touches.length === 1) {
+            pinched.current = false;
+            touchX.current = e.touches[0].clientX;
+          }
+        }}
         onTouchEnd={(e) => {
+          if (pinched.current || e.touches.length) return;
           const dx = e.changedTouches[0].clientX - touchX.current;
           if (count > 1 && Math.abs(dx) > 50) show(active + (dx < 0 ? 1 : -1));
         }}

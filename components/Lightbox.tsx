@@ -106,9 +106,19 @@ export default function Lightbox({
       else if (e.key === "ArrowLeft") go(-1);
     };
     addEventListener("keydown", onKey);
+    // While the viewer is open a pinch zooms the photo only, never the page
+    // behind it (Safari would otherwise zoom the whole page too).
+    const block = (e: Event) => e.preventDefault();
+    const twoFingers = (e: TouchEvent) => e.touches.length > 1 && e.preventDefault();
+    document.addEventListener("gesturestart", block);
+    document.addEventListener("gesturechange", block);
+    document.addEventListener("touchmove", twoFingers, { passive: false });
     return () => {
       root.style.overflow = prev;
       removeEventListener("keydown", onKey);
+      document.removeEventListener("gesturestart", block);
+      document.removeEventListener("gesturechange", block);
+      document.removeEventListener("touchmove", twoFingers);
     };
   }, [go, onClose]);
 
@@ -225,7 +235,8 @@ export default function Lightbox({
             src={images[index]}
             alt={alts[index] ?? ""}
             fill
-            sizes="100vw"
+            // Phones load a sharper file so the photo stays crisp when zoomed.
+            sizes="(max-width: 860px) 200vw, 100vw"
             quality={90}
             priority
             draggable={false}
