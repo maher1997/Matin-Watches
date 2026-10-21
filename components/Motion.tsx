@@ -10,6 +10,22 @@ const ITEMS =
   ".card, .big-stat, .fgroup, .lp-reasons > *, .lp-colls > *, .lp-trio-item, .faq-item";
 const STEP = 90; // ms between cards in a row
 const SAFETY = 1600; // ms: anything still waiting after it is in view shows anyway
+const RISE = 34; // px a block rises while it arrives
+const RISE_MS = 1150;
+
+// cubic-bezier(0.16, 0.84, 0.24, 1), the same soft curve the CSS used.
+function ease(t: number) {
+  const x1 = 0.16, y1 = 0.84, x2 = 0.24, y2 = 1;
+  const bx = (u: number) => 3 * u * (1 - u) * (1 - u) * x1 + 3 * u * u * (1 - u) * x2 + u * u * u;
+  const by = (u: number) => 3 * u * (1 - u) * (1 - u) * y1 + 3 * u * u * (1 - u) * y2 + u * u * u;
+  let lo = 0, hi = 1, u = t;
+  for (let i = 0; i < 20; i++) {
+    u = (lo + hi) / 2;
+    if (bx(u) < t) lo = u;
+    else hi = u;
+  }
+  return by(u);
+}
 
 // Soft "arrive" animations, Apple style. Each block plays once, on its own
 // clock, when it reaches the screen; it is never tied to how far or how fast
@@ -24,6 +40,7 @@ export default function Motion() {
     const timers: number[] = [];
     let raf = 0;
     let waiting: HTMLElement[] = [];
+    const frames = new Set<number>();
 
     const usable = (el: HTMLElement) => {
       const cs = getComputedStyle(el);
@@ -40,11 +57,35 @@ export default function Motion() {
     const done = (el: HTMLElement) => {
       el.classList.remove("rv", "rv-in");
       el.style.removeProperty("--rv-d");
+      el.style.removeProperty("transform");
+    };
+
+    // The rise is moved here rather than by a CSS transition so that every
+    // frame lands on a whole screen pixel. Moved by fractions of a pixel,
+    // thin borders and photos flickered between sharp and soft in Chrome.
+    const rise = (el: HTMLElement, delay: number) => {
+      const px = 1 / (window.devicePixelRatio || 1);
+      const set = (y: number) => {
+        const snapped = Math.round(y / px) * px;
+        el.style.transform = snapped > 0 ? `translate3d(0, ${snapped}px, 0)` : "none";
+      };
+      set(RISE);
+      let t0 = 0;
+      const step = (now: number) => {
+        if (!el.classList.contains("rv-in")) return;
+        if (!t0) t0 = now + delay;
+        const t = Math.min(1, Math.max(0, (now - t0) / RISE_MS));
+        set(RISE * (1 - ease(t)));
+        if (t < 1) frames.add(requestAnimationFrame(step));
+      };
+      frames.add(requestAnimationFrame(step));
     };
 
     const play = (el: HTMLElement) => {
-      el.classList.add("rv-in");
       const delay = parseFloat(el.style.getPropertyValue("--rv-d")) || 0;
+      // The lineup table only fades in (its photos flickered while moving).
+      if (!el.matches(".cmp-panel")) rise(el, delay);
+      el.classList.add("rv-in");
       timers.push(window.setTimeout(() => done(el), delay + 1300));
     };
 
@@ -116,6 +157,7 @@ export default function Motion() {
     return () => {
       cancelAnimationFrame(start);
       cancelAnimationFrame(raf);
+      frames.forEach(cancelAnimationFrame);
       stop();
       timers.forEach((t) => {
         clearTimeout(t);

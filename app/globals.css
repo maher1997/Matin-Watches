@@ -7143,15 +7143,14 @@ button.thumb:focus-visible {
    script runs; they rise and fade in on their own clock when reached. */
 html.rv-on .rv {
   opacity: 0;
-  transform: translate3d(0, 34px, 0) scale(0.985);
+  transform: translate3d(0, 34px, 0);
 }
 
+/* The rise itself is moved by components/Motion.tsx, one whole pixel at a
+   time, so borders stay crisp; CSS only fades the block in. */
 html.rv-on .rv.rv-in {
   opacity: 1;
-  transform: none;
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--rv-d, 0ms),
-    transform 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--rv-d, 0ms);
 }
 
 /* Photos inside an arriving block get their own layer, drawn sharp once.
