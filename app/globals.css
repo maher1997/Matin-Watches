@@ -5191,10 +5191,14 @@ button.thumb:focus-visible {
   transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* The wave strip is one wave-length wider than the screen and slides
+   sideways as a whole (a transform the phone's graphics chip moves), instead
+   of redrawing its picture every frame, which caught the scroll in
+   Instagram's browser. */
 .bl-wave {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: -50cqw;
+  width: calc(100% + 50cqw);
   height: 9cqw;
   bottom: 100%;
   margin-bottom: -1px;
@@ -5216,10 +5220,10 @@ button.thumb:focus-visible {
 
 @keyframes bl-wave {
   from {
-    background-position-x: 0;
+    transform: translate3d(0, 0, 0);
   }
   to {
-    background-position-x: 50cqw;
+    transform: translate3d(50cqw, 0, 0);
   }
 }
 

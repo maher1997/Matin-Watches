@@ -5,6 +5,7 @@ import SectionHead from "@/components/SectionHead";
 import { useEffect, useRef, useState } from "react";
 import { Athlete } from "./sports/rig";
 import { sportLibrary } from "./sports/library";
+import { scrolling } from "@/lib/scrolling";
 
 // "Sport modes" showcase: the real watch with the sport being tracked on its
 // screen (moving athlete, name, one dot per sport), and every sport the watch
@@ -84,10 +85,12 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     const svgs = Array.from(el.querySelectorAll<SVGSVGElement>("svg.ath"));
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     reduced.current = reduce.matches;
+    let held = false;
+    let resume = 0;
     const sync = () => {
       reduced.current = reduce.matches;
-      const play = live.current && !reduce.matches;
-      el.classList.toggle("is-live", play);
+      const play = live.current && !reduce.matches && !held;
+      el.classList.toggle("is-live", live.current && !reduce.matches);
       svgs.forEach((svg) => {
         if (play) svg.unpauseAnimations();
         else {
@@ -104,9 +107,26 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     io.observe(el);
     reduce.addEventListener("change", sync);
     sync();
-    // Gently walk through the sports until the visitor picks one.
+    // Inside Instagram's browser the little athletes (about thirty drawings
+    // redrawn every frame) hold still while the page is being scrolled and
+    // carry on right after; drawing them mid-scroll made this page shake there.
+    const onScroll = () => {
+      if (!document.documentElement.hasAttribute("data-ig") || !live.current) return;
+      if (!held) {
+        held = true;
+        svgs.forEach((svg) => svg.pauseAnimations());
+      }
+      clearTimeout(resume);
+      resume = window.setTimeout(() => {
+        held = false;
+        sync();
+      }, 200);
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    // Gently walk through the sports until the visitor picks one (never in
+    // the middle of a scroll).
     const timer = window.setInterval(() => {
-      if (!live.current || reduce.matches || Date.now() - touched.current < 7000) return;
+      if (!live.current || reduce.matches || Date.now() - touched.current < 7000 || scrolling()) return;
       setActive((a) => (a + 1) % n);
     }, 2600);
 
@@ -124,6 +144,8 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     return () => {
       io.disconnect();
       ro?.disconnect();
+      removeEventListener("scroll", onScroll);
+      clearTimeout(resume);
       reduce.removeEventListener("change", sync);
       window.clearInterval(timer);
       cancelAnimationFrame(anim.current);

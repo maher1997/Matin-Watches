@@ -8,6 +8,7 @@ import {
   type KeyboardEvent,
   type TouchEvent,
 } from "react";
+import { scrolling } from "@/lib/scrolling";
 
 // Shared behaviour of the tabbed on-watch showcases (health, GPS): which
 // screen is showing, whether the section is on screen, the gentle
@@ -44,7 +45,8 @@ export default function useShowcase(n: number) {
   useEffect(() => {
     if (!live || reduced.current) return;
     const t = window.setInterval(() => {
-      if (Date.now() > hold.current) setActive((a) => (a + 1) % n);
+      // Never switch screens in the middle of a scroll in Instagram.
+      if (Date.now() > hold.current && !scrolling()) setActive((a) => (a + 1) % n);
     }, 7000);
     return () => window.clearInterval(t);
   }, [live, n]);
