@@ -85,7 +85,7 @@ const groups: Group[] = [
       },
       {
         q: "Can I swim with a MATIN watch?",
-        a: "Yes, with the MATIN Varkon and Kaldor. Both track your swims, and the Varkon also works in open water and reads your heart rate underwater. The Trekon is not made for swimming.",
+        a: "Yes, with the MATIN Varkon and Torvan (5ATM). The Varkon also tracks your swims in the pool and open water and reads your heart rate underwater; the Torvan has no swim-tracking mode. The Trekon and Kaldor (3ATM) are splash-proof, not made for swimming.",
       },
       {
         q: "How tough are MATIN watches?",

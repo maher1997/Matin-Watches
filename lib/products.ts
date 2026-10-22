@@ -518,7 +518,7 @@ export const products: Product[] = [
       },
       {
         q: "Is the MATIN Trekon waterproof?",
-        a: "It is rated 3ATM, so rain, sweat and splashes are fine. It is not made for swimming or diving.",
+        a: "It is rated 3ATM, so rain, sweat and splashes are fine. It is splash-proof, not made for swimming or diving.",
       },
       {
         q: "What is the screen like?",
@@ -658,7 +658,7 @@ export const products: Product[] = [
       },
       {
         q: "Is the MATIN Torvan waterproof?",
-        a: "It is rated 5ATM and IP69K, so rain, sweat, splashes, dust, mud and high-pressure water are fine. Do not use it for diving or in hot showers.",
+        a: "It is rated 5ATM and IP69K, so rain, sweat, splashes, dust, mud, high-pressure water and swimming in a pool are fine. It has no swim-tracking mode, so it will not count laps. Do not use it for diving, in hot showers or in the sauna.",
       },
       {
         q: "How tough is the MATIN Torvan?",
@@ -746,7 +746,7 @@ export const products: Product[] = [
       { name: "Graphite Grey", hex: "#6a6c6e", from: 15 },
     ],
     description:
-      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with 30+ sport modes, swimming included. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts about 7 days with typical use and up to 15 days with light use, and it is rated 3ATM against rain, sweat and splashes.',
+      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with 30+ sport modes. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts about 7 days with typical use and up to 15 days with light use, and it is rated 3ATM against rain, sweat and splashes (splash-proof, not made for swimming).',
     highlights: [
       { value: "GPS", label: "Multi-system" },
       { value: "LED", label: "Flashlight" },
@@ -766,8 +766,7 @@ export const products: Product[] = [
       { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
       { group: "Health", label: "Sleep", value: "Sleep tracking" },
       { group: "Health", label: "Activity", value: "Steps, calories and sedentary reminder" },
-      { group: "Sports", label: "Sport modes", value: "30+ modes, including running, walking, cycling, fitness, rock climbing and swimming" },
-      { group: "Sports", label: "Swim tracking", value: "Pool and open water: laps, strokes, stroke rate, SWOLF, pace and heart rate" },
+      { group: "Sports", label: "Sport modes", value: "30+ modes, including running, walking, cycling, fitness and rock climbing" },
       { group: "Build", label: "Case", value: "Zinc alloy middle frame with armored screws" },
       { group: "Build", label: "Water resistance", value: "3ATM" },
       { group: "Build", label: "Size", value: "49 mm wide, 13.9 mm thick (1.93 x 0.55 in)" },
@@ -830,7 +829,7 @@ export const products: Product[] = [
       },
       {
         q: "Is the MATIN Kaldor waterproof?",
-        a: "It is rated 3ATM, so rain, sweat, splashes and pool swimming are fine, and it tracks your swims. Do not use it for diving, in hot showers or in the sauna.",
+        a: "It is splash-proof, not made for swimming. It is rated 3ATM, so rain, sweat, splashes and washing your hands are fine. Do not swim, dive, shower or go in the sauna with it.",
       },
       {
         q: "What is the screen like?",
