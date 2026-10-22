@@ -80,15 +80,12 @@ body::after {
     bottom: auto;
     height: var(--sv, 100vh);
   }
-}
-
-/* Instagram's browser on iPhone: the backdrop scrolls with the page instead
-   of staying fixed. Instagram moves fixed layers a little on every scroll
-   step while its bar slides, so the grid behind the page wobbled against
-   the photos and text, which made them look like they shook. */
-html[data-ig] body::before,
-html[data-ig] body::after {
-  position: absolute;
+  /* Its lower edge melts into the page colour, so no line shows where it
+     ends when the in-app bar slides away and the screen grows. */
+  body::before {
+    -webkit-mask-image: linear-gradient(#000 75%, transparent);
+    mask-image: linear-gradient(#000 75%, transparent);
+  }
 }
 
 /* Test links (?t=1 to ?t=4, set in app/layout.tsx), each switching off one
