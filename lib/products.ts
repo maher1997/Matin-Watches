@@ -880,7 +880,7 @@ export const products: Product[] = [
       { name: "Orange / Silver", hex: "#f08a1c", from: 5 },
     ],
     description:
-      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red or orange details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes, from triathlon to open water swimming. The 500mAh battery lasts about 12 days with typical use and up to 30 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
+      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red or orange details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. A built-in LED flashlight lights the way at night. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes, from triathlon to open water swimming. The 500mAh battery lasts about 12 days with typical use and up to 30 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
     highlights: [
       { value: "30d", label: "Power saving" },
       { value: "GPS", label: "6 satellite systems" },
@@ -899,7 +899,7 @@ export const products: Product[] = [
       { group: "GPS & outdoor", label: "GPS", value: "Built-in, 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS, NavIC)" },
       { group: "GPS & outdoor", label: "Routes", value: "Real-time track and track back to your start point" },
       { group: "GPS & outdoor", label: "Sensors", value: "Compass, barometric altimeter, air pressure, gyroscope, geomagnetic sensor, accelerometer" },
-      { group: "GPS & outdoor", label: "Flashlight", value: "Built-in flashlight function" },
+      { group: "GPS & outdoor", label: "Flashlight", value: "Built-in LED flashlight" },
       { group: "GPS & outdoor", label: "Time", value: "GPS time sync, automatic daylight saving time, world clock" },
       { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
       { group: "Health", label: "Blood oxygen", value: "SpO2 measurement" },
@@ -927,7 +927,7 @@ export const products: Product[] = [
       { title: "GPS & outdoor", icon: "outdoor", items: ["6-system GPS", "Compass", "Barometric altimeter", "GPS time sync"] },
       { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "SMS and app notifications", "Find my phone"] },
       { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
-      { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
+      { title: "Everyday tools", icon: "tools", items: ["LED flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
     gps: { screens: ["route", "sats", "alt"], systems: ["GPS", "GLONASS", "Galileo", "BeiDou", "QZSS", "NavIC"], barometric: true },
     fitness: { look: "tri", count: "170+" },
@@ -959,6 +959,10 @@ export const products: Product[] = [
       {
         q: "Does the MATIN Varkon have GPS?",
         a: "Yes. Built-in GPS uses 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS and NavIC) to track your route, distance and pace. It also has a compass and a barometric altimeter.",
+      },
+      {
+        q: "Does the MATIN Varkon have a flashlight?",
+        a: "Yes. It has a built-in LED flashlight, handy on night hikes, when camping or when you drop something in the dark.",
       },
       {
         q: "Can I take calls on the MATIN Varkon?",
