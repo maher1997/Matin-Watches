@@ -37,7 +37,7 @@ const groups: Group[] = [
       },
       {
         q: "Which MATIN smartwatch has GPS?",
-        a: "The MATIN Trekon, Kaldor and Varkon have built-in GPS to track your route, distance and pace. The Varkon uses 6 satellite systems and the Kaldor 5, for a more reliable position. The MATIN Torvan does not have GPS.",
+        a: "The MATIN Trekon, Kaldor and Varkon have built-in GPS to track your route, distance and pace. The Varkon uses 6 satellite systems, and the Kaldor uses dual-frequency GPS with 5 systems, for a more reliable position. The MATIN Torvan does not have GPS.",
       },
       {
         q: "Which MATIN watches can take calls?",
@@ -45,15 +45,15 @@ const groups: Group[] = [
       },
       {
         q: "Which MATIN watch has a flashlight?",
-        a: "The MATIN Kaldor has an LED flashlight with 3 light modes built into the side of the case. The MATIN Torvan and Varkon also have a built-in LED flashlight.",
+        a: "The MATIN Kaldor, Torvan and Varkon have a built-in LED flashlight. The MATIN Trekon does not.",
       },
       {
         q: "What is the best rugged smartwatch for work, like construction or outdoor jobs?",
-        a: "For tough job sites, the MATIN Torvan has a 316L stainless steel case, sapphire glass and an IP69K rating against dust, mud and high-pressure water. The MATIN Varkon is also IP69K rated and adds GPS. The MATIN Kaldor adds a flashlight for early starts and dark spaces.",
+        a: "For tough job sites, the MATIN Torvan has a 316L stainless steel case, sapphire glass and an IP69K rating against dust, mud and high-pressure water. The MATIN Varkon is also IP69K rated and adds GPS. The MATIN Kaldor adds a flashlight, compass and barometric altimeter for early starts and dark spaces.",
       },
       {
         q: "Which MATIN watch is best under $150?",
-        a: "Three of our four watches are under $150: the MATIN Trekon at $120 for the longest battery and 170+ sport modes, the MATIN Kaldor at $130 for GPS, calls and a flashlight, and the MATIN Torvan at $140 for a stainless steel case, sapphire glass and calls.",
+        a: "Three of our four watches are $150 or less: the MATIN Trekon at $120 for the longest battery and 170+ sport modes, the MATIN Torvan at $140 for a stainless steel case, sapphire glass and calls, and the MATIN Kaldor at $150 for dual-frequency GPS, calls, a flashlight and 5ATM swim-proofing.",
       },
     ],
   },
@@ -63,7 +63,7 @@ const groups: Group[] = [
     items: [
       {
         q: "How long does the battery last?",
-        a: "With typical use: MATIN Trekon about 11 days, Torvan about 14 days, Varkon about 12 days and Kaldor about 7 days. In power-saving mode the Trekon, Torvan and Varkon last up to 30 days, and the Kaldor up to 15 days with light use.",
+        a: "With typical use: MATIN Trekon about 11 days, Torvan about 14 days, Varkon about 12 days and Kaldor about 10 days. In power-saving mode the Trekon, Torvan and Varkon last up to 30 days, and the Kaldor up to 15 days with light use.",
       },
       {
         q: "How do I charge a MATIN watch?",
@@ -81,15 +81,15 @@ const groups: Group[] = [
     items: [
       {
         q: "Are MATIN watches waterproof?",
-        a: "They are water resistant: the Trekon and Kaldor are rated 3ATM, the Torvan 5ATM and IP69K, and the Varkon 5ATM and IP69K. Rain, sweat, splashes and washing your hands are fine. They are not made for diving, hot showers or the sauna.",
+        a: "They are water resistant: the Trekon is rated 3ATM, the Kaldor 5ATM, and the Torvan and Varkon 5ATM and IP69K. Rain, sweat, splashes and washing your hands are fine. They are not made for diving, hot showers or the sauna.",
       },
       {
         q: "Can I swim with a MATIN watch?",
-        a: "Yes, with the MATIN Varkon and Torvan (5ATM). The Varkon also tracks your swims in the pool and open water and reads your heart rate underwater; the Torvan has no swim-tracking mode. The Trekon and Kaldor (3ATM) are splash-proof, not made for swimming.",
+        a: "Yes, with the MATIN Varkon, Kaldor and Torvan (all 5ATM). The Varkon tracks your swims in the pool and open water and reads your heart rate underwater, the Kaldor tracks pool swims, and the Torvan has no swim-tracking mode. The Trekon (3ATM) is splash-proof, not made for swimming.",
       },
       {
         q: "How tough are MATIN watches?",
-        a: "The MATIN Torvan has a 316L stainless steel case and sapphire glass. The Varkon has Corning Gorilla Glass and an IP69K rating. The Trekon and Kaldor have zinc alloy cases, and the Kaldor adds armored screws. All four have a military-style rugged design made for outdoor work and sport.",
+        a: "The MATIN Torvan has a 316L stainless steel case and sapphire glass. The Varkon has Corning Gorilla Glass and an IP69K rating. The Trekon and Kaldor have zinc alloy cases. All four have a military-style rugged design made for outdoor work and sport.",
       },
     ],
   },
@@ -107,11 +107,11 @@ const groups: Group[] = [
       },
       {
         q: "Do MATIN watches track heart rate, blood oxygen and sleep?",
-        a: "All four track heart rate and sleep. The MATIN Torvan and Varkon also measure blood oxygen (SpO2). MATIN watches are wellness smartwatches, not medical devices.",
+        a: "All four track heart rate and sleep. The MATIN Torvan, Kaldor and Varkon also measure blood oxygen (SpO2). MATIN watches are wellness smartwatches, not medical devices.",
       },
       {
         q: "How many sport modes do they have?",
-        a: "The MATIN Trekon and Varkon have 170+ sport modes, the Kaldor 30+ and the Torvan 9, including running, walking, hiking and cycling.",
+        a: "The MATIN Trekon and Varkon have 170+ sport modes, the Kaldor 100+ and the Torvan 9, including running, walking, hiking and cycling.",
       },
       {
         q: "Are MATIN watches certified for the USA?",

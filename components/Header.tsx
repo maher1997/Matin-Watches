@@ -79,7 +79,7 @@ const help = [
 const watchLine: Record<string, string> = {
   "matin-trekon": "Rugged · 30-day battery · 3ATM",
   "matin-torvan": "Round AMOLED · Sapphire",
-  "matin-kaldor": "Tactical · Flashlight · GPS",
+  "matin-kaldor": "Outdoor · GPS · 5ATM",
   "matin-varkon": "AMOLED · 6-system GPS",
 };
 

@@ -65,7 +65,7 @@ const faq = [
   },
   {
     q: "Are MATIN watches waterproof?",
-    a: "They are water resistant: the Trekon and Kaldor are rated 3ATM, the Torvan and Varkon 5ATM and IP69K. Rain, sweat, splashes and washing your hands are fine. They are not made for diving.",
+    a: "They are water resistant: the Trekon is rated 3ATM, the Kaldor 5ATM, and the Torvan and Varkon 5ATM and IP69K. The Kaldor, Torvan and Varkon are fine for pool swimming. Rain, sweat, splashes and washing your hands are fine. They are not made for diving.",
   },
   {
     q: "How much is shipping, and can I return my watch?",
