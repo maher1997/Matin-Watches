@@ -4,6 +4,9 @@ import { CartProvider } from "@/components/Cart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
+import PauseOffscreen from "@/components/PauseOffscreen";
+import ScrollProbe from "@/components/ScrollProbe";
+import { formatPrice, products } from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -73,16 +76,49 @@ const orgData = {
   ],
 };
 
+const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)return;var r=Node.prototype.removeChild;Node.prototype.removeChild=function(c){if(c.parentNode!==this){return c}return r.apply(this,arguments)};var i=Node.prototype.insertBefore;Node.prototype.insertBefore=function(n,ref){if(ref&&ref.parentNode!==this){return n}return i.apply(this,arguments)}})();`;
+
+// The phone's screen height, measured once when the page opens and again only
+// if the phone is turned. Inside apps like Instagram the app's own bars slide
+// away on the first scroll and the page's height changes; sizes tied to that
+// height made the whole page lay out again mid-scroll, a visible hitch.
+// Instagram's in-app browser on iPhone also gets data-ig (see globals.css
+// and lib/scrolling.ts). ?t=1 to ?t=6 sets data-t for the test links
+// described in globals.css.
+const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-6])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}d.style.setProperty("--sh",Math.max(screen.width,screen.height)+"px");s();addEventListener("resize",s)})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-US" data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable} ${brand.variable}`}>
-      <body>
+    <html
+      lang="en-US"
+      data-scroll-behavior="smooth"
+      className={`${sans.variable} ${display.variable} ${brand.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Browser extensions and auto-translate wrap or move text on the
+            page; when React later updates that text it can no longer find
+            it and the whole page breaks. This makes those two DOM calls
+            forgiving, so the page keeps working. */}
+        <script dangerouslySetInnerHTML={{ __html: domGuard }} />
+        <script dangerouslySetInnerHTML={{ __html: screenHeight }} />
+      </head>
+      <body suppressHydrationWarning>
         <JsonLd data={orgData} />
         <CartProvider>
-          <Header />
+          <Header
+            watches={products.map((p) => ({
+              slug: p.slug,
+              name: p.name,
+              price: formatPrice(p.price).replace(/\.00$/, ""),
+              image: p.images[0],
+            }))}
+          />
           <main>{children}</main>
+          <PauseOffscreen />
+          <ScrollProbe />
           <Footer />
         </CartProvider>
       </body>

@@ -45,6 +45,7 @@ export default function Stories({ product }: { product: Product }) {
   const [inView, setInView] = useState(false);
   const [paused, setPaused] = useState(false);
   const touchX = useRef(0);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   // Plain scroll check instead of IntersectionObserver: on iPhone Safari the
   // observer did not report this tall section, so the slides stayed hidden.
@@ -75,6 +76,20 @@ export default function Stories({ product }: { product: Product }) {
     };
   }, []);
 
+  // Photos are fetched one slide ahead instead of all at once: the seven
+  // big photos loading and decoding together, on the first scroll, made
+  // the page catch in the Instagram browser.
+  const [loaded, setLoaded] = useState<number[]>([0]);
+  useEffect(() => {
+    if (!shown || n < 2) return;
+    const next = (active + 1) % n;
+    setLoaded((l) =>
+      l.includes(active) && l.includes(next)
+        ? l
+        : [...new Set([...l, active, next])],
+    );
+  }, [active, shown, n]);
+
   // Keyed on `active`, so any jump restarts the 4 seconds.
   useEffect(() => {
     if (!inView || paused || n < 2) return;
@@ -82,6 +97,47 @@ export default function Stories({ product }: { product: Product }) {
     const id = setTimeout(() => setActive((a) => (a + 1) % n), AUTOPLAY_MS);
     return () => clearTimeout(id);
   }, [active, inView, paused, n]);
+
+  // Phones: the tab row is three copies of the tabs, so it can keep sliding
+  // forward forever. The current tab glides to the middle; once it is in the
+  // first or last copy the row jumps (invisibly) by one copy back to the
+  // middle one. Desktop shows one copy that fits, so nothing moves there.
+  const pos = useRef(-1);
+  useEffect(() => {
+    const row = tabsRef.current;
+    if (!row || n < 2) return;
+    const btns = row.children as HTMLCollectionOf<HTMLElement>;
+    if (btns.length < 3 * n || row.scrollWidth <= row.clientWidth + 1) return;
+    const centre = (v: number) =>
+      btns[v].offsetLeft - (row.clientWidth - btns[v].offsetWidth) / 2;
+    if (pos.current < 0) {
+      pos.current = n + active;
+      row.scrollLeft = centre(pos.current);
+      return;
+    }
+    // The copy of the active tab nearest to where the row is now; ties go forward.
+    let v = pos.current;
+    for (let d = 0; d < n; d++) {
+      if ((pos.current + d) % n === active) {
+        v = pos.current + d;
+        break;
+      }
+      if (pos.current - d >= 0 && (pos.current - d) % n === active) {
+        v = pos.current - d;
+        break;
+      }
+    }
+    pos.current = v;
+    row.scrollTo({ left: centre(v), behavior: "smooth" });
+    const id = setTimeout(() => {
+      if (pos.current >= n && pos.current < 2 * n) return;
+      const shift = pos.current < n ? n : -n;
+      const copy = btns[n].offsetLeft - btns[0].offsetLeft;
+      pos.current += shift;
+      row.scrollLeft += shift > 0 ? copy : -copy;
+    }, 1000);
+    return () => clearTimeout(id);
+  }, [active, n]);
 
   if (n === 0) return null;
   const go = (i: number) => setActive((i + n) % n);
@@ -103,31 +159,46 @@ export default function Stories({ product }: { product: Product }) {
       </div>
       <div className="stories-bar">
         <div
+          ref={tabsRef}
           className="stories-tabs"
           role="tablist"
           aria-label="Choose a highlight"
         >
-          {stories.map((s, i) => (
-            <button
-              key={s.image}
-              type="button"
-              role="tab"
-              id={`story-tab-${i}`}
-              aria-selected={i === active}
-              aria-controls={`story-${i}`}
-              className={i === active ? "on" : undefined}
-              onClick={() => go(i)}
-            >
-              {s.tab}
-              {i === active && (
-                <span
-                  key={`${active}-${inView}`}
-                  className="stories-progress"
-                  aria-hidden="true"
-                />
-              )}
-            </button>
-          ))}
+          {[0, 1, 2].flatMap((copy) =>
+            stories.map((s, i) => {
+              const main = copy === 1;
+              return (
+                <button
+                  key={`${copy}-${s.image}`}
+                  type="button"
+                  role={main ? "tab" : undefined}
+                  id={main ? `story-tab-${i}` : undefined}
+                  aria-selected={main ? i === active : undefined}
+                  aria-controls={main ? `story-${i}` : undefined}
+                  aria-hidden={main ? undefined : true}
+                  tabIndex={main ? undefined : -1}
+                  className={
+                    [i === active && "on", !main && "stories-clone"]
+                      .filter(Boolean)
+                      .join(" ") || undefined
+                  }
+                  onClick={() => {
+                    pos.current = copy * n + i;
+                    go(i);
+                  }}
+                >
+                  {s.tab}
+                  {i === active && (
+                    <span
+                      key={`${active}-${inView}`}
+                      className="stories-progress"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              );
+            }),
+          )}
         </div>
 
         <button
@@ -170,17 +241,22 @@ export default function Stories({ product }: { product: Product }) {
             className={`story story-${s.accent ?? "blue"}${i === active ? " on" : ""}`}
           >
             <div className="story-pic">
-              <Image
-                src={s.image}
-                alt={s.alt}
-                fill
-                quality={75}
-                sizes="(max-width: 860px) 100vw, 1240px"
-              />
+              {loaded.includes(i) && (
+                <Image
+                  src={s.image}
+                  alt={s.alt}
+                  fill
+                  quality={75}
+                  style={s.focus ? { objectPosition: s.focus } : undefined}
+                  sizes="(max-width: 860px) 100vw, 1240px"
+                />
+              )}
             </div>
             {/* Keyed on `shown`: the words are already there at load, and they
-                play in again the first time the slider comes into view. */}
-            <div key={`${i}-${shown}`} className="story-copy">
+                play in again the first time the slider comes into view. Only
+                the first slide (the one on show then) is rebuilt, not all
+                seven, so the scroll there stays smooth. */}
+            <div key={i === 0 ? `0-${shown}` : i} className="story-copy">
               <h3>
                 <span>{s.title[0]}</span>
                 <span className="story-accent">{s.title[1]}</span>

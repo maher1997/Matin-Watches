@@ -23,7 +23,7 @@ export default function CountUp({
         io.disconnect();
         const start = performance.now();
         const tick = (now: number) => {
-          const t = Math.min(1, (now - start) / 1400);
+          const t = Math.min(1, Math.max(0, now - start) / 1400);
           const eased = 1 - Math.pow(1 - t, 3);
           el.textContent = `${Math.round(to * eased)}${suffix}`;
           if (t < 1) raf = requestAnimationFrame(tick);

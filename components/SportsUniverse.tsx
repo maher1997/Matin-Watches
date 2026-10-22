@@ -1,12 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import SectionHead from "@/components/SectionHead";
 import { useEffect, useRef, useState } from "react";
 import { Athlete } from "./sports/rig";
 import { sportLibrary } from "./sports/library";
+import { scrolling } from "@/lib/scrolling";
 
-// "Sport modes" showcase: the count on a watch-style dial, with each sport
-// the watch really tracks drawn as a moving athlete around it.
+// "Sport modes" showcase: the real watch with the sport being tracked on its
+// screen (moving athlete, name, one dot per sport), and every sport the watch
+// really tracks drawn as a moving athlete around it.
 // Everything is visible without JavaScript; motion is an extra and stops
 // off screen or when the visitor prefers reduced motion.
 // SVG arc on a circle of radius r around the dial centre, angles in degrees
@@ -17,59 +20,6 @@ function arc(r: number, a0: number, a1: number) {
     return `${(120 + r * Math.sin(t)).toFixed(2)} ${(120 - r * Math.cos(t)).toFixed(2)}`;
   };
   return `M${pt(a0)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${pt(a1)}`;
-}
-
-// The watch-style dial: steel bezel, dark face, minute ticks and one
-// marker per sport on the ring.
-function Bezel({ n }: { n: number }) {
-  const ticks = Array.from({ length: 60 }, (_, i) => {
-    const t = (i * 6 * Math.PI) / 180;
-    const big = i % 5 === 0;
-    const r0 = big ? 88 : 93;
-    const r1 = 99;
-    return (
-      <line
-        key={i}
-        x1={(120 + r0 * Math.sin(t)).toFixed(2)}
-        y1={(120 - r0 * Math.cos(t)).toFixed(2)}
-        x2={(120 + r1 * Math.sin(t)).toFixed(2)}
-        y2={(120 - r1 * Math.cos(t)).toFixed(2)}
-        className={big ? "sx-tk sx-tk-big" : "sx-tk"}
-      />
-    );
-  });
-  return (
-    <svg viewBox="0 0 240 240" className="sx-bezel">
-      <defs>
-        <linearGradient id="sxBez" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#4a5160" />
-          <stop offset="0.35" stopColor="#171a21" />
-          <stop offset="0.65" stopColor="#2e3440" />
-          <stop offset="1" stopColor="#0e1015" />
-        </linearGradient>
-        <radialGradient id="sxFace" cx="0.5" cy="0.42" r="0.6">
-          <stop offset="0" stopColor="#1d2a52" />
-          <stop offset="0.55" stopColor="#0f1426" />
-          <stop offset="1" stopColor="#080a10" />
-        </radialGradient>
-        <linearGradient id="sxHand" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#5285f7" stopOpacity="0.2" />
-          <stop offset="0.5" stopColor="#8fb0ff" />
-          <stop offset="1" stopColor="#5285f7" stopOpacity="0.2" />
-        </linearGradient>
-      </defs>
-      <circle cx={120} cy={120} r={118} fill="url(#sxBez)" />
-      <circle cx={120} cy={120} r={117} className="sx-bez-edge" />
-      <circle cx={120} cy={120} r={110} className="sx-track-ring" />
-      <circle cx={120} cy={120} r={103} fill="url(#sxFace)" />
-      <circle cx={120} cy={120} r={103} className="sx-face-edge" />
-      {ticks}
-      {Array.from({ length: n }, (_, i) => {
-        const t = ((i * 360) / n) * (Math.PI / 180);
-        return <circle key={i} cx={(120 + 110 * Math.sin(t)).toFixed(2)} cy={(120 - 110 * Math.cos(t)).toFixed(2)} r={2.1} className="sx-mark" />;
-      })}
-    </svg>
-  );
 }
 
 export default function SportsUniverse({ name, count, ids }: { name: string; count: string; ids: string[] }) {
@@ -120,7 +70,7 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     let t0 = -1;
     const step = (now: number) => {
       if (t0 < 0) t0 = now;
-      const k = Math.min(1, (now - t0) / 650);
+      const k = Math.min(1, Math.max(0, now - t0) / 650);
       const e = 1 - Math.pow(1 - k, 3);
       paint(from + (to - from) * e);
       if (k < 1) anim.current = requestAnimationFrame(step);
@@ -135,10 +85,12 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     const svgs = Array.from(el.querySelectorAll<SVGSVGElement>("svg.ath"));
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     reduced.current = reduce.matches;
+    let held = false;
+    let resume = 0;
     const sync = () => {
       reduced.current = reduce.matches;
-      const play = live.current && !reduce.matches;
-      el.classList.toggle("is-live", play);
+      const play = live.current && !reduce.matches && !held;
+      el.classList.toggle("is-live", live.current && !reduce.matches);
       svgs.forEach((svg) => {
         if (play) svg.unpauseAnimations();
         else {
@@ -155,9 +107,26 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     io.observe(el);
     reduce.addEventListener("change", sync);
     sync();
-    // Gently walk through the sports until the visitor picks one.
+    // Inside Instagram's browser the little athletes (about thirty drawings
+    // redrawn every frame) hold still while the page is being scrolled and
+    // carry on right after; drawing them mid-scroll made this page shake there.
+    const onScroll = () => {
+      if (!document.documentElement.hasAttribute("data-ig") || !live.current) return;
+      if (!held) {
+        held = true;
+        svgs.forEach((svg) => svg.pauseAnimations());
+      }
+      clearTimeout(resume);
+      resume = window.setTimeout(() => {
+        held = false;
+        sync();
+      }, 200);
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    // Gently walk through the sports until the visitor picks one (never in
+    // the middle of a scroll).
     const timer = window.setInterval(() => {
-      if (!live.current || reduce.matches || Date.now() - touched.current < 7000) return;
+      if (!live.current || reduce.matches || Date.now() - touched.current < 7000 || scrolling()) return;
       setActive((a) => (a + 1) % n);
     }, 2600);
 
@@ -175,6 +144,8 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
     return () => {
       io.disconnect();
       ro?.disconnect();
+      removeEventListener("scroll", onScroll);
+      clearTimeout(resume);
       reduce.removeEventListener("change", sync);
       window.clearInterval(timer);
       cancelAnimationFrame(anim.current);
@@ -271,24 +242,44 @@ export default function SportsUniverse({ name, count, ids }: { name: string; cou
       />
       <div className="sx-stage">
         <div className="sx-core">
-          <div className="sx-dial" aria-hidden="true">
-            <Bezel n={n} />
-            {/* The blue hand moves to the sport being shown. */}
-            <div className="sx-hand" style={{ transform: `rotate(${(turn * 360) / n}deg)` }}>
-              <svg viewBox="0 0 240 240">
-                <path d={arc(110, (-180 / n) * 0.72, (180 / n) * 0.72)} className="sx-hand-arc" />
-                <circle cx={120} cy={10} r={4.6} className="sx-hand-dot" />
+          {/* The real Torvan: its round screen shows the sport being tracked. */}
+          <figure className="sx-watch">
+            <Image
+              src="/products/matin-torvan-front-view.webp"
+              alt={`${name} showing a sport mode on its round AMOLED screen`}
+              fill
+              sizes="(max-width: 900px) 86vw, 440px"
+              quality={75}
+            />
+            <div className="sx-screen">
+              <svg viewBox="0 0 240 240" className="sx-ring" aria-hidden="true">
+                {sports.map((s, i) => {
+                  const t = (i / n) * Math.PI * 2;
+                  return (
+                    <circle
+                      key={s.id}
+                      cx={(120 + 110 * Math.sin(t)).toFixed(2)}
+                      cy={(120 - 110 * Math.cos(t)).toFixed(2)}
+                      r={i === active ? 4.4 : 2.6}
+                      className={i === active ? "sx-mark on" : "sx-mark"}
+                    />
+                  );
+                })}
+                <g className="sx-hand" style={{ transform: `rotate(${(turn * 360) / n}deg)` }}>
+                  <path d={arc(110, (-180 / n) * 0.72, (180 / n) * 0.72)} className="sx-hand-arc" />
+                </g>
               </svg>
+              <span className="sx-count" aria-hidden="true">
+                {count} sport modes
+              </span>
+              <span className="sx-fig" key={sports[active].id} aria-hidden="true">
+                <Athlete sport={sports[active]} />
+              </span>
+              <p className="sx-now" aria-live="polite">
+                <strong key={active}>{sports[active].name}</strong>
+              </p>
             </div>
-          </div>
-          <p className="sx-title" aria-hidden="true">
-            <span className="sx-num">{count}</span>
-            <span className="sx-word">Sport modes</span>
-          </p>
-          <p className="sx-now" aria-live="polite">
-            <span className="sx-now-dot" aria-hidden="true" />
-            <strong key={active}>{sports[active].name}</strong>
-          </p>
+          </figure>
         </div>
 
         {/* Desktop: the athletes float around the dial. */}

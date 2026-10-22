@@ -1,9 +1,9 @@
 // All store products live here. To add a real product:
-// 1. Put its photos in /public/products/ (e.g. /public/products/titan-x-1.jpg)
+// 1. Put its photos in /public/products/ (e.g. /public/products/matin-<name>-front-view.webp)
 // 2. Copy one of the entries below and change the text, price and `images`.
 // A product with no `images` shows a drawn placeholder watch instead.
 
-export type Category = "tactical" | "outdoor" | "dive";
+export type Category = "tactical" | "outdoor";
 
 export type StoryIcon =
   | "shield"
@@ -27,6 +27,8 @@ export type Product = {
   price: number;
   compareAt?: number;
   category: Category;
+  // Collections this watch shows up in (see `collections` below).
+  collections?: CollectionId[];
   badge?: string;
   images: string[];
   // Text read by Google and screen readers for each photo (same order as images).
@@ -48,9 +50,33 @@ export type Product = {
   // Animated sport modes section: the headline count and the ids (from
   // components/sports/library.tsx) of the sports this watch really tracks.
   sportModes?: { count: string; ids: string[] };
-  // Animated health monitoring section (heart rate, resting heart rate, SpO2).
-  // Only for watches that really have all three.
-  healthMonitoring?: boolean;
+  // Animated health section drawn on the watch's own screen (the battery
+  // section's photo and screen). List only what the watch really measures;
+  // "continuous" claims 24/7 per-minute heart rate (Torvan only).
+  health?: { metrics: ("hr" | "rest" | "spo2" | "sleep" | "activity")[]; continuous?: boolean };
+  // Animated GPS section drawn on the watch's own screen, only for watches
+  // with built-in GPS. screens: route map, satellite systems, compass,
+  // altitude. systems lists the satellite systems the listing names.
+  gps?: { screens: ("route" | "sats" | "compass" | "alt")[]; systems?: string[]; barometric?: boolean };
+  // Animated sport section that is not drawn on the watch: "multi" (each
+  // sport in its own animated place, Kaldor) or "tri" (triathlon swim, bike, run, Varkon).
+  // count is the number of sport modes the listing gives.
+  fitness?: { look: "multi" | "tri"; count: string };
+  // Liquid battery drawn on the watch's own screen: a round screen (circle in
+  // % of the photo) or a shaped one (box in % plus a CSS polygon for its
+  // outline). look "cells" is stacked green battery cells, "radar" a green radar ring, "rings" green rings. Longest mode last.
+  batteryLiquid?: {
+    mah: number;
+    image: string;
+    imageAlt: string;
+    screen:
+      | { cx: number; cy: number; r: number }
+      | { x: number; y: number; w: number; h: number; clip: string };
+    look?: "wave" | "cells" | "radar" | "rings";
+    intro?: string;
+    modes: { label: string; days: number; text: string }[];
+    facts: { value: string; label: string }[];
+  };
   // "What it does", sorted into a few groups (icon: outdoor | health | smart | tools).
   featureGroups?: { title: string; icon: "outdoor" | "health" | "smart" | "tools"; items: string[] }[];
   // "Turn it around" scroll section: each step shows one photo (index into
@@ -60,6 +86,9 @@ export type Product = {
   stories?: {
     image: string;
     alt: string;
+    // Where the original sits in a photo extended on one side only
+    // (CSS object-position), so the square desktop crop shows all of it.
+    focus?: string;
     // Short name on the slider button
     tab: string;
     title: [string, string];
@@ -83,11 +112,97 @@ export type Product = {
   art: { case: string; strap: string; accent: string };
 };
 
+// A watch's main label (shown above its name).
 export const categories: { id: Category; name: string; blurb: string }[] = [
-  { id: "tactical", name: "Tactical", blurb: "Built to military standard" },
-  { id: "outdoor", name: "Outdoor", blurb: "GPS, maps and long battery" },
-  { id: "dive", name: "Dive", blurb: "Water rated to 100m" },
+  { id: "tactical", name: "Tactical", blurb: "Military-style and built tough" },
+  { id: "outdoor", name: "Outdoor", blurb: "For trails, camping and long days outside" },
 ];
+
+// Collections a shopper can browse. One watch can be in several, so each
+// collection gets its own page (/collections/<id>) that Google can rank.
+export type CollectionId = "tactical" | "outdoor" | "gps" | "calling" | "long-battery";
+
+export const collections: {
+  id: CollectionId;
+  name: string;
+  blurb: string;
+  title: string;
+  heading: string;
+  intro: string;
+  seoTitle: string;
+  seoDescription: string;
+}[] = [
+  {
+    id: "tactical",
+    name: "Tactical",
+    blurb: "Military-style and built tough",
+    title: "Tactical",
+    heading: "Tactical smartwatches",
+    intro:
+      "Military-style smartwatches with armored metal cases, bright AMOLED screens and weeks of battery. Made for work sites, training and hard days outside.",
+    seoTitle: "Tactical Smartwatches for Men | Rugged & Military-Style",
+    seoDescription:
+      "Rugged tactical smartwatches for men: military-style metal cases, AMOLED screens, GPS or Bluetooth calling and up to 30 days battery. Free worldwide shipping.",
+  },
+  {
+    id: "outdoor",
+    name: "Outdoor",
+    blurb: "For trails, camping and long days outside",
+    title: "Outdoor",
+    heading: "Outdoor smartwatches",
+    intro:
+      "Tough smartwatches for hiking, camping and long days outside, with screens you can read in the sun and batteries that last for weeks.",
+    seoTitle: "Rugged Outdoor Smartwatches for Hiking & Camping",
+    seoDescription:
+      "Rugged outdoor smartwatches for men: GPS, compass, flashlight, bright AMOLED screens and up to 30 days battery for hiking and camping. Free worldwide shipping.",
+  },
+  {
+    id: "gps",
+    name: "GPS",
+    blurb: "Track your route, distance and pace",
+    title: "GPS",
+    heading: "GPS smartwatches",
+    intro:
+      "Rugged smartwatches with built-in GPS, so you can track your route, distance and pace without carrying your phone.",
+    seoTitle: "Rugged GPS Smartwatches for Men | Built-In GPS",
+    seoDescription:
+      "Rugged GPS smartwatches for men with built-in GPS route tracking, sport modes, AMOLED screens and up to 30 days battery. Free worldwide shipping.",
+  },
+  {
+    id: "calling",
+    name: "Bluetooth calling",
+    blurb: "Answer and make calls from your wrist",
+    title: "Calling",
+    heading: "Bluetooth calling smartwatches",
+    intro:
+      "Rugged smartwatches with a built-in speaker and microphone, so you can answer and make calls from your wrist while your phone stays in your pocket.",
+    seoTitle: "Rugged Bluetooth Calling Smartwatches for Men",
+    seoDescription:
+      "Rugged smartwatches with Bluetooth calling: answer and make calls from your wrist, AMOLED screens, heart rate and up to 30 days battery. Free worldwide shipping.",
+  },
+  {
+    id: "long-battery",
+    name: "Long battery",
+    blurb: "Up to 30 days on one charge",
+    title: "Long battery",
+    heading: "Rugged smartwatches with long battery life",
+    intro:
+      "Every watch here lasts up to 30 days on one charge with light use or power saving, so you charge it a few times a month instead of every night.",
+    seoTitle: "Rugged Smartwatches with Long Battery Life (30 Days)",
+    seoDescription:
+      "Rugged smartwatches with long battery life: up to 30 days on one charge, tough metal cases, AMOLED screens and GPS or calling. Free worldwide shipping.",
+  },
+];
+
+// Which collections a watch is in. Real watches list theirs; the
+// placeholders just use their main label.
+export function collectionsOf(p: Product): string[] {
+  return p.collections ?? [p.category];
+}
+
+export function productsIn(id: string) {
+  return products.filter((p) => collectionsOf(p).includes(id));
+}
 
 export const products: Product[] = [
   {
@@ -96,13 +211,14 @@ export const products: Product[] = [
     tagline: "Rugged GPS smartwatch with 170+ sport modes",
     price: 120,
     category: "tactical",
+    collections: ["tactical", "outdoor", "gps", "long-battery"],
     badge: "New",
     images: [
-      "/products/matin-trekon-rugged-smartwatch.webp",
-      "/products/matin-trekon-front-view.webp",
-      "/products/matin-trekon-angle-view.webp",
-      "/products/matin-trekon-side-buttons.webp",
-      "/products/matin-trekon-heart-rate-sensor-back.webp",
+      "/products/matin-trekon-black-rugged-smartwatch.webp",
+      "/products/matin-trekon-black-front-view.webp",
+      "/products/matin-trekon-black-angle-view.webp",
+      "/products/matin-trekon-black-side-buttons.webp",
+      "/products/matin-trekon-black-heart-rate-sensor-back.webp",
       "/products/matin-trekon-orange-rugged-smartwatch.webp",
       "/products/matin-trekon-orange-angle.webp",
       "/products/matin-trekon-orange-front-view.webp",
@@ -167,6 +283,7 @@ export const products: Product[] = [
       { group: "Smart features", label: "Tools", value: "Alarm, calendar, calculator, world time" },
       { group: "Smart features", label: "Camera", value: "None" },
       { group: "In the box", label: "Includes", value: "MATIN Trekon watch, magnetic charging cable" },
+      { group: "In the box", label: "Package", value: "4.3 x 4.3 x 2.8 in (11 x 11 x 7 cm), 0.44 lb (0.2 kg) shipping weight" },
     ],
     features: [
       "Built-in GPS",
@@ -193,9 +310,10 @@ export const products: Product[] = [
     ],
     stories: [
       {
-        image: "/products/life/matin-trekon-built-for-the-tough.webp",
+        image: "/products/life/matin-trekon-tough-mission.webp",
+        focus: "100% 50%",
         tab: "Tough",
-        alt: "MATIN Trekon rugged smartwatch covered in mud on a soldier's wrist in the mountains",
+        alt: "MATIN Trekon rugged smartwatch on a gloved soldier's wrist in the mountains, with climbing, trekking and river scenes",
         title: ["Built for", "the tough"],
         text: "For work. For mission. For more.",
         tags: ["For work", "For mission", "For more"],
@@ -207,9 +325,22 @@ export const products: Product[] = [
         ],
       },
       {
-        image: "/products/life/matin-trekon-built-tough-outdoors.webp",
+        image: "/products/life/matin-trekon-construction-work.webp",
+        tab: "Construction",
+        alt: "Construction worker in gloves and a hi-vis vest wearing the MATIN Trekon rugged smartwatch on a snowy building site",
+        title: ["Built for", "the job site"],
+        text: "Snow, dust and hard knocks. The Trekon is a rugged smartwatch made for construction work, and it keeps going shift after shift.",
+        points: [
+          { icon: "shield", title: "Shock resistant", text: "Takes knocks from tools, rebar and concrete" },
+          { icon: "dust", title: "Dust and dirt", text: "Keeps working on dusty, muddy sites" },
+          { icon: "thermo", title: "Cold and heat", text: "Works from -4°F to 140°F" },
+          { icon: "battery", title: "Lasts the work week", text: "Up to 20 days with typical use" },
+        ],
+      },
+      {
+        image: "/products/life/matin-trekon-outdoors-route.webp",
         tab: "Outdoors",
-        alt: "Hiker checking a GPS route on the MATIN Trekon smartwatch above a mountain lake",
+        alt: "Hiker at sunrise checking his route, altitude and heart rate on the MATIN Trekon smartwatch above a mountain lake",
         title: ["Built", "tough"],
         text: "Designed for real adventures, ready for any environment.",
         points: [
@@ -220,15 +351,27 @@ export const products: Product[] = [
         ],
       },
       {
-        image: "/products/life/matin-trekon-heart-rate-monitoring.webp",
+        image: "/products/life/matin-trekon-heart-rate-graph.webp",
         tab: "Heart rate",
-        alt: "Hiker checking his heart rate on the MATIN Trekon smartwatch",
+        alt: "Hiker checking his heart rate graph on the MATIN Trekon smartwatch above a mountain lake",
         title: ["Heart rate", "monitoring"],
         text: "Track your heart rate in real time and stay in control of your health every day.",
         points: [
           { icon: "heart", title: "Real-time heart rate", text: "24/7 continuous monitoring" },
           { icon: "chart", title: "Heart rate trends", text: "View your daily, weekly and monthly data" },
           { icon: "run", title: "Stay active and healthy", text: "Get insights to improve your fitness" },
+        ],
+      },
+      {
+        image: "/products/life/matin-trekon-heart-rate-running.webp",
+        tab: "Workout",
+        alt: "Trail runner in the mountains with the MATIN Trekon smartwatch showing workout time, heart rate, distance and calories",
+        title: ["Every workout", "tracked"],
+        text: "Start a run and see your time, heart rate, distance and calories live on your wrist.",
+        points: [
+          { icon: "run", title: "170+ sport modes", text: "Running, hiking, cycling and more" },
+          { icon: "heart", title: "Live heart rate", text: "See your effort as you move" },
+          { icon: "route", title: "Distance and calories", text: "Every kilometre and calorie counted" },
         ],
       },
       {
@@ -256,6 +399,46 @@ export const products: Product[] = [
         ],
       },
     ],
+    gps: { screens: ["route", "compass", "alt"] },
+    health: { metrics: ["hr", "sleep", "activity"] },
+    batteryLiquid: {
+      mah: 1000,
+      image: "/products/matin-trekon-black-front-view.webp",
+      imageAlt:
+        "MATIN Trekon front view with its AMOLED screen showing the battery level",
+      screen: {
+        x: 27.65,
+        y: 23.7,
+        w: 44.2,
+        h: 50.8,
+        clip: "polygon(12.1% 0, 86.8% 0, 100% 17.5%, 100% 80.5%, 86.5% 100%, 12.1% 100%, 0 80.7%, 0 17.7%)",
+      },
+      look: "cells",
+      intro:
+        "The MATIN Trekon packs a 1000mAh battery: up to 20 days of everyday wear, and up to 30 days with light use.",
+      modes: [
+        {
+          label: "Heavy use",
+          days: 11,
+          text: "GPS workouts, lots of notifications and the screen always bright.",
+        },
+        {
+          label: "Typical use",
+          days: 20,
+          text: "Everyday wear with heart rate tracking and notifications.",
+        },
+        {
+          label: "Light use",
+          days: 30,
+          text: "Time, steps and a few notifications a day.",
+        },
+      ],
+      facts: [
+        { value: "1000 mAh", label: "Battery" },
+        { value: "50 days", label: "Standby" },
+        { value: "Magnetic", label: "Charger" },
+      ],
+    },
     bigStats: [
       { value: 170, suffix: "+", label: "Sport modes" },
       { value: 30, label: "Days of battery" },
@@ -267,17 +450,17 @@ export const products: Product[] = [
         eyebrow: "Sport & fitness",
         title: "Every sport. Covered.",
         text: "Running, cycling, hiking, gym, basketball and more: over 170 sport modes in all. Pick your workout and the Trekon tracks heart rate, calories, distance and time.",
-        image: "/products/matin-trekon-sport-fitness-modes.webp",
+        image: "/products/matin-trekon-workout-menu-hiking.webp",
         imageAlt:
-          "MATIN Trekon rugged smartwatch on a hiker's wrist showing the workout menu with running, cycling, hiking and gym sport modes",
+          "MATIN Trekon rugged smartwatch on a hiker's wrist showing its workout menu with outdoor run, cycling, hiking and indoor run, above a mountain lake",
       },
       {
         eyebrow: "Waterproof",
         title: "Rain or river. Keep going.",
         text: "Rain, splashes, sweat and stream crossings don't slow it down. Wear it on every trail and never stop to take it off.",
-        image: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",
+        image: "/products/matin-trekon-waterproof-river-splash.webp",
         imageAlt:
-          "Waterproof MATIN Trekon rugged smartwatch splashed with water on a hiker's wrist by a mountain river",
+          "Waterproof MATIN Trekon rugged smartwatch covered in water drops on a hiker's wrist in a splashing mountain river",
       },
     ],
     sports: [
@@ -300,14 +483,14 @@ export const products: Product[] = [
     ],
     posters: [
       {
-        src: "/products/matin-trekon-sport-fitness-modes.webp",
-        alt: "MATIN Trekon rugged smartwatch on a hiker's wrist showing the workout menu with running, cycling, hiking and gym sport modes",
-        width: 2000,
-        height: 2000,
+        src: "/products/matin-trekon-workout-menu-hiking.webp",
+        alt: "MATIN Trekon rugged smartwatch on a hiker's wrist showing its workout menu with outdoor run, cycling, hiking and indoor run, above a mountain lake",
+        width: 1408,
+        height: 1117,
       },
       {
-        src: "/products/matin-trekon-waterproof-rugged-smartwatch.webp",
-        alt: "Waterproof MATIN Trekon rugged smartwatch splashed with water on a hiker's wrist by a mountain river",
+        src: "/products/matin-trekon-waterproof-river-splash.webp",
+        alt: "Waterproof MATIN Trekon rugged smartwatch covered in water drops on a hiker's wrist in a splashing mountain river",
         width: 2000,
         height: 2000,
       },
@@ -338,8 +521,12 @@ export const products: Product[] = [
         a: 'A big 1.95 inch AMOLED touchscreen with bright, sharp colors that stays readable outdoors.',
       },
       {
+        q: "Is the MATIN Trekon certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
+      },
+      {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
       },
     ],
     seoTitle: "MATIN Trekon Tactical GPS Smartwatch for Men | Rugged",
@@ -353,7 +540,8 @@ export const products: Product[] = [
     tagline: "Round rugged smartwatch with sapphire glass and Bluetooth calls",
     price: 140,
     shareImage: "/products/matin-torvan-share.jpg",
-    category: "outdoor",
+    category: "tactical",
+    collections: ["tactical", "outdoor", "calling", "long-battery"],
     badge: "New",
     images: [
       "/products/matin-torvan-rugged-smartwatch-angle.webp",
@@ -371,20 +559,24 @@ export const products: Product[] = [
     ],
     colors: [{ name: "Stealth Black", hex: "#1c1f26" }],
     description:
-      'The MATIN Torvan is a round, military-style rugged smartwatch with a stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) is sharp and bright, and you can take calls right from your wrist over Bluetooth. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts up to 30 days with typical use or up to 60 days in power-saving mode. Rated 5ATM water resistant, it is a tough outdoor smartwatch that works with both iPhone and Android.',
+      'The MATIN Torvan is a round, military-style rugged smartwatch with a 316L stainless steel case, sapphire glass and a bold blue side plate. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays sharp and easy to read in the sun, and you can take calls right from your wrist over Bluetooth. A built-in LED flashlight lights the way at night. It tracks heart rate around the clock, blood oxygen, sleep and calories, and the 550mAh battery lasts about 14 days with typical use and up to 30 days in power-saving mode. Rated 5ATM and IP69K and tested to MIL-STD-810H for heat, cold, salt spray, humidity and shock, it is a tough outdoor smartwatch that works with both iPhone and Android.',
     highlights: [
       { value: '1.43"', label: "AMOLED screen" },
-      { value: "30d", label: "Battery life" },
-      { value: "5ATM", label: "Water rating" },
+      { value: "14d", label: "Typical battery" },
+      { value: "IP69K", label: "& 5ATM" },
       { value: "Calls", label: "From your wrist" },
     ],
     specs: [
       { group: "Display", label: "Screen", value: '1.43" AMOLED, ultra HD' },
-      { group: "Display", label: "Resolution", value: "466 x 466 pixels" },
+      { group: "Display", label: "Resolution", value: "466 x 466 pixels, 391 PPI" },
+      { group: "Display", label: "Brightness", value: "Up to 1000 nits" },
+      { group: "Display", label: "Screen-to-body", value: "76%" },
+      { group: "Display", label: "Always-on", value: "Always-on display mode" },
+      { group: "Display", label: "Watch faces", value: "300+ watch faces to download, or use your own photo" },
       { group: "Display", label: "Glass", value: "Sapphire glass" },
       { group: "Display", label: "Shape", value: "Round" },
       { group: "Battery", label: "Capacity", value: "550mAh" },
-      { group: "Battery", label: "Battery life", value: "Up to 30 days typical, 18 days heavy use, 60 days power saving" },
+      { group: "Battery", label: "Battery life", value: "About 14 days typical, 6 days heavy use, up to 30 days power saving" },
       { group: "Battery", label: "Talk time", value: "Up to 573 minutes" },
       { group: "Battery", label: "Charging", value: "Magnetic charger, about 1.5 hours" },
       { group: "Health", label: "Heart rate", value: "Continuous, every minute, plus daily resting heart rate" },
@@ -394,23 +586,43 @@ export const products: Product[] = [
       { group: "Sports", label: "Sport modes", value: "Walking, running, hiking, cycling, basketball, soccer, badminton, yoga, jump rope" },
       { group: "Sports", label: "Activity", value: "Steps, standing time, calories, real-time pace and distance, automatic goals" },
       { group: "Sports", label: "Sensors", value: "3-axis accelerometer and 3-axis gyroscope" },
-      { group: "Build", label: "Case", value: "Stainless steel with liquid silicone" },
-      { group: "Build", label: "Water resistance", value: "5ATM" },
-      { group: "Build", label: "Strap", value: "Liquid silicone sport strap with two keepers" },
+      { group: "Build", label: "Flashlight", value: "Built-in LED flashlight" },
+      { group: "Build", label: "Case", value: "316L stainless steel unibody" },
+      { group: "Build", label: "Water and dust", value: "5ATM and IP69K" },
+      { group: "Build", label: "Toughness", value: "Tested to MIL-STD-810H: heat to 70°C (158°F), cold to -40°C (-40°F), 96 h salt spray, ice and freezing rain, 240 h humidity, shock" },
+      { group: "Build", label: "Size", value: "49.2 x 49.2 x 13.6 mm (1.94 x 1.94 x 0.54 in)" },
+      { group: "Build", label: "Strap", value: "22 mm liquid silicone sport strap with folding buckle and two keepers, fits 130 to 235 mm (5.1 to 9.25 in) wrists" },
       { group: "Smart features", label: "Calls", value: "Bluetooth calls, dial pad, contacts, recent calls, voice assistant" },
       { group: "Smart features", label: "Notifications", value: "Calls, messages, email and app alerts" },
       { group: "Smart features", label: "Tools", value: "Weather, music and camera control, find my phone, calendar, calculator, alarm, stopwatch, timer" },
       { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
       { group: "Smart features", label: "Phone app", value: "Works with iPhone (iOS 10+) and Android (5.0+)" },
       { group: "Smart features", label: "Languages", value: "19, including English, Arabic, French, German and Spanish" },
+      { group: "In the box", label: "Includes", value: "MATIN Torvan watch with strap, magnetic charging cable, instruction manual" },
     ],
     featureGroups: [
       { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "Message and app notifications", "Find my phone"] },
       { title: "Health", icon: "health", items: ["24/7 heart rate", "Blood oxygen (SpO2)", "Sleep score", "Breathing training"] },
       { title: "Sport & activity", icon: "outdoor", items: ["9 sport modes", "Steps and distance", "Calorie tracker", "Real-time pace"] },
-      { title: "Everyday tools", icon: "tools", items: ["Weather", "Music control", "Stopwatch and timer", "Alarm and calendar"] },
+      { title: "Everyday tools", icon: "tools", items: ["LED flashlight", "Weather", "Music control", "Stopwatch and timer"] },
     ],
-    healthMonitoring: true,
+    batteryLiquid: {
+      mah: 550,
+      image: "/products/matin-torvan-front-view.webp",
+      imageAlt: "MATIN Torvan front view with its round AMOLED screen showing the battery level",
+      screen: { cx: 49.6, cy: 48.8, r: 24.8 },
+      modes: [
+        { label: "Heavy use", days: 6, text: "Lots of calls, workouts and notifications." },
+        { label: "Typical use", days: 14, text: "Everyday wear with health tracking and notifications." },
+        { label: "Power saving", days: 30, text: "Stretch the battery when you are away from a charger." },
+      ],
+      facts: [
+        { value: "550 mAh", label: "Battery" },
+        { value: "573 min", label: "Talk time" },
+        { value: "1.5 h", label: "Magnetic charge" },
+      ],
+    },
+    health: { metrics: ["hr", "rest", "spo2"], continuous: true },
     sportModes: {
       count: "9",
       ids: ["running", "walking", "hiking", "cycling", "basketball", "soccer", "badminton", "yoga", "jump-rope"],
@@ -430,11 +642,19 @@ export const products: Product[] = [
       },
       {
         q: "How long does the battery last?",
-        a: "Up to 30 days with typical use, up to 18 days with heavy use and up to 60 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
+        a: "About 14 days with typical use, about 6 days with heavy use and up to 30 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
+      },
+      {
+        q: "Does the MATIN Torvan have a flashlight?",
+        a: "Yes. It has a built-in LED flashlight, handy at night, when camping or when you drop something in the dark.",
       },
       {
         q: "Is the MATIN Torvan waterproof?",
-        a: "It is rated 5ATM, so rain, sweat, splashes and washing your hands are fine.",
+        a: "It is rated 5ATM and IP69K, so rain, sweat, splashes, dust, mud and high-pressure water are fine. Do not use it for diving or in hot showers.",
+      },
+      {
+        q: "How tough is the MATIN Torvan?",
+        a: "It has a 316L stainless steel case and sapphire glass, and it is tested to MIL-STD-810H for heat up to 70°C (158°F), cold down to -40°C (-40°F), 96 hours of salt spray, ice and freezing rain, 240 hours of humidity and shock.",
       },
       {
         q: "Does it work with iPhone and Android?",
@@ -442,160 +662,341 @@ export const products: Product[] = [
       },
       {
         q: "What is the screen like?",
-        a: "A round 1.43 inch AMOLED display at 466 x 466 pixels, protected by sapphire glass.",
+        a: "A round 1.43 inch AMOLED display at 466 x 466 pixels (391 PPI), up to 1000 nits bright and protected by sapphire glass. It has an always-on mode and 300+ watch faces, and you can use your own photo as a face.",
+      },
+      {
+        q: "Is the MATIN Torvan certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
       },
       {
         q: "Does shipping cost anything?",
-        a: "No. Shipping is free across the USA, and you get a 2 year warranty and 30 day returns.",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
       },
     ],
     seoTitle: "MATIN Torvan Military Smartwatch | Bluetooth Calling, AMOLED",
     seoDescription:
-      'MATIN Torvan rugged military-style smartwatch for men: Bluetooth calling, 1.43" AMOLED, sapphire glass, heart rate, SpO2, 30 day battery, 5ATM waterproof.',
+      'MATIN Torvan rugged military-style smartwatch for men: Bluetooth calling, 1.43" AMOLED, sapphire glass, SpO2, 30 day battery, 5ATM, IP69K, MIL-STD-810H.',
     art: { case: "#1c1f26", strap: "#121418", accent: "#2f62e0" },
   },
   {
-    slug: "matin-titan-x",
-    name: "MATIN Titan X",
-    tagline: "Flagship military smartwatch",
-    price: 349,
-    compareAt: 399,
-    category: "tactical",
-    badge: "Best seller",
-    images: [],
-    colors: [
-      { name: "Stealth Black", hex: "#1c1f26" },
-      { name: "Ranger Green", hex: "#4b5a3a" },
-    ],
-    description:
-      "Our toughest watch. A titanium case, sapphire glass and MIL-STD-810H testing mean it keeps going wherever you do.",
-    specs: [
-      { label: "Durability", value: "MIL-STD-810H tested" },
-      { label: "Water", value: "100m / 10 ATM" },
-      { label: "Battery", value: "Up to 30 days" },
-      { label: "Display", value: '1.43" AMOLED, sapphire' },
-      { label: "Case", value: "Titanium, 48mm" },
-      { label: "GPS", value: "Dual-band GPS" },
-    ],
-    art: { case: "#2a2e38", strap: "#16181e", accent: "#5285f7" },
-  },
-  {
-    slug: "matin-commander",
-    name: "MATIN Commander",
-    tagline: "Tactical mode, night vision display",
-    price: 279,
-    category: "tactical",
+    slug: "matin-kaldor",
+    name: "MATIN Kaldor",
+    tagline: "Tactical GPS smartwatch with flashlight, compass and Bluetooth calls",
+    price: 130,
+    shareImage: "/products/matin-kaldor-share.jpg",
+    category: "outdoor",
+    collections: ["outdoor", "tactical", "gps", "calling"],
     badge: "New",
-    images: [],
+    images: [
+      "/products/matin-kaldor-rugged-smartwatch.webp",
+      "/products/matin-kaldor-front-view.webp",
+      "/products/matin-kaldor-angle-view.webp",
+      "/products/matin-kaldor-side-flashlight.webp",
+      "/products/matin-kaldor-heart-rate-sensor-back.webp",
+      "/products/matin-kaldor-green-rugged-smartwatch.webp",
+      "/products/matin-kaldor-green-front-view.webp",
+      "/products/matin-kaldor-green-angle-view.webp",
+      "/products/matin-kaldor-green-side-flashlight.webp",
+      "/products/matin-kaldor-green-heart-rate-sensor-back.webp",
+      "/products/matin-kaldor-blue-rugged-smartwatch.webp",
+      "/products/matin-kaldor-blue-front-view.webp",
+      "/products/matin-kaldor-blue-angle-view.webp",
+      "/products/matin-kaldor-blue-side-buttons.webp",
+      "/products/matin-kaldor-blue-heart-rate-sensor-back.webp",
+      "/products/matin-kaldor-grey-rugged-smartwatch.webp",
+      "/products/matin-kaldor-grey-front-view.webp",
+      "/products/matin-kaldor-grey-angle-view.webp",
+      "/products/matin-kaldor-grey-side-buttons.webp",
+      "/products/matin-kaldor-grey-heart-rate-sensor-back.webp",
+    ],
+    imageAlts: [
+      'MATIN Kaldor tactical GPS smartwatch in black with a compass bezel, yellow LED flashlight and 1.43" AMOLED display',
+      "MATIN Kaldor front view with round AMOLED watch face showing time, steps, heart rate and battery",
+      "MATIN Kaldor rugged smartwatch angled view with armored screws, grip keys and black silicone strap",
+      "MATIN Kaldor side view with the LED flashlight between textured side buttons",
+      "Back of the MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
+      "MATIN Kaldor tactical GPS smartwatch in army green with a compass bezel, yellow LED flashlight and green silicone strap",
+      "MATIN Kaldor army green front view with round AMOLED watch face showing time, steps, heart rate and battery",
+      "MATIN Kaldor army green rugged smartwatch angled view with textured grip keys and metal buckle",
+      "MATIN Kaldor army green side view with the LED flashlight between textured side buttons",
+      "Back of the army green MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
+      "MATIN Kaldor tactical GPS smartwatch in slate blue with a compass bezel, yellow LED flashlight and blue silicone strap",
+      "MATIN Kaldor slate blue front view with an orange tactical watch face on the round AMOLED screen",
+      "MATIN Kaldor slate blue rugged smartwatch angled from the left with textured side buttons and metal buckle",
+      "MATIN Kaldor slate blue side view with three textured buttons and armored case",
+      "Back of the slate blue MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
+      "MATIN Kaldor tactical GPS smartwatch in graphite grey with a compass bezel, yellow LED flashlight and grey silicone strap",
+      "MATIN Kaldor graphite grey front view with a yellow sport watch face on the round AMOLED screen",
+      "MATIN Kaldor graphite grey rugged smartwatch angled from the left with textured side buttons and metal buckle",
+      "MATIN Kaldor graphite grey side view with three textured buttons and armored case",
+      "Back of the graphite grey MATIN Kaldor with heart rate sensor, magnetic charging pins and flashlight",
+    ],
     colors: [
-      { name: "Desert Tan", hex: "#a08a64" },
       { name: "Stealth Black", hex: "#1c1f26" },
+      { name: "Army Green", hex: "#5f6b3c", from: 5 },
+      { name: "Slate Blue", hex: "#4e6b85", from: 10 },
+      { name: "Graphite Grey", hex: "#6a6c6e", from: 15 },
     ],
     description:
-      "Built for long missions. Night vision red display, compass, altimeter and a stealth mode that turns off all signals.",
-    specs: [
-      { label: "Durability", value: "MIL-STD-810H tested" },
-      { label: "Water", value: "50m / 5 ATM" },
-      { label: "Battery", value: "Up to 21 days" },
-      { label: "Display", value: '1.39" AMOLED' },
-      { label: "Case", value: "Reinforced polymer, 47mm" },
-      { label: "Sensors", value: "Compass, altimeter, barometer" },
+      'The MATIN Kaldor is a tactical GPS smartwatch for men, built for night shifts, trails and long days outside. A built-in LED flashlight with 3 light modes sits on the side of the armored zinc alloy case, and the compass bezel, altitude meter and multi-system GPS (GPS, GLONASS, BeiDou, Galileo and QZSS) keep you on track. Take calls from your wrist over Bluetooth, follow your heart rate, sleep and calories, and train with 30+ sport modes, swimming included. The bright 1.43" AMOLED display is easy to read in the sun, the battery lasts about 7 days with typical use and up to 15 days with light use, and it is rated 3ATM against rain, sweat and splashes.',
+    highlights: [
+      { value: "GPS", label: "Multi-system" },
+      { value: "LED", label: "Flashlight" },
+      { value: "Calls", label: "From your wrist" },
+      { value: "15d", label: "Battery life" },
     ],
-    art: { case: "#6e624c", strap: "#4d4535", accent: "#e0b45a" },
+    specs: [
+      { group: "Display", label: "Screen", value: '1.43" AMOLED touchscreen' },
+      { group: "Display", label: "Resolution", value: "466 x 466 pixels" },
+      { group: "Display", label: "Shape", value: "Round" },
+      { group: "Battery", label: "Capacity", value: "530mAh" },
+      { group: "Battery", label: "Battery life", value: "About 7 days typical, up to 15 days light use or standby" },
+      { group: "Battery", label: "Charging", value: "Magnetic charger" },
+      { group: "GPS & outdoor", label: "GPS", value: "Built-in, high-precision single-frequency, multi-system (GPS, GLONASS, BeiDou, Galileo, QZSS)" },
+      { group: "GPS & outdoor", label: "Flashlight", value: "LED flashlight with 3 light modes" },
+      { group: "GPS & outdoor", label: "Navigation", value: "Compass and altitude meter" },
+      { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
+      { group: "Health", label: "Sleep", value: "Sleep tracking" },
+      { group: "Health", label: "Activity", value: "Steps, calories and sedentary reminder" },
+      { group: "Sports", label: "Sport modes", value: "30+ modes, including running, walking, cycling, fitness, rock climbing and swimming" },
+      { group: "Sports", label: "Swim tracking", value: "Pool and open water: laps, strokes, stroke rate, SWOLF, pace and heart rate" },
+      { group: "Build", label: "Case", value: "Zinc alloy middle frame with armored screws" },
+      { group: "Build", label: "Water resistance", value: "3ATM" },
+      { group: "Build", label: "Size", value: "49 mm wide, 13.9 mm thick (1.93 x 0.55 in)" },
+      { group: "Build", label: "Strap", value: "Silicone sport strap, 91 mm + 136 mm, fits 150 to 260 mm (5.9 to 10.2 in) wrists" },
+      { group: "Smart features", label: "Calls", value: "Bluetooth calls from your wrist" },
+      { group: "Smart features", label: "Notifications", value: "Call and message reminders, push notifications" },
+      { group: "Smart features", label: "Tools", value: "World time, calendar, calculator, alarm clock" },
+      { group: "Smart features", label: "Camera", value: "No camera" },
+      { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
+      { group: "Smart features", label: "Phone app", value: "Works with iPhone (iOS 11+) and Android (5.0+)" },
+      { group: "In the box", label: "Package", value: "4.3 x 4.3 x 2.8 in (11 x 11 x 7 cm), 0.44 lb (0.2 kg) shipping weight" },
+    ],
+    featureGroups: [
+      { title: "Outdoor & navigation", icon: "outdoor", items: ["Multi-system GPS", "LED flashlight, 3 modes", "Compass", "Altitude meter"] },
+      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Call and message reminders", "Push notifications", "Phone app sync"] },
+      { title: "Health & sport", icon: "health", items: ["Heart rate", "Sleep tracking", "Calorie tracker", "30+ sport modes"] },
+      { title: "Everyday tools", icon: "tools", items: ["World time", "Calendar", "Calculator", "Alarm clock"] },
+    ],
+    gps: { screens: ["route", "sats", "compass"], systems: ["GPS", "GLONASS", "BeiDou", "Galileo", "QZSS"] },
+    fitness: { look: "multi", count: "30+" },
+    health: { metrics: ["hr", "sleep", "activity"] },
+    batteryLiquid: {
+      mah: 530,
+      image: "/products/matin-kaldor-front-view.webp",
+      imageAlt: "MATIN Kaldor front view with its round AMOLED screen showing the battery level",
+      screen: { cx: 49.5, cy: 48.64, r: 26.8 },
+      look: "radar",
+      intro:
+        "The MATIN Kaldor runs on a 530mAh battery: about 7 days of everyday wear with calls, GPS and the flashlight, and up to 15 days with light use.",
+      modes: [
+        { label: "Typical use", days: 7, text: "Calls, GPS workouts, notifications and the flashlight." },
+        { label: "Light use", days: 15, text: "Time, steps, heart rate and a few notifications a day." },
+      ],
+      facts: [
+        { value: "530 mAh", label: "Battery" },
+        { value: "7 to 15", label: "Days per charge" },
+        { value: "Magnetic", label: "Charger" },
+      ],
+    },
+    faq: [
+      {
+        q: "Does the MATIN Kaldor have a flashlight?",
+        a: "Yes. An LED flashlight is built into the side of the case, with 3 light modes for walking at night, camping or working in the dark.",
+      },
+      {
+        q: "Does it have GPS?",
+        a: "Yes. Built-in GPS tracks your route, distance and pace, and it uses several satellite systems (GPS, GLONASS, BeiDou, Galileo and QZSS) for a more reliable position. It also has a compass and an altitude meter.",
+      },
+      {
+        q: "Can I take calls on the MATIN Kaldor?",
+        a: "Yes. Pair it with your phone over Bluetooth and you can answer and make calls from your wrist.",
+      },
+      {
+        q: "How long does the battery last?",
+        a: "About 7 days with typical use and up to 15 days with light use. Daily GPS workouts, long calls and the flashlight use it faster. It charges with a magnetic cable.",
+      },
+      {
+        q: "Is the MATIN Kaldor waterproof?",
+        a: "It is rated 3ATM, so rain, sweat, splashes and pool swimming are fine, and it tracks your swims. Do not use it for diving, in hot showers or in the sauna.",
+      },
+      {
+        q: "What is the screen like?",
+        a: "A round 1.43 inch AMOLED touchscreen at 466 x 466 pixels that stays bright and easy to read outdoors.",
+      },
+      {
+        q: "Does it work with iPhone and Android?",
+        a: "Yes. It works with iPhone (iOS 11 or newer) and Android (5.0 or newer) over Bluetooth 5.3.",
+      },
+      {
+        q: "Is the MATIN Kaldor certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
+      },
+      {
+        q: "Does shipping cost anything?",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
+      },
+    ],
+    seoTitle: "MATIN Kaldor Tactical GPS Smartwatch with Flashlight",
+    seoDescription:
+      'MATIN Kaldor tactical GPS smartwatch for men: LED flashlight, compass, Bluetooth calls, 1.43" AMOLED, heart rate, 15 day battery, 3ATM. Free worldwide shipping.',
+    art: { case: "#1c1f26", strap: "#121418", accent: "#e8e04a" },
   },
   {
-    slug: "matin-trail-pro",
-    name: "MATIN Trail Pro",
-    tagline: "Offline maps for the wild",
-    price: 299,
-    category: "outdoor",
-    images: [],
+    slug: "matin-varkon",
+    name: "MATIN Varkon",
+    tagline: "Rugged GPS smartwatch with Bluetooth calls and up to 30 days battery",
+    price: 180,
+    shareImage: "/products/matin-varkon-share.jpg",
+    category: "tactical",
+    collections: ["tactical", "outdoor", "gps", "calling", "long-battery"],
+    badge: "New",
+    images: [
+      "/products/matin-varkon-angle-view.webp",
+      "/products/matin-varkon-rugged-smartwatch.webp",
+      "/products/matin-varkon-front-view.webp",
+      "/products/matin-varkon-heart-rate-sensor-back.webp",
+      "/products/matin-varkon-side-buttons.webp",
+      "/products/matin-varkon-orange-angle-view.webp",
+      "/products/matin-varkon-orange-rugged-smartwatch.webp",
+      "/products/matin-varkon-orange-front-view.webp",
+      "/products/matin-varkon-orange-heart-rate-sensor-back.webp",
+      "/products/matin-varkon-orange-side-buttons.webp",
+    ],
+    imageAlts: [
+      "MATIN Varkon rugged smartwatch angled from the left with a red stainless steel side plate and armored screws",
+      'MATIN Varkon rugged GPS smartwatch in black with a red crown, red side plate and 1.43" AMOLED display',
+      "MATIN Varkon front view with round AMOLED watch face showing time, heart rate, steps, air pressure and date",
+      "Back of the MATIN Varkon with heart rate and blood oxygen sensor and magnetic charging pins",
+      "MATIN Varkon side view with a red side plate between three metal buttons and black silicone strap",
+      "MATIN Varkon in orange and silver angled from the left, with an orange side plate and orange silicone strap",
+      'MATIN Varkon rugged GPS smartwatch in orange with a silver steel bezel, orange crown and 1.43" AMOLED display',
+      "MATIN Varkon orange front view with compass, steps and date on the round AMOLED watch face",
+      "Back of the orange MATIN Varkon with heart rate and blood oxygen sensor and magnetic charging pins",
+      "MATIN Varkon orange side view with an orange side plate between metal buttons",
+    ],
     colors: [
-      { name: "Ranger Green", hex: "#4b5a3a" },
-      { name: "Storm Grey", hex: "#5a5f6b" },
+      { name: "Black / Red", hex: "#1c1f26" },
+      { name: "Orange / Silver", hex: "#f08a1c", from: 5 },
     ],
     description:
-      "Offline maps, route back and a 40 day battery. Made for hikers, hunters and anyone off the grid.",
+      'The MATIN Varkon is a rugged GPS smartwatch for men with a 316L stainless steel case, a carbon-coated metal bezel and bold red or orange details. The 1.43" AMOLED display (466x466) reaches 1000 nits, so it stays easy to read in direct sun, behind Corning Gorilla Glass. Built-in GPS works with 6 satellite systems, and a compass, barometric altimeter and gyroscope keep you on track outdoors. Take calls from your wrist over Bluetooth, track heart rate, blood oxygen and sleep, and pick from 170+ sport modes, from triathlon to open water swimming. The 500mAh battery lasts about 12 days with typical use and up to 30 days in power-saving mode. Rated 5ATM and IP69K, it handles rain, dust, mud and high-pressure water.',
+    highlights: [
+      { value: "30d", label: "Power saving" },
+      { value: "GPS", label: "6 satellite systems" },
+      { value: "Calls", label: "From your wrist" },
+      { value: "IP69K", label: "& 5ATM" },
+    ],
     specs: [
-      { label: "Durability", value: "MIL-STD-810H tested" },
-      { label: "Water", value: "50m / 5 ATM" },
-      { label: "Battery", value: "Up to 40 days" },
-      { label: "Display", value: '1.45" AMOLED' },
-      { label: "Case", value: "Stainless steel, 47mm" },
-      { label: "Maps", value: "Offline topo maps" },
+      { group: "Display", label: "Screen", value: '1.43" AMOLED, 466 x 466 pixels, 391 PPI' },
+      { group: "Display", label: "Brightness", value: "Up to 1000 nits" },
+      { group: "Display", label: "Screen-to-body", value: "76%" },
+      { group: "Display", label: "Glass", value: "Corning Gorilla Glass" },
+      { group: "Display", label: "Always-on", value: "Always-on display mode and raise to wake" },
+      { group: "Battery", label: "Capacity", value: "500mAh Li-polymer" },
+      { group: "Battery", label: "Battery life", value: "About 12 days typical, 5 days heavy use, up to 30 days power saving" },
+      { group: "Battery", label: "Charging", value: "Magnetic charger, about 1.5 hours" },
+      { group: "GPS & outdoor", label: "GPS", value: "Built-in, 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS, NavIC)" },
+      { group: "GPS & outdoor", label: "Routes", value: "Real-time track and track back to your start point" },
+      { group: "GPS & outdoor", label: "Sensors", value: "Compass, barometric altimeter, air pressure, gyroscope, geomagnetic sensor, accelerometer" },
+      { group: "GPS & outdoor", label: "Flashlight", value: "Built-in flashlight function" },
+      { group: "GPS & outdoor", label: "Time", value: "GPS time sync, automatic daylight saving time, world clock" },
+      { group: "Health", label: "Heart rate", value: "Heart rate monitoring from the wrist" },
+      { group: "Health", label: "Blood oxygen", value: "SpO2 measurement" },
+      { group: "Health", label: "Sleep", value: "Sleep quality and daytime naps" },
+      { group: "Health", label: "Alerts", value: "Low blood oxygen and abnormally high or low heart rate alerts" },
+      { group: "Health", label: "More", value: "Stress levels, daytime naps, breathing exercises, women's health tracking, activity tracking" },
+      { group: "Sports", label: "Sport modes", value: "170+ sport modes, including triathlon, mountaineering and open water swimming" },
+      { group: "Sports", label: "Smart recognition", value: "Recognises when you start a workout" },
+      { group: "Sports", label: "Swim tracking", value: "Pool and open water: underwater heart rate, stroke type, stroke count and rate, SWOLF, distance" },
+      { group: "Build", label: "Case", value: "316L stainless steel with a carbon-coated metal bezel" },
+      { group: "Build", label: "Water and dust", value: "5ATM and IP69K" },
+      { group: "Build", label: "Toughness", value: "Passed 15 rugged durability tests" },
+      { group: "Build", label: "Size", value: "49 x 49 x 14 mm" },
+      { group: "Build", label: "Weight", value: "63 g with strap" },
+      { group: "Build", label: "Strap", value: "Silicone, 22 mm wide, fits 130 to 235 mm wrists" },
+      { group: "Smart features", label: "Calls", value: "Bluetooth calls from your wrist, offline voice assistant" },
+      { group: "Smart features", label: "Notifications", value: "Calls, SMS and app notifications" },
+      { group: "Smart features", label: "Tools", value: "Music and camera control, find my phone, weather, world clock, stopwatch, timer, alarm, calculator" },
+      { group: "Smart features", label: "Modes", value: "Power saving, do not disturb, silent, screen lock, password lock" },
+      { group: "Smart features", label: "Bluetooth", value: "BLE 5.3" },
+      { group: "Smart features", label: "Phone app", value: "Free app for iPhone (iOS 11+) and Android (5.0+), with hundreds of watch faces" },
+      { group: "Smart features", label: "Languages", value: "30, including English, Spanish, French, German, Portuguese and Arabic" },
     ],
-    art: { case: "#3d4733", strap: "#2c3324", accent: "#7fd36a" },
-  },
-  {
-    slug: "matin-ridge",
-    name: "MATIN Ridge",
-    tagline: "Light, tough, everyday",
-    price: 189,
-    compareAt: 219,
-    category: "outdoor",
-    images: [],
-    colors: [
-      { name: "Storm Grey", hex: "#5a5f6b" },
-      { name: "Blaze Orange", hex: "#d4682c" },
+    featureGroups: [
+      { title: "GPS & outdoor", icon: "outdoor", items: ["6-system GPS", "Compass", "Barometric altimeter", "GPS time sync"] },
+      { title: "Calls & connect", icon: "smart", items: ["Bluetooth calls", "Voice assistant", "SMS and app notifications", "Find my phone"] },
+      { title: "Health & sport", icon: "health", items: ["Heart rate", "Blood oxygen (SpO2)", "Sleep quality", "170+ sport modes"] },
+      { title: "Everyday tools", icon: "tools", items: ["Flashlight", "Weather", "Music and camera control", "Stopwatch and timer"] },
     ],
-    description:
-      "All the toughness in a lighter, smaller body. Heart rate, sleep, 100+ sport modes and two weeks of battery.",
-    specs: [
-      { label: "Durability", value: "IP68 + drop tested" },
-      { label: "Water", value: "50m / 5 ATM" },
-      { label: "Battery", value: "Up to 14 days" },
-      { label: "Display", value: '1.32" AMOLED' },
-      { label: "Case", value: "Fibre polymer, 44mm" },
-      { label: "Sports", value: "100+ modes" },
+    gps: { screens: ["route", "sats", "alt"], systems: ["GPS", "GLONASS", "Galileo", "BeiDou", "QZSS", "NavIC"], barometric: true },
+    fitness: { look: "tri", count: "170+" },
+    health: { metrics: ["hr", "spo2", "sleep"] },
+    batteryLiquid: {
+      mah: 500,
+      image: "/products/matin-varkon-front-view.webp",
+      imageAlt: "MATIN Varkon front view with its round AMOLED screen showing the battery level",
+      screen: { cx: 49.5, cy: 47.21, r: 26.07 },
+      look: "rings",
+      intro:
+        "The MATIN Varkon runs on a 500mAh battery: about 12 days of everyday wear, and up to 30 days in power-saving mode.",
+      modes: [
+        { label: "Heavy use", days: 5, text: "GPS workouts, calls and lots of notifications." },
+        { label: "Typical use", days: 12, text: "Everyday wear with health tracking and notifications." },
+        { label: "Power saving", days: 30, text: "Stretch the battery on long trips away from a charger." },
+      ],
+      facts: [
+        { value: "500 mAh", label: "Battery" },
+        { value: "1.5 h", label: "Magnetic charge" },
+        { value: "30 days", label: "Power saving" },
+      ],
+    },
+    faq: [
+      {
+        q: "How long does the MATIN Varkon battery last?",
+        a: "About 12 days with typical use, about 5 days with heavy GPS use and up to 30 days in power-saving mode. It charges in about 1.5 hours with a magnetic charger.",
+      },
+      {
+        q: "Does the MATIN Varkon have GPS?",
+        a: "Yes. Built-in GPS uses 6 satellite systems (GPS, GLONASS, Galileo, BeiDou, QZSS and NavIC) to track your route, distance and pace. It also has a compass and a barometric altimeter.",
+      },
+      {
+        q: "Can I take calls on the MATIN Varkon?",
+        a: "Yes. Pair it with your phone over Bluetooth and you can answer and make calls from your wrist. It also has a voice assistant.",
+      },
+      {
+        q: "Is the MATIN Varkon waterproof?",
+        a: "It is rated 5ATM and IP69K, so pool and open water swimming, rain, mud, dust and high-pressure water are fine, and it tracks your swims with underwater heart rate. Do not use it for diving or in hot showers.",
+      },
+      {
+        q: "Does it track heart rate and blood oxygen?",
+        a: "Yes. It reads your heart rate from your wrist, measures blood oxygen (SpO2), tracks stress and sleep, and alerts you to low blood oxygen or an unusually high or low heart rate. It is a wellness smartwatch, not a medical device.",
+      },
+      {
+        q: "What is the screen like?",
+        a: "A round 1.43 inch AMOLED display at 466 x 466 pixels, up to 1000 nits bright, behind Corning Gorilla Glass.",
+      },
+      {
+        q: "How big and heavy is it?",
+        a: "The case is 49 x 49 x 14 mm and the watch weighs 63 g with the strap. The 22 mm silicone strap fits wrists from 130 to 235 mm.",
+      },
+      {
+        q: "Does it work with iPhone and Android?",
+        a: "Yes. It works with iPhone (iOS 11 or newer) and Android (5.0 or newer) through the free phone app.",
+      },
+      {
+        q: "Is the MATIN Varkon certified for the USA?",
+        a: "Yes. It has passed FCC, CE and RoHS certification, and its Bluetooth is BQB qualified, so it meets US and EU requirements for electronics.",
+      },
+      {
+        q: "Does shipping cost anything?",
+        a: "No. Shipping is free worldwide, and you get a 1 year warranty and 30 day returns. Delivery takes about 8 to 10 business days to the USA, 7 to 9 to Canada, 5 to 8 to the UK, 7 to 9 to Europe, Australia and the Middle East, and 2 to 4 within Asia.",
+      },
     ],
-    art: { case: "#4a4e58", strap: "#d4682c", accent: "#ff8a3d" },
-  },
-  {
-    slug: "matin-abyss",
-    name: "MATIN Abyss",
-    tagline: "Dive computer on your wrist",
-    price: 399,
-    category: "dive",
-    badge: "Limited",
-    images: [],
-    colors: [
-      { name: "Deep Blue", hex: "#1f3a6b" },
-      { name: "Stealth Black", hex: "#1c1f26" },
-    ],
-    description:
-      "Depth, dive time and decompression on a bright display you can read underwater. Ceramic bezel, 100m rated.",
-    specs: [
-      { label: "Durability", value: "MIL-STD-810H tested" },
-      { label: "Water", value: "100m / EN13319" },
-      { label: "Battery", value: "Up to 25 days" },
-      { label: "Display", value: '1.43" AMOLED, sapphire' },
-      { label: "Case", value: "Titanium, ceramic bezel" },
-      { label: "Dive", value: "Depth, deco, dive log" },
-    ],
-    art: { case: "#1f3a6b", strap: "#121c33", accent: "#5fd6d0" },
-  },
-  {
-    slug: "matin-reef",
-    name: "MATIN Reef",
-    tagline: "Swim, surf and snorkel",
-    price: 229,
-    category: "dive",
-    images: [],
-    colors: [
-      { name: "Reef Teal", hex: "#1f6b6b" },
-      { name: "Storm Grey", hex: "#5a5f6b" },
-    ],
-    description:
-      "Made for water sports. Swim tracking, tide times and a strong strap that stays put in the waves.",
-    specs: [
-      { label: "Durability", value: "IP68 + drop tested" },
-      { label: "Water", value: "100m / 10 ATM" },
-      { label: "Battery", value: "Up to 18 days" },
-      { label: "Display", value: '1.39" AMOLED' },
-      { label: "Case", value: "Stainless steel, 45mm" },
-      { label: "Water sports", value: "Swim, surf, tides" },
-    ],
-    art: { case: "#1f5a5a", strap: "#143c3c", accent: "#5fd6d0" },
+    seoTitle: "MATIN Varkon Rugged GPS Smartwatch | 30 Day Battery",
+    seoDescription:
+      'MATIN Varkon rugged GPS smartwatch for men: 30 day battery, Bluetooth calls, 1.43" AMOLED, compass, altimeter, heart rate, SpO2, 5ATM and IP69K.',
+    art: { case: "#1c1f26", strap: "#121418", accent: "#e0262b" },
   },
 ];
 

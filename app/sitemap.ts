@@ -1,11 +1,24 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/lib/products";
+import { collections, products } from "@/lib/products";
 import { absoluteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/shop"), changeFrequency: "weekly", priority: 0.9 },
+    { url: absoluteUrl("/compare"), changeFrequency: "monthly", priority: 0.85 },
+    { url: absoluteUrl("/faq"), changeFrequency: "monthly", priority: 0.6 },
+    { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.5 },
+    { url: absoluteUrl("/warranty"), changeFrequency: "yearly", priority: 0.4 },
+    { url: absoluteUrl("/shipping"), changeFrequency: "monthly", priority: 0.4 },
+    { url: absoluteUrl("/returns"), changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/contact"), changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
+    ...collections.map((c) => ({
+      url: absoluteUrl(`/collections/${c.id}`),
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    })),
     ...products.map((p) => ({
       url: absoluteUrl(`/product/${p.slug}`),
       changeFrequency: "weekly" as const,

@@ -2,42 +2,43 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { categories, products, type Category } from "@/lib/products";
+import Link from "next/link";
+import { collections, collectionsOf, products } from "@/lib/products";
 import ProductCard from "./ProductCard";
 
 type Sort = "featured" | "low" | "high";
 
 export default function ShopGrid() {
   const params = useSearchParams();
-  return <ShopGridView active={(params.get("c") as Category | null) ?? null} />;
+  return <ShopGridView active={params.get("c")} />;
 }
 
 // The grid itself. The shop page also renders it with no filter as the
 // first paint, so the page is full height right away and does not jump.
-export function ShopGridView({ active }: { active: Category | null }) {
+export function ShopGridView({ active }: { active: string | null }) {
   const router = useRouter();
   const [sort, setSort] = useState<Sort>("featured");
 
   const list = useMemo(() => {
-    const filtered = active ? products.filter((p) => p.category === active) : products;
+    const filtered = active ? products.filter((p) => collectionsOf(p).includes(active)) : products;
     if (sort === "low") return [...filtered].sort((a, b) => a.price - b.price);
     if (sort === "high") return [...filtered].sort((a, b) => b.price - a.price);
     return filtered;
   }, [active, sort]);
 
-  const pick = (c: Category | null) => router.replace(c ? `/shop?c=${c}` : "/shop", { scroll: false });
+  const showAll = () => router.replace("/shop", { scroll: false });
 
   return (
     <>
       <div className="toolbar">
         <div className="chips">
-          <button className={!active ? "chip active" : "chip"} onClick={() => pick(null)}>
+          <button className={!active ? "chip active" : "chip"} onClick={showAll}>
             All
           </button>
-          {categories.map((c) => (
-            <button key={c.id} className={active === c.id ? "chip active" : "chip"} onClick={() => pick(c.id)}>
+          {collections.map((c) => (
+            <Link key={c.id} href={`/collections/${c.id}`} className={active === c.id ? "chip active" : "chip"}>
               {c.name}
-            </button>
+            </Link>
           ))}
         </div>
         <label className="sort">

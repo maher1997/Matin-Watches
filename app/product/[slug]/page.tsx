@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categories, formatPrice, getProduct, products, type Product } from "@/lib/products";
-import { absoluteUrl, site, siteUrl } from "@/lib/site";
+import { absoluteUrl, delivery, site, siteUrl } from "@/lib/site";
 import ProductImage from "@/components/ProductImage";
 import ProductCard from "@/components/ProductCard";
 import AddToCart from "@/components/AddToCart";
+import { lineupSlugs } from "@/lib/lineup";
+import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
 import Stories from "@/components/Stories";
 import CountUp from "@/components/CountUp";
@@ -15,7 +17,10 @@ import Showcase from "@/components/Showcase";
 import PdpGallery from "@/components/PdpGallery";
 import SpecSheet from "@/components/SpecSheet";
 import SportsUniverse from "@/components/SportsUniverse";
+import Fitness from "@/components/Fitness";
 import HealthMonitoring from "@/components/HealthMonitoring";
+import GpsShowcase from "@/components/GpsShowcase";
+import BatteryLiquid from "@/components/BatteryLiquid";
 import SectionHead from "@/components/SectionHead";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -55,6 +60,14 @@ const groupIcons = {
   smart: svg("M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"),
   tools: svg("M12 22a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 9v4l2.5 2.5M5 3 2 6M19 3l3 3"),
 };
+
+// Short reasons to buy, under the Add to cart button.
+const trust = [
+  { title: "Free shipping", text: "Worldwide", icon: <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17.5 18.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" /> },
+  { title: "1 year warranty", text: "On every watch", icon: <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /> },
+  { title: "30 day returns", text: "Change your mind", icon: <path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" /> },
+  { title: "iPhone & Android", text: "Free phone app", icon: <path d="M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2" /> },
+];
 
 export default async function ProductPage({ params }: Props) {
   const product = getProduct((await params).slug);
@@ -99,16 +112,20 @@ export default async function ProductPage({ params }: Props) {
           availability: "https://schema.org/InStock",
           itemCondition: "https://schema.org/NewCondition",
           seller: { "@id": `${siteUrl}/#org` },
-          shippingDetails: {
+          shippingDetails: delivery.map((d) => ({
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "0", currency: site.currency },
-            shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
-          },
+            shippingDestination: { "@type": "DefinedRegion", addressCountry: [...d.countries] },
+            deliveryTime: {
+              "@type": "ShippingDeliveryTime",
+              transitTime: { "@type": "QuantitativeValue", minValue: d.days[0], maxValue: d.days[1], unitCode: "DAY" },
+            },
+          })),
           hasMerchantReturnPolicy: {
             "@type": "MerchantReturnPolicy",
             returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
             merchantReturnDays: 30,
-            applicableCountry: "US",
+            applicableCountry: delivery.flatMap((d) => d.countries),
           },
         },
       },
@@ -138,8 +155,10 @@ export default async function ProductPage({ params }: Props) {
   // Jump links to the main sections of this product page.
   const toc = [
     (product.featureGroups || product.features) && ["#features", "Features"],
-    product.healthMonitoring && ["#health", "Health"],
-    product.sportModes && ["#sports", "Sports"],
+    product.batteryLiquid && ["#battery", "Battery"],
+    product.health && product.batteryLiquid && ["#health", "Health"],
+    product.gps && product.batteryLiquid && ["#gps", "GPS"],
+    (product.sportModes || product.fitness) && ["#sports", "Sports"],
     product.specs.length > 0 && ["#specs", "Specs"],
     product.faq && ["#faq", "FAQ"],
   ].filter(Boolean) as [string, string][];
@@ -173,11 +192,40 @@ export default async function ProductPage({ params }: Props) {
             </ul>
           )}
           <AddToCart product={product} />
-          <ul className="perks">
-            <li>Free shipping across the USA</li>
-            <li>2 year warranty</li>
-            <li>30 day returns</li>
+          <ul className="trust" aria-label="Buy with confidence">
+            {trust.map((t) => (
+              <li key={t.title}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  {t.icon}
+                </svg>
+                <span>
+                  <strong>{t.title}</strong>
+                  {t.text}
+                </span>
+              </li>
+            ))}
           </ul>
+          <div className="pdp-delivery">
+            <p>Delivery time (business days)</p>
+            <ul>
+              {delivery.map((d) => (
+                <li key={d.region}>
+                  <span>{d.region}</span>
+                  <strong>
+                    {d.days[0]}–{d.days[1]}
+                  </strong>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {lineupSlugs.includes(product.slug as (typeof lineupSlugs)[number]) && (
+            <Link href="/compare" className="pdp-compare">
+              Compare with the other MATIN watches
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )}
           <p className="pdp-desc">{product.description}</p>
         </div>
       </div>
@@ -265,11 +313,50 @@ export default async function ProductPage({ params }: Props) {
         )
       )}
 
-      {product.healthMonitoring && <HealthMonitoring />}
+      {product.batteryLiquid && (
+        <BatteryLiquid
+          name={product.name}
+          mah={product.batteryLiquid.mah}
+          image={product.batteryLiquid.image}
+          imageAlt={product.batteryLiquid.imageAlt}
+          screen={product.batteryLiquid.screen}
+          modes={product.batteryLiquid.modes}
+          facts={product.batteryLiquid.facts}
+          intro={product.batteryLiquid.intro}
+          look={product.batteryLiquid.look}
+        />
+      )}
+
+      {product.health && product.batteryLiquid && (
+        <HealthMonitoring
+          name={product.name}
+          metrics={product.health.metrics}
+          continuous={product.health.continuous}
+          image={product.batteryLiquid.image}
+          imageAlt={`${product.name} showing its health screens`}
+          screen={product.batteryLiquid.screen}
+          look={product.batteryLiquid.look}
+        />
+      )}
+
+      {product.gps && product.batteryLiquid && (
+        <GpsShowcase
+          name={product.name}
+          screens={product.gps.screens}
+          systems={product.gps.systems}
+          barometric={product.gps.barometric}
+          image={product.batteryLiquid.image}
+          imageAlt={`${product.name} showing GPS navigation screens`}
+          screen={product.batteryLiquid.screen}
+          look={product.batteryLiquid.look}
+        />
+      )}
 
       {product.sportModes && (
         <SportsUniverse name={product.name} count={product.sportModes.count} ids={product.sportModes.ids} />
       )}
+
+      {product.fitness && <Fitness name={product.name} look={product.fitness.look} count={product.fitness.count} />}
 
       {product.sports && (
         <section className="section sports">
@@ -315,18 +402,7 @@ export default async function ProductPage({ params }: Props) {
               </>
             }
           />
-          <div className="faq">
-            {product.faq.map((f, i) => (
-              <details key={f.q} name="faq">
-                <summary>
-                  <span className="faq-num">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="faq-q">{f.q}</span>
-                  <span className="faq-icon" aria-hidden="true" />
-                </summary>
-                <p>{f.a}</p>
-              </details>
-            ))}
-          </div>
+          <FaqList items={product.faq} />
         </section>
       )}
 
