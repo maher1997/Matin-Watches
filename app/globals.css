@@ -79,6 +79,11 @@ body::after {
   body::after {
     bottom: auto;
     height: var(--sv, 100vh);
+    /* The tallest the screen gets (bars hidden), which never changes while
+       scrolling. Instagram reports a much shorter screen while its browser
+       is still opening, so a backdrop sized from that ended a third of the
+       way down, and its edge sat across the page as a line. */
+    height: 100lvh;
   }
   /* Its lower edge melts into the page colour, so no line shows where it
      ends when the in-app bar slides away and the screen grows. */
