@@ -85,7 +85,7 @@ const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)retur
 // Instagram's in-app browser on iPhone also gets data-ig (see globals.css
 // and lib/scrolling.ts). ?t=1 to ?t=6 sets data-t for the test links
 // described in globals.css.
-const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-6])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
+const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-6])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}d.style.setProperty("--sh",Math.max(screen.width,screen.height)+"px");s();addEventListener("resize",s)})();`;
 
 export default function RootLayout({
   children,
