@@ -161,7 +161,7 @@ export const compareGroups: {
       { label: "Sport modes", values: ["170+", "9", "30+", "170+"] },
       {
         label: "Swim tracking",
-        values: [NO, NO, "Pool and open water", "Pool and open water"],
+        values: [NO, NO, NO, "Pool and open water"],
       },
     ],
   },
