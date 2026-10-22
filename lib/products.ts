@@ -513,6 +513,10 @@ export const products: Product[] = [
         a: "Yes. The MATIN Trekon pairs with both iPhone and Android phones through its companion app for notifications, settings and watch faces.",
       },
       {
+        q: "Is the MATIN Trekon good for construction work?",
+        a: "Yes. The armored zinc alloy case takes the knocks of a workday, the big 1.95\" screen is easy to read with dirty hands or in bright sun, and the battery lasts up to 30 days, so it gets through long shifts. It is rated 3ATM, so rain, sweat and splashes are fine, but it is not sealed against high-pressure water, and it has no flashlight. For very dusty or wet sites, the MATIN Torvan is the tougher pick.",
+      },
+      {
         q: "Is the MATIN Trekon waterproof?",
         a: "It is rated 3ATM, so rain, sweat and splashes are fine. It is not made for swimming or diving.",
       },
@@ -647,6 +651,10 @@ export const products: Product[] = [
       {
         q: "Does the MATIN Torvan have a flashlight?",
         a: "Yes. It has a built-in LED flashlight, handy at night, when camping or when you drop something in the dark.",
+      },
+      {
+        q: "Is the MATIN Torvan good for construction work?",
+        a: "Yes, it is our best pick for job sites. Sapphire glass resists scratches from tools and concrete, the 316L stainless steel case takes knocks, and it is sealed to IP69K against dust, mud and high-pressure water. The built-in LED flashlight helps in dark corners, you can take calls without pulling out your phone, and the battery lasts about 14 days with typical use.",
       },
       {
         q: "Is the MATIN Torvan waterproof?",
@@ -817,6 +825,10 @@ export const products: Product[] = [
         a: "About 7 days with typical use and up to 15 days with light use. Daily GPS workouts, long calls and the flashlight use it faster. It charges with a magnetic cable.",
       },
       {
+        q: "Is the MATIN Kaldor good for construction work?",
+        a: "Yes, especially for early starts and night shifts. The LED flashlight on the side of the case has 3 light modes, the zinc alloy case takes everyday knocks, and you can take calls from your wrist. It is rated 3ATM, so rain, sweat and splashes are fine, but it is not sealed against high-pressure water, and the battery lasts about 7 days with typical use, so plan a weekly charge.",
+      },
+      {
         q: "Is the MATIN Kaldor waterproof?",
         a: "It is rated 3ATM, so rain, sweat, splashes and pool swimming are fine, and it tracks your swims. Do not use it for diving, in hot showers or in the sauna.",
       },
@@ -967,6 +979,10 @@ export const products: Product[] = [
       {
         q: "Can I take calls on the MATIN Varkon?",
         a: "Yes. Pair it with your phone over Bluetooth and you can answer and make calls from your wrist. It also has a voice assistant.",
+      },
+      {
+        q: "Is the MATIN Varkon good for construction work?",
+        a: "Yes. The 316L stainless steel case and Gorilla Glass take daily knocks, it is sealed to IP69K against dust, mud and high-pressure water, and it has a built-in LED flashlight and Bluetooth calls. The battery lasts about 12 days with typical use. Its GPS, compass and altimeter make it a great fit if your work takes you outdoors or off-road.",
       },
       {
         q: "Is the MATIN Varkon waterproof?",
