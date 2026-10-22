@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/Cart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
+import PauseOffscreen from "@/components/PauseOffscreen";
 import ScrollProbe from "@/components/ScrollProbe";
 import { formatPrice, products } from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
@@ -116,6 +117,7 @@ export default function RootLayout({
             }))}
           />
           <main>{children}</main>
+          <PauseOffscreen />
           <ScrollProbe />
           <Footer />
         </CartProvider>

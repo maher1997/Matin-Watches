@@ -7182,6 +7182,14 @@ button.thumb:focus-visible {
   }
 }
 
+/* Off-screen sections hold their looping animations still
+   (components/PauseOffscreen.tsx). */
+[data-off] *,
+[data-off] *::before,
+[data-off] *::after {
+  animation-play-state: paused !important;
+}
+
 /* ---------- Premium touches ---------- */
 /* A soft light sweeps across the main buttons on hover */
 .btn-primary {
