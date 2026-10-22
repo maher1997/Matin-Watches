@@ -14,7 +14,7 @@ export type LineupSlug = (typeof lineupSlugs)[number];
 export const bestFor: Record<LineupSlug, string> = {
   "matin-trekon": "Long trips and training",
   "matin-torvan": "Calls, health and everyday wear",
-  "matin-kaldor": "Nights out, trails and navigation",
+  "matin-kaldor": "Trails, swimming and navigation",
   "matin-varkon": "GPS, calls and tough jobs",
 };
 
@@ -33,16 +33,16 @@ export const keyRows: Row[] = [
       '1.43" round AMOLED',
     ],
   },
-  { label: "GPS", values: ["Yes", "No", "Yes, 5 systems", "Yes, 6 systems"] },
+  { label: "GPS", values: ["Yes", "No", "Yes, dual-frequency, 5 systems", "Yes, 6 systems"] },
   {
     label: "Bluetooth calls",
     values: ["Call alerts only", "Yes", "Yes", "Yes"],
   },
   { label: "Flashlight", values: ["No", "Yes", "Yes", "Yes"] },
-  { label: "Blood oxygen (SpO2)", values: ["No", "Yes", "No", "Yes"] },
+  { label: "Blood oxygen (SpO2)", values: ["No", "Yes", "Yes", "Yes"] },
   {
     label: "Battery, typical use",
-    values: ["20 days", "14 days", "7 days", "12 days"],
+    values: ["20 days", "14 days", "10 days", "12 days"],
   },
   {
     label: "Battery, longest",
@@ -50,9 +50,9 @@ export const keyRows: Row[] = [
   },
   {
     label: "Water rating",
-    values: ["3ATM", "5ATM + IP69K", "3ATM", "5ATM + IP69K"],
+    values: ["3ATM", "5ATM + IP69K", "5ATM", "5ATM + IP69K"],
   },
-  { label: "Sport modes", values: ["170+", "9", "30+", "170+"] },
+  { label: "Sport modes", values: ["170+", "9", "100+", "170+"] },
   {
     label: "Case",
     values: ["Zinc alloy", "316L steel", "Zinc alloy", "316L steel"],
@@ -94,14 +94,14 @@ export const compareGroups: {
     rows: [
       {
         label: "Typical use",
-        values: ["20 days", "14 days", "7 days", "12 days"],
+        values: ["20 days", "14 days", "10 days", "12 days"],
       },
       {
         label: "Light use or power saving",
         values: ["30 days", "30 days", "15 days", "30 days"],
       },
-      { label: "Heavy use", values: ["11 days", "6 days", NO, "5 days"] },
-      { label: "Capacity", values: ["1000mAh", "550mAh", "530mAh", "500mAh"] },
+      { label: "Heavy use", values: ["11 days", "6 days", "5 days", "5 days"] },
+      { label: "Capacity", values: ["1000mAh", "550mAh", "670mAh", "500mAh"] },
       {
         label: "Charging",
         values: [
@@ -118,7 +118,7 @@ export const compareGroups: {
     rows: [
       {
         label: "GPS",
-        values: ["Yes", "No", "Yes, 5 systems", "Yes, 6 systems"],
+        values: ["Yes", "No", "Yes, dual-frequency, 5 systems", "Yes, 6 systems"],
       },
       { label: "Compass", values: ["Yes", NO, "Yes", "Yes"] },
       {
@@ -126,13 +126,13 @@ export const compareGroups: {
         values: [
           "Altitude meter",
           NO,
-          "Altitude meter",
+          "Barometric altimeter",
           "Barometric altimeter",
         ],
       },
       {
         label: "Flashlight",
-        values: ["No", "Yes, LED", "Yes, LED with 3 modes", "Yes"],
+        values: ["No", "Yes, LED", "Yes, LED", "Yes"],
       },
     ],
   },
@@ -144,24 +144,24 @@ export const compareGroups: {
         values: [
           "Yes",
           "Yes, every minute",
-          "Yes",
+          "Yes, plus HRV and stress",
           "Yes, with high and low alerts",
         ],
       },
-      { label: "Blood oxygen (SpO2)", values: ["No", "Yes", "No", "Yes"] },
+      { label: "Blood oxygen (SpO2)", values: ["No", "Yes", "Yes", "Yes"] },
       {
         label: "Sleep",
-        values: ["Yes", "Yes, with sleep score", "Yes", "Yes, with naps"],
+        values: ["Yes", "Yes, with sleep score", "Yes, 24/7", "Yes, with naps"],
       },
     ],
   },
   {
     title: "Sports",
     rows: [
-      { label: "Sport modes", values: ["170+", "9", "30+", "170+"] },
+      { label: "Sport modes", values: ["170+", "9", "100+", "170+"] },
       {
         label: "Swim tracking",
-        values: [NO, NO, NO, "Pool and open water"],
+        values: [NO, NO, "Pool swimming", "Pool and open water"],
       },
     ],
   },
@@ -205,20 +205,20 @@ export const compareGroups: {
         values: [
           "Zinc alloy",
           "316L stainless steel",
-          "Zinc alloy, armored screws",
+          "Zinc alloy middle frame",
           "316L stainless steel",
         ],
       },
       {
         label: "Water and dust",
-        values: ["3ATM", "5ATM and IP69K", "3ATM", "5ATM and IP69K"],
+        values: ["3ATM", "5ATM and IP69K", "5ATM", "5ATM and IP69K"],
       },
       {
         label: "Size",
         values: [
           NO,
           "49.2 x 49.2 x 13.6 mm",
-          "49 mm wide, 13.9 mm thick",
+          NO,
           "49 x 49 x 14 mm",
         ],
       },

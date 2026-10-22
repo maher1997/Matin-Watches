@@ -47,7 +47,7 @@ export default function Fitness({
           eyebrow: "Sport modes",
           title: (
             <>
-              Run, ride, <span className="grad">climb.</span>
+              Run, ride, climb. <span className="grad">Then swim.</span>
             </>
           ),
           intro: `${count} sport modes on the ${name}. Here are a few of them, each with its own live workout log.`,

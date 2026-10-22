@@ -3,9 +3,10 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Athlete, type Sport } from "@/components/sports/rig";
 import { sportLibrary } from "@/components/sports/library";
+import { PoolScene, poolStats } from "@/components/fitness/Pool";
 
 // Every sport the Kaldor names, one at a time: each has its own animated
-// place (track, park, road, rock wall, gym) and its own workout log.
+// place (track, park, road, rock wall, gym, pool) and its own workout log.
 // The sport changes by itself every 5 seconds; picking one holds it a while.
 
 const DUR = 5;
@@ -64,7 +65,8 @@ type Id =
   | "walking"
   | "cycling"
   | "climbing"
-  | "fitness";
+  | "fitness"
+  | "swimming";
 const SPORTS: { id: Id; name: string; icon: string }[] = [
   {
     id: "running",
@@ -91,6 +93,11 @@ const SPORTS: { id: Id; name: string; icon: string }[] = [
     name: "Fitness",
     icon: "M3 9 V15 M6 7 V17 M18 7 V17 M21 9 V15 M6 12 H18",
   },
+  {
+    id: "swimming",
+    name: "Swimming",
+    icon: "M3 17 q3 -2 6 0 t6 0 t6 0 M7 13 L12 9 L16 11 M17 8a1.5 1.5 0 1 0 .01 0",
+  },
 ];
 
 // Places, all 400 x 230 with the ground at y = 200.
@@ -109,7 +116,7 @@ const Repeat = ({
   </g>
 );
 
-const PLACES: Record<Id, ReactNode> = {
+const PLACES: Record<Exclude<Id, "swimming">, ReactNode> = {
   running: (
     <>
       <rect width="400" height="230" fill="url(#ftDusk)" />
@@ -344,6 +351,19 @@ function stats(
           ["Heart rate", String(wob(156, 4, 2)), "bpm"],
         ],
       };
+    case "swimming": {
+      const p = poolStats(t);
+      return {
+        hero: ["Laps", String(p.laps), ""],
+        sub: "Pool swim · freestyle",
+        items: [
+          ["Distance", String(p.laps * 25), "m"],
+          ["Strokes", String(p.strokes), ""],
+          ["SWOLF", String(p.swolf), ""],
+          ["Heart rate", String(p.hr), "bpm"],
+        ],
+      };
+    }
   }
 }
 
@@ -392,39 +412,45 @@ export default function Multi({ t, count }: { t: number; count: string }) {
           key={sport.id}
         >
           <span className="hm-badge">Illustrative</span>
-          <svg
-            viewBox="0 0 400 230"
-            className="ft-place"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <defs>
-              <linearGradient id="ftDusk" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#0d1418" />
-                <stop offset="1" stopColor="#173027" />
-              </linearGradient>
-              <linearGradient id="ftMorning" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#10181a" />
-                <stop offset="1" stopColor="#21362a" />
-              </linearGradient>
-            </defs>
-            {PLACES[sport.id]}
-          </svg>
-          <div
-            className="ft-ath"
-            role="img"
-            aria-label={`Athlete ${sport.name.toLowerCase()}`}
-          >
-            <Athlete
-              sport={
-                sport.id === "climbing"
-                  ? climbing
-                  : sport.id === "fitness"
-                    ? fitness
-                    : sportLibrary[sport.id]
-              }
-            />
-          </div>
+          {sport.id === "swimming" ? (
+            <PoolScene t={t} />
+          ) : (
+            <>
+              <svg
+                viewBox="0 0 400 230"
+                className="ft-place"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <linearGradient id="ftDusk" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#0d1418" />
+                    <stop offset="1" stopColor="#173027" />
+                  </linearGradient>
+                  <linearGradient id="ftMorning" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#10181a" />
+                    <stop offset="1" stopColor="#21362a" />
+                  </linearGradient>
+                </defs>
+                {PLACES[sport.id]}
+              </svg>
+              <div
+                className="ft-ath"
+                role="img"
+                aria-label={`Athlete ${sport.name.toLowerCase()}`}
+              >
+                <Athlete
+                  sport={
+                    sport.id === "climbing"
+                      ? climbing
+                      : sport.id === "fitness"
+                        ? fitness
+                        : sportLibrary[sport.id]
+                  }
+                />
+              </div>
+            </>
+          )}
           <span className="ft-arena-name">{sport.name}</span>
         </div>
 
