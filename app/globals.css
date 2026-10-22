@@ -832,17 +832,26 @@ button.thumb:focus-visible {
 }
 
 /* Stacked photos in the big picture; the chosen one fades in */
+/* Photos not on show are also hidden from drawing (after their fade), so
+   the phone does not keep five big shadowed photos in memory while you
+   scroll. */
 .pdp-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
+  visibility: hidden;
   transform: scale(0.985);
-  transition: opacity 0.28s ease, transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition:
+    opacity 0.28s ease,
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s linear 0.35s;
 }
 
 .pdp-slide.on {
   opacity: 1;
+  visibility: visible;
   transform: none;
+  transition-delay: 0s;
 }
 
 /* Fade only after the first tap, so the first photo shows instantly */
@@ -1344,7 +1353,7 @@ button.thumb:focus-visible {
    drawn once and kept. Without it, a browser that resizes the page while
    scrolling (Instagram hides its bar on the first scroll) had to redraw
    that heavy shadow in the middle of the scroll. Looks exactly the same. */
-.pdp-gallery .product-photo {
+.pdp-gallery .pdp-slide.on .product-photo {
   will-change: transform;
 }
 
