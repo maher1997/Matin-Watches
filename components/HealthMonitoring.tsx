@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import SectionHead from "@/components/SectionHead";
 import useShowcase from "@/components/useShowcase";
+import useSteadyHeight from "@/components/useSteadyHeight";
 import HealthWatch, { type MetricId, type Screen } from "@/components/health/faces";
 import { RESTING, SLEEP_TOTAL, STEPS } from "@/components/health/visuals";
 
@@ -107,6 +108,7 @@ export default function HealthMonitoring({
 }) {
   const n = metrics.length;
   const { ref, tabs, active, live, reduced, touch, choose, onKey, onTouchStart, onTouchEnd } = useShowcase(n);
+  const body = useSteadyHeight<HTMLDivElement>();
   const [bpmStep, setBpmStep] = useState(0);
   const [restPick, setRestPick] = useState(RESTING.length - 1);
   const [o2, setO2] = useState(98);
@@ -224,7 +226,7 @@ export default function HealthMonitoring({
           ))}
         </div>
 
-        <div className="hm-body">
+        <div ref={body} className="hm-body">
           <div className={`hm-visual hm-visual-${id}`} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
             <span className="hm-badge">Illustrative</span>
             <HealthWatch

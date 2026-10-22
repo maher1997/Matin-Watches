@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import SectionHead from "@/components/SectionHead";
 import useShowcase from "@/components/useShowcase";
+import useSteadyHeight from "@/components/useSteadyHeight";
 import { scrolling } from "@/lib/scrolling";
 import GpsWatch, {
   altFeet,
@@ -75,6 +76,7 @@ export default function GpsShowcase({
     onTouchStart,
     onTouchEnd,
   } = useShowcase(n);
+  const body = useSteadyHeight<HTMLDivElement>();
   const id = screens[active];
   const satTarget = systems.length * 5 + 4;
   const route = mapOf(look);
@@ -266,7 +268,7 @@ export default function GpsShowcase({
           ))}
         </div>
 
-        <div className="hm-body">
+        <div ref={body} className="hm-body">
           <div
             className={`hm-visual gps-visual-${id}`}
             onTouchStart={onTouchStart}

@@ -2697,6 +2697,7 @@ button.thumb:focus-visible {
 @media (max-width: 860px) {
   .showcase-panel {
     grid-template-columns: 1fr;
+    align-content: start;
     overflow: hidden;
     --pad: clamp(1.5rem, 4vw, 3rem);
   }
@@ -3707,6 +3708,8 @@ button.thumb:focus-visible {
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: clamp(1.5rem, 3vw, 3rem);
   align-items: center;
+  /* Kept at its tallest height by useSteadyHeight; spare room goes below. */
+  align-content: start;
 }
 
 .hm-visual {
