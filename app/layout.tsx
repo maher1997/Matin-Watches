@@ -4,7 +4,6 @@ import { CartProvider } from "@/components/Cart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
-import Motion from "@/components/Motion";
 import ScrollProbe from "@/components/ScrollProbe";
 import { formatPrice, products } from "@/lib/products";
 import { absoluteUrl, site, siteUrl } from "@/lib/site";
@@ -82,9 +81,8 @@ const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)retur
 // if the phone is turned. Inside apps like Instagram the app's own bars slide
 // away on the first scroll and the page's height changes; sizes tied to that
 // height made the whole page lay out again mid-scroll, a visible hitch.
-// Instagram's in-app browser on iPhone also gets data-ig: there the arriving
-// blocks only fade in (see globals.css), as anything moving while you
-// scroll looked like it shook. ?t=1 to ?t=4 sets data-t for the test links
+// Instagram's in-app browser on iPhone also gets data-ig (see globals.css
+// and lib/scrolling.ts). ?t=1 to ?t=4 sets data-t for the test links
 // described in globals.css.
 const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-4])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
 
@@ -118,7 +116,6 @@ export default function RootLayout({
             }))}
           />
           <main>{children}</main>
-          <Motion />
           <ScrollProbe />
           <Footer />
         </CartProvider>

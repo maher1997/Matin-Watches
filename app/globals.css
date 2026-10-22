@@ -93,7 +93,7 @@ html[data-ig] body::after {
 
 /* Test links (?t=1 to ?t=4, set in app/layout.tsx), each switching off one
    more effect, to find what shakes in a browser we cannot test here.
-   1: no arrive animations (components/Motion.tsx). 2: no other animations.
+   1: nothing switched off. 2: no animations.
    3: no filters, shadows or extra layers. 4: nothing fixed or sticky. */
 html[data-t="2"] *, html[data-t="2"] *::before, html[data-t="2"] *::after,
 html[data-t="3"] *, html[data-t="3"] *::before, html[data-t="3"] *::after,
@@ -7175,68 +7175,6 @@ button.thumb:focus-visible {
   }
   .ft-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* ---------- Arrive animations (components/Motion.tsx) ----------
-   Only blocks still below the first screen get .rv, and only once the
-   script runs; they rise and fade in on their own clock when reached. */
-html.rv-on .rv {
-  opacity: 0;
-  transform: translate3d(0, 34px, 0);
-}
-
-/* The rise runs as a CSS transition so the phone's graphics chip moves it
-   in step with the scroll. Moved from script, frame by frame, it fell out
-   of step with a finger scroll on iPhone and looked like it shook. */
-html.rv-on .rv.rv-in {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--rv-d, 0ms),
-    transform 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
-}
-
-/* The lineup table only fades in, without rising: moving its detailed
-   watch photos by fractions of a pixel made them flicker in Chrome. */
-html.rv-on .cmp-panel.rv,
-html.rv-on .cmp-panel.rv.rv-in {
-  transform: none;
-}
-
-/* Computers: blocks only fade in, with no rise or zoom (see Motion.tsx). */
-@media (hover: hover) and (pointer: fine) {
-  html.rv-on .rv,
-  html.rv-on .rv .card-media img,
-  html.rv-on .rv.card .card-media img {
-    transform: none !important;
-  }
-}
-
-/* Instagram's browser on iPhone: blocks only fade in, with no rise or
-   photo zoom; anything moving there while you scroll looked like it shook. */
-html[data-ig].rv-on .rv,
-html[data-ig].rv-on .rv .card-media img,
-html[data-ig].rv-on .rv.card .card-media img {
-  transform: none !important;
-}
-
-/* Product photos in cards settle from a slight zoom as the card arrives */
-html.rv-on .rv .card-media img,
-html.rv-on .rv.card .card-media img {
-  transform: scale(1.06);
-}
-
-html.rv-on .rv.rv-in .card-media img,
-html.rv-on .rv.card.rv-in .card-media img {
-  transform: none;
-  transition: transform 1.4s cubic-bezier(0.16, 0.84, 0.24, 1) var(--rv-d, 0ms);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.rv-on .rv {
-    opacity: 1;
-    transform: none;
   }
 }
 
