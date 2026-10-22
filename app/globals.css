@@ -115,6 +115,13 @@ html[data-t="4"] .header {
 html[data-t="4"] .buy-bar {
   display: none !important;
 }
+/* 5: no grid lines, and the backdrop scrolls away with the page. */
+html[data-t="5"] body::after {
+  display: none;
+}
+html[data-t="5"] body::before {
+  position: absolute;
+}
 
 a {
   color: inherit;
