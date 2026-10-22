@@ -7,8 +7,11 @@ let last = -1e9;
 let listening = false;
 
 export function scrolling() {
-  if (typeof document === "undefined" || !document.documentElement.hasAttribute("data-ig"))
-    return false;
+  if (typeof document === "undefined") return false;
+  const d = document.documentElement;
+  // Test links ?t=2 and up hold every animation still.
+  if ([2, 3, 4].includes(Number(d.dataset.t))) return true;
+  if (!d.hasAttribute("data-ig")) return false;
   if (!listening) {
     listening = true;
     addEventListener("scroll", () => (last = performance.now()), {

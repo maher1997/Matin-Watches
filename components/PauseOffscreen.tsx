@@ -19,6 +19,9 @@ export default function PauseOffscreen() {
       { rootMargin: "120px 0px" },
     );
     els.forEach((el) => io.observe(el));
+    // Test links ?t=2 and up: drawn watch-screen animations hold still too.
+    if ([2, 3, 4].includes(Number(document.documentElement.dataset.t)))
+      document.querySelectorAll("svg").forEach((s) => s.pauseAnimations?.());
     return () => {
       io.disconnect();
       els.forEach((el) => el.removeAttribute("data-off"));

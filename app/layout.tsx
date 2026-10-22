@@ -83,9 +83,9 @@ const domGuard = `(function(){if(typeof Node!=="function"||!Node.prototype)retur
 // away on the first scroll and the page's height changes; sizes tied to that
 // height made the whole page lay out again mid-scroll, a visible hitch.
 // Instagram's in-app browser on iPhone also gets data-ig (see globals.css
-// and lib/scrolling.ts). ?t=1 to ?t=5 sets data-t for the test links
+// and lib/scrolling.ts). ?t=1 to ?t=6 sets data-t for the test links
 // described in globals.css.
-const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-5])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
+const screenHeight = `(function(){var d=document.documentElement,w=0;if(/Instagram/.test(navigator.userAgent))d.setAttribute("data-ig","");var t=/[?&]t=([1-6])/.exec(location.search);if(t)d.setAttribute("data-t",t[1]);function s(){if(innerWidth!==w){w=innerWidth;d.style.setProperty("--sv",innerHeight+"px")}}s();addEventListener("resize",s)})();`;
 
 export default function RootLayout({
   children,
