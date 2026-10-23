@@ -557,7 +557,7 @@ export const products: Product[] = [
     imageAlts: [
       "MATIN Torvan round rugged smartwatch with blue side button, textured grip keys and black silicone strap",
       'MATIN Torvan round rugged smartwatch in black with a blue side plate, 1.43" AMOLED display and silicone strap',
-      "MATIN Torvan front view with round AMOLED display showing steps, heart rate, weather, date and moon phase",
+      "MATIN Torvan front view with round AMOLED display showing steps, heart rate, battery, weather and date",
       "MATIN Torvan side view with two buttons and a blue stainless steel side plate",
       "Back of the MATIN Torvan with heart rate sensor and magnetic charging pins",
     ],
