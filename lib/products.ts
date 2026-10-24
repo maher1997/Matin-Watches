@@ -35,6 +35,9 @@ export type Product = {
   imageAlts?: string[];
   // 1200x630 picture shown when the page link is shared (WhatsApp, Facebook, X).
   shareImage?: string;
+  // Small line under the photos when they show a watch face the real watch
+  // doesn't ship with.
+  faceNote?: string;
   // `from`: index in `images` where this color's photos start (they run to
   // the next color's `from`). Picking the color shows only its photos.
   colors: { name: string; hex: string; from?: number }[];
@@ -544,6 +547,7 @@ export const products: Product[] = [
     tagline: "Round rugged smartwatch with sapphire glass and Bluetooth calls",
     price: 140,
     shareImage: "/products/matin-torvan-share.jpg",
+    faceNote: "Display watch face. 300+ more faces in the free app.",
     category: "tactical",
     collections: ["tactical", "outdoor", "calling", "long-battery"],
     badge: "New",
@@ -835,6 +839,7 @@ export const products: Product[] = [
     tagline: "Rugged GPS smartwatch with Bluetooth calls and up to 30 days battery",
     price: 180,
     shareImage: "/products/matin-varkon-share.jpg",
+    faceNote: "Display watch face. Many more faces in the free app.",
     category: "tactical",
     collections: ["tactical", "outdoor", "gps", "calling", "long-battery"],
     badge: "New",

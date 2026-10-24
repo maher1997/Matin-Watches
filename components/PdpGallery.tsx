@@ -180,6 +180,7 @@ export default function PdpGallery({ product }: { product: Product }) {
           ))}
         </div>
       )}
+      {product.faceNote && <p className="pdp-face-note">{product.faceNote}</p>}
       {zoom && count > 0 && (
         <Lightbox
           images={photos}

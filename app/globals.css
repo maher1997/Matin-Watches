@@ -804,6 +804,13 @@ h3 {
   margin-top: 0.75rem;
 }
 
+.pdp-face-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
 .thumb {
   position: relative;
   aspect-ratio: 1;
